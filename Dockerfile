@@ -19,6 +19,8 @@ RUN go get -v ./...
 RUN go build -o app -tags seabolt_static main.go
 
 # base the image to neo4j
-FROM neo4j:latest
+FROM alpine:latest
 # copy the statically linked executable
 COPY --from=dev-build /go/src/neo4j-go-file-system/app /neo4j-go-file-system/app
+WORKDIR /neo4j-go-file-system
+CMD ["./app"]

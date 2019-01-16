@@ -50,7 +50,7 @@ func helloWorld(uri, username, password string) (string, error) {
 
 func main() {
 	fmt.Println("Hello there")
-	s, err := helloWorld("bolt://localhost:7687", "neo4j", "password")
+	s, err := helloWorld("bolt://neo4j:7687", "neo4j", "password")
 	if err != nil {
 		log.Fatalf("oops: %s", err.Error())
 	}
