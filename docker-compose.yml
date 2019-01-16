@@ -9,6 +9,8 @@ services:
       - NEO_HOSTNAME=neo4j
       - NEO_USERNAME=neo4j
       - NEO_PASSWORD=password
+    ports:
+      - "8080:8080"
 
   neo4j:
     image: neo4j:latest

@@ -16,7 +16,7 @@ ADD . .
 # install dependencies
 RUN go get -v ./...
 # build statically linked executable
-RUN go build -o app -tags seabolt_static main.go
+RUN go build -o app -tags seabolt_static .
 
 # base the image to neo4j
 FROM alpine:latest

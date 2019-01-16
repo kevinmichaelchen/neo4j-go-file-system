@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/neo4j/neo4j-go-driver/neo4j"
 	"log"
 	"os"
+
+	"github.com/neo4j/neo4j-go-driver/neo4j"
 )
 
-func getDriver(driverInfo DriverInfo) neo4j.Driver {
+func GetDriver(driverInfo DriverInfo) neo4j.Driver {
 	driver, err := neo4j.NewDriver(driverInfo.ConnectionUri, neo4j.BasicAuth(driverInfo.Username, driverInfo.Password, ""))
 	if err != nil {
 		panic(err)
@@ -15,7 +16,7 @@ func getDriver(driverInfo DriverInfo) neo4j.Driver {
 	return driver
 }
 
-func getSession(driver neo4j.Driver) neo4j.Session {
+func GetSession(driver neo4j.Driver) neo4j.Session {
 	session, err := driver.Session(neo4j.AccessModeWrite)
 	if err != nil {
 		panic(err)
@@ -52,10 +53,10 @@ func createObjects(session neo4j.Session) error {
 }
 
 func initializeObjects(driverInfo DriverInfo) {
-	driver := getDriver(driverInfo)
+	driver := GetDriver(driverInfo)
 	defer driver.Close()
 
-	session := getSession(driver)
+	session := GetSession(driver)
 	defer session.Close()
 
 	err := createObjects(session)
@@ -85,5 +86,10 @@ func main() {
 	connectionString := fmt.Sprintf("bolt://%s:7687", hostname)
 	log.Printf("Connecting to: %s", connectionString)
 
-	initializeObjects(DriverInfo{ConnectionUri: connectionString, Username: user, Password: pass})
+	driverInfo := DriverInfo{ConnectionUri: connectionString, Username: user, Password: pass}
+	initializeObjects(driverInfo)
+
+	a := NewApp(driverInfo)
+	port := 8080
+	a.ServeRest(fmt.Sprintf(":%d", port), "http://localhost:3000")
 }
