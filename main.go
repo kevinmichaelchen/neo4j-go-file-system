@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 	"log"
+	"os"
 )
 
 func helloWorld(uri, username, password string) (string, error) {
@@ -49,8 +50,21 @@ func helloWorld(uri, username, password string) (string, error) {
 }
 
 func main() {
-	fmt.Println("Hello there")
-	s, err := helloWorld("bolt://neo4j:7687", "neo4j", "password")
+	var hostname, user, pass string
+	var ok bool
+	if hostname, ok = os.LookupEnv("NEO_HOSTNAME"); !ok {
+		log.Fatal("Failed to specify hostname")
+	}
+	if user, ok = os.LookupEnv("NEO_USERNAME"); !ok {
+		log.Fatal("Failed to specify username")
+	}
+	if pass, ok = os.LookupEnv("NEO_PASSWORD"); !ok {
+		log.Fatal("Failed to specify password")
+	}
+	connectionString := fmt.Sprintf("bolt://%s:7687", hostname)
+	log.Printf("Connecting to: %s", connectionString)
+
+	s, err := helloWorld(connectionString, user, pass)
 	if err != nil {
 		log.Fatalf("oops: %s", err.Error())
 	}

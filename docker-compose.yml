@@ -5,6 +5,10 @@ services:
     container_name: neo4j-app
     depends_on:
       - neo4j
+    environment:
+      - NEO_HOSTNAME=neo4j
+      - NEO_USERNAME=neo4j
+      - NEO_PASSWORD=password
 
   neo4j:
     image: neo4j:latest
