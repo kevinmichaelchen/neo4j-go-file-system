@@ -13,3 +13,10 @@ This will spin up Neo4j, which you can access at http://localhost:7474
 
 Log in with `neo4j:neo4j` and it'll ask you to change your password
 (I just changed mine to `password`).
+
+## Reading
+- [Docker Compose reference](https://docs.docker.com/compose/compose-file/)
+- [Background on Seabolt driver](https://medium.com/neo4j/neo4j-go-driver-is-out-fbb4ba5b3a30)
+- [Neo4j with Docker](https://neo4j.com/developer/docker/)
+- [neo4j-go-driver](https://github.com/neo4j/neo4j-go-driver) repo
+- [seabolt](https://github.com/neo4j-drivers/seabolt) repo
