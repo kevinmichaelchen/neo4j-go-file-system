@@ -7,46 +7,67 @@ import (
 	"os"
 )
 
-func helloWorld(uri, username, password string) (string, error) {
+func getDriver(driverInfo DriverInfo) neo4j.Driver {
+	driver, err := neo4j.NewDriver(driverInfo.ConnectionUri, neo4j.BasicAuth(driverInfo.Username, driverInfo.Password, ""))
+	if err != nil {
+		panic(err)
+	}
+	return driver
+}
+
+func getSession(driver neo4j.Driver) neo4j.Session {
+	session, err := driver.Session(neo4j.AccessModeWrite)
+	if err != nil {
+		panic(err)
+	}
+	return session
+}
+
+func createUsers(session neo4j.Session) error {
 	var (
-		err      error
-		driver   neo4j.Driver
-		session  neo4j.Session
-		result   neo4j.Result
-		greeting interface{}
+		err    error
+		result neo4j.Result
 	)
 
-	driver, err = neo4j.NewDriver(uri, neo4j.BasicAuth(username, password, ""))
-	if err != nil {
-		return "", err
-	}
-	defer driver.Close()
-
-	session, err = driver.Session(neo4j.AccessModeWrite)
-	if err != nil {
-		return "", err
-	}
-	defer session.Close()
-
-	greeting, err = session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
+	_, err = session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		result, err = transaction.Run(
-			"CREATE (a:Greeting) SET a.message = $message RETURN a.message + ', from node ' + id(a)",
-			map[string]interface{}{"message": "hello, world"})
+			`CREATE 
+				(Kevin:User {name:'Kevin Chen'}),
+				(IrisVR:Organization {name:'IrisVR'}),
+				(IrisVRFolder1:Folder {name:'secret-projects'}),
+				(File1:File {name:'File1.txt'}),
+				(Kevin)-[:HAS_ORGANIZATION]->(IrisVR),
+				(IrisVR)-[:CONTAINS_FOLDER]->(IrisVRFolder1),
+				(IrisVRFolder1)-[:CONTAINS_FILE]->(File1)
+`,
+			map[string]interface{}{})
 		if err != nil {
 			return nil, err
 		}
 
-		if result.Next() {
-			return result.Record().GetByIndex(0), nil
-		}
-
 		return nil, result.Err()
 	})
-	if err != nil {
-		return "", err
-	}
 
-	return greeting.(string), nil
+	return err
+}
+
+func initializeObjects(driverInfo DriverInfo) {
+	driver := getDriver(driverInfo)
+	defer driver.Close()
+
+	session := getSession(driver)
+	defer session.Close()
+
+	err := createUsers(session)
+	if err != nil {
+		panic(err)
+	}
+}
+
+type DriverInfo struct {
+	ConnectionUri string
+	Username      string
+	Password      string
 }
 
 func main() {
@@ -64,9 +85,5 @@ func main() {
 	connectionString := fmt.Sprintf("bolt://%s:7687", hostname)
 	log.Printf("Connecting to: %s", connectionString)
 
-	s, err := helloWorld(connectionString, user, pass)
-	if err != nil {
-		log.Fatalf("oops: %s", err.Error())
-	}
-	log.Printf("String was: %s", s)
+	initializeObjects(DriverInfo{ConnectionUri: connectionString, Username: user, Password: pass})
 }
