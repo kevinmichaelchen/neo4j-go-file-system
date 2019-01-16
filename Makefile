@@ -5,3 +5,7 @@ all:
 .PHONY: stop
 stop:
 	docker-compose stop
+
+.PHONY: rebuild
+rebuild:
+	docker-compose up --build
