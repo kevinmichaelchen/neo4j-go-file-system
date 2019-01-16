@@ -23,7 +23,7 @@ func getSession(driver neo4j.Driver) neo4j.Session {
 	return session
 }
 
-func createUsers(session neo4j.Session) error {
+func createObjects(session neo4j.Session) error {
 	var (
 		err    error
 		result neo4j.Result
@@ -58,7 +58,7 @@ func initializeObjects(driverInfo DriverInfo) {
 	session := getSession(driver)
 	defer session.Close()
 
-	err := createUsers(session)
+	err := createObjects(session)
 	if err != nil {
 		panic(err)
 	}
