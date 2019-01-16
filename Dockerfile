@@ -10,6 +10,7 @@ WORKDIR /seabolt/build
 # in our generated pkg-config file
 RUN cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_LIBDIR=lib .. && cmake --build . --target install
 
+ENV GO111MODULE on
 WORKDIR /go/src/neo4j-go-file-system
 ADD . .
 # install dependencies
