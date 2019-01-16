@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
+	"log"
 )
 
 func helloWorld(uri, username, password string) (string, error) {
@@ -49,5 +50,9 @@ func helloWorld(uri, username, password string) (string, error) {
 
 func main() {
 	fmt.Println("Hello there")
-	helloWorld("bolt://localhost:7687", "neo4j", "password")
+	s, err := helloWorld("bolt://localhost:7687", "neo4j", "password")
+	if err != nil {
+		log.Fatalf("oops: %s", err.Error())
+	}
+	log.Printf("String was: %s", s)
 }
