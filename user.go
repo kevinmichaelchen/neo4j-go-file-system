@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -24,6 +25,19 @@ func CreateUser(session neo4j.Session, user User) error {
 		return err
 	}
 	return nil
+}
+
+func userExists(session neo4j.Session, user User) (bool, error) {
+	res, err := session.Run(`MATCH (u:User {email_address: $email_address}) RETURN u.email_address`, map[string]interface{}{"email_address": user.EmailAddress})
+	if err != nil {
+		return false, err
+	}
+	if res.Next() {
+		e := res.Record().GetByIndex(0).(string)
+		log.Println("RESULT =", e)
+		return e != "", nil
+	}
+	return false, nil
 }
 
 func userToMap(user User) map[string]interface{} {
@@ -59,8 +73,17 @@ func (s *UserService) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	// TODO validate user resource
 	// TODO check if user exists with that email
+	exists, err := userExists(session, resource)
+	if err != nil {
+		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	if exists {
+		requestUtils.RespondWithError(w, http.StatusBadRequest, "User already exists with that email")
+		return
+	}
 
-	err := CreateUser(session, resource)
+	err = CreateUser(session, resource)
 
 	if err != nil {
 		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())

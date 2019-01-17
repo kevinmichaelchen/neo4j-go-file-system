@@ -34,12 +34,12 @@ func createObjects(session neo4j.Session) error {
 		result, err = transaction.Run(
 			`CREATE 
 				(IrisVR:Organization {name:'IrisVR'}),
-				(Kevin:User {name:'Kevin Chen', emailAddress: 'kevin.chen@irisvr.com'}),
-				(Robin:User {name:'Robin Kim', emailAddress: 'robin@irisvr.com'}),
-				(Graham:User {name:'Graham Hagger', emailAddress: 'graham@irisvr.com'}),
-				(Ezra:User {name:'Ezra Smith', emailAddress: 'ezra@irisvr.com'}),
-				(Shane:User {name:'Shane Scranton', emailAddress: 'shane@irisvr.com'}),
-				(Nate:User {name:'Nate Beatty', emailAddress: 'nate@irisvr.com'}),
+				(Kevin:User {full_name:'Kevin Chen', email_address: 'kevin.chen@irisvr.com'}),
+				(Robin:User {full_name:'Robin Kim', email_address: 'robin@irisvr.com'}),
+				(Graham:User {full_name:'Graham Hagger', email_address: 'graham@irisvr.com'}),
+				(Ezra:User {full_name:'Ezra Smith', email_address: 'ezra@irisvr.com'}),
+				(Shane:User {full_name:'Shane Scranton', email_address: 'shane@irisvr.com'}),
+				(Nate:User {full_name:'Nate Beatty', email_address: 'nate@irisvr.com'}),
 
 				(CloudFolder:Folder {name:'cloud'}),
 				(CloudAuthFolder:Folder {name:'cloud-auth'}),
