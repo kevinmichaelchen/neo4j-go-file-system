@@ -33,13 +33,13 @@ func createObjects(session neo4j.Session) error {
 	_, err = session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		result, err = transaction.Run(
 			`CREATE 
+				(IrisVR:Organization {name:'IrisVR'}),
 				(Kevin:User {name:'Kevin Chen', emailAddress: 'kevin.chen@irisvr.com'}),
 				(Robin:User {name:'Robin Kim', emailAddress: 'robin@irisvr.com'}),
 				(Graham:User {name:'Graham Hagger', emailAddress: 'graham@irisvr.com'}),
 				(Ezra:User {name:'Ezra Smith', emailAddress: 'ezra@irisvr.com'}),
 				(Shane:User {name:'Shane Scranton', emailAddress: 'shane@irisvr.com'}),
 				(Nate:User {name:'Nate Beatty', emailAddress: 'nate@irisvr.com'}),
-				(IrisVR:Organization {name:'IrisVR'}),
 
 				(CloudFolder:Folder {name:'cloud'}),
 				(CloudAuthFolder:Folder {name:'cloud-auth'}),
