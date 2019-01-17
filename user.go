@@ -72,7 +72,6 @@ func (s *UserService) CreateUser(w http.ResponseWriter, r *http.Request) {
 	resource.ID = uuid.Must(uuid.NewRandom())
 
 	// TODO validate user resource
-	// TODO check if user exists with that email
 	exists, err := userExists(session, resource)
 	if err != nil {
 		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
