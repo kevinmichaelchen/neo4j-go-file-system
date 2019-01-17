@@ -27,12 +27,17 @@ func NewApp(driverInfo DriverInfo) *App {
 func (a *App) initializeRoutes() {
 	a.Router = mux.NewRouter()
 
-	a.Router.HandleFunc("/user", a.CreateUser).Methods("POST")
+	a.Router.HandleFunc("/hello", HelloWorld).Methods(http.MethodGet)
+	a.Router.HandleFunc("/user", a.CreateUser).Methods(http.MethodPost)
 }
 
 type User struct {
 	EmailAddress string `json:"email_address"`
 	FullName     string `json:"full_name"`
+}
+
+func HelloWorld(w http.ResponseWriter, r *http.Request) {
+	requestUtils.RespondWithJSON(w, http.StatusOK, map[string]string{"msg": "Hello world"})
 }
 
 // CreateUser creates a user
@@ -53,7 +58,7 @@ func (a *App) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	_, err := session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		result, err := transaction.Run(
-			"CREATE (User {name:$name, emailAddress:$emailAddress})",
+			"CREATE ($emailAddress:User {name:$name, emailAddress:$emailAddress})",
 			map[string]interface{}{"name": resource.FullName, "emailAddress": resource.EmailAddress})
 		if err != nil {
 			return nil, err
