@@ -25,6 +25,18 @@ func CreateOrganization(session neo4j.Session, organization Organization) error 
 	return nil
 }
 
+func organizationExists(session neo4j.Session, organization Organization) (bool, error) {
+	res, err := session.Run(`MATCH (o:Organization {name: $name}) RETURN o.name`, map[string]interface{}{"name": organization.Name})
+	if err != nil {
+		return false, err
+	}
+	if res.Next() {
+		e := res.Record().GetByIndex(0).(string)
+		return e != "", nil
+	}
+	return false, nil
+}
+
 func orgToMap(organization Organization) map[string]interface{} {
 	return map[string]interface{}{
 		"id":   organization.ID.String(),
@@ -56,9 +68,18 @@ func (s *OrganizationService) CreateOrganization(w http.ResponseWriter, r *http.
 	resource.ID = uuid.Must(uuid.NewRandom())
 
 	// TODO validate org resource
-	// TODO check if org exists with that name
 
-	err := CreateOrganization(session, resource)
+	exists, err := organizationExists(session, resource)
+	if err != nil {
+		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	if exists {
+		requestUtils.RespondWithError(w, http.StatusBadRequest, "Org already exists with that name")
+		return
+	}
+
+	err = CreateOrganization(session, resource)
 
 	if err != nil {
 		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())

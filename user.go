@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -34,7 +33,6 @@ func userExists(session neo4j.Session, user User) (bool, error) {
 	}
 	if res.Next() {
 		e := res.Record().GetByIndex(0).(string)
-		log.Println("RESULT =", e)
 		return e != "", nil
 	}
 	return false, nil
