@@ -4,7 +4,7 @@ A proof of concept demonstrating how to create
 a small graph of objects (files, folders, users, organizations, and policies)
 that when put together look something like a rudimentary file system.
 
-[Neo4j](https://neo4j.com/) felt like a natural choice for database, 
+[Neo4j](https://neo4j.com/) feels like a natural choice for database, 
 since our goal is to represent a file system tree and users' relationships to certain nodes in that tree.
 
 In this model, organizations (red nodes) represent file system root.
