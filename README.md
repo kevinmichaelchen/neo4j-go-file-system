@@ -7,6 +7,13 @@ that when put together look something like a rudimentary file system.
 [Neo4j](https://neo4j.com/) felt like a natural choice for database, 
 since our goal is to represent a file system tree and users' relationships to certain nodes in that tree.
 
+In this model, organizations (red nodes) represent file system root.
+The blue nodes are the users.
+The yellow nodes are the folders.
+The green nodes are the files.
+
+<img width="1075" alt="screen shot 2019-01-17 at 10 49 13 am" src="https://user-images.githubusercontent.com/5129994/51330465-936d7300-1a45-11e9-9ca9-c1c484503fb6.png">
+
 ## Getting started
 This guide expects your Neo4j password to be in the `.env` file.
 If you've never configured Neo4j, the default password should be `neo4j`.

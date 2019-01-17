@@ -40,36 +40,44 @@ func createObjects(session neo4j.Session) error {
 				(Shane:User {name:'Shane Scranton', emailAddress: 'shane@irisvr.com'}),
 				(Nate:User {name:'Nate Beatty', emailAddress: 'nate@irisvr.com'}),
 				(IrisVR:Organization {name:'IrisVR'}),
+
 				(CloudFolder:Folder {name:'cloud'}),
 				(CloudAuthFolder:Folder {name:'cloud-auth'}),
 				(CloudFileSystemFolder:Folder {name:'cloud-file-system'}),
 				(CloudFolder)-[:CONTAINS_FOLDER]->(CloudAuthFolder),
 				(CloudFolder)-[:CONTAINS_FOLDER]->(CloudFileSystemFolder),
+				(CloudAuthDoc:File {name:'cloud-auth.md'}),
+				(CloudAuthFolder)-[:CONTAINS_FILE]->(CloudAuthDoc),
 
-				(AdminFolder:Folder {name:'admin'}),
-				(DevOpsFolder:Folder {name:'devops'}),
 				(CloudLibrarySyncDoc:File {name:'cloud-library-syncing.md'}),
 				(CloudLibraryEventDataFormat:File {name:'cloud-library-event-data-format.md'}),
+				(CloudFileSystemFolder)-[:CONTAINS_FILE]->(CloudLibrarySyncDoc),
+				(CloudFileSystemFolder)-[:CONTAINS_FILE]->(CloudLibraryEventDataFormat),
+
+				(AdminFolder:Folder {name:'admin'}),
 				(PayrollFile:File {name:'payroll.csv'}),
+				(AdminFolder)-[:CONTAINS_FILE]->(PayrollFile),
+
+				(DevOpsFolder:Folder {name:'devops'}),
 				(KubernetesDocFile:File {name:'kubernetes.md'}),
+				(DevOpsFolder)-[:CONTAINS_FILE]->(KubernetesDocFile),
+
 				(Kevin)-[:HAS_ORGANIZATION]->(IrisVR),
 				(Robin)-[:HAS_ORGANIZATION]->(IrisVR),
 				(Graham)-[:HAS_ORGANIZATION]->(IrisVR),
 				(Ezra)-[:HAS_ORGANIZATION]->(IrisVR),
 				(Shane)-[:HAS_ORGANIZATION]->(IrisVR),
 				(Nate)-[:HAS_ORGANIZATION]->(IrisVR),
+
 				(IrisVR)-[:CONTAINS_FOLDER]->(CloudFolder),
 				(IrisVR)-[:CONTAINS_FOLDER]->(AdminFolder),
 				(IrisVR)-[:CONTAINS_FOLDER]->(DevOpsFolder),
-				(CloudFolder)-[:CONTAINS_FILE]->(CloudLibrarySyncDoc),
-				(CloudFolder)-[:CONTAINS_FILE]->(CloudLibraryEventDataFormat),
-				(AdminFolder)-[:CONTAINS_FILE]->(PayrollFile),
-				(DevOpsFolder)-[:CONTAINS_FILE]->(KubernetesDocFile),
+
 				(Graham)-[:CAN_ACCESS]->(DevOpsFolder),
 				(Shane)-[:CAN_ACCESS_EVERYTHING]->(IrisVR),
 				(Nate)-[:CAN_ACCESS_EVERYTHING]->(IrisVR),
-				(Kevin)-[:CAN_ACCESS]->(CloudFolder),
-				(Robin)-[:CAN_ACCESS]->(CloudFolder),
+				(Kevin)-[:CAN_ACCESS]->(CloudFileSystemFolder),
+				(Robin)-[:CAN_ACCESS]->(CloudAuthFolder),
 				(Ezra)-[:CAN_ACCESS]->(CloudFolder)
 `,
 			map[string]interface{}{})
