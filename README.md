@@ -4,15 +4,29 @@ A proof of concept demonstrating how to create
 a small graph of objects (files, folders, users, organizations, and policies)
 that when put together look something like a rudimentary file system.
 
-[Neo4j](https://neo4j.com/) felt like a natural choice to represent a graph.
+[Neo4j](https://neo4j.com/) felt like a natural choice for database, 
+since our goal is to represent a file system tree and users' relationships to certain nodes in that tree.
 
 ## Getting started
-To get started, just run `make`
+This guide expects your Neo4j password to be in the `.env` file.
+If you've never configured Neo4j, the default password should be `neo4j`.
 
-This will spin up Neo4j, which you can access at http://localhost:7474
+Set that in your `.env` file:
+```bash
+$ cat .env
 
-Log in with `neo4j:neo4j` and it'll ask you to change your password
-(I just changed mine to `password`).
+NEO_PASSWORD=neo4j
+```
+
+| Command        | Description                                      |
+| -------------- |:------------------------------------------------:|
+| `make`         | Runs containers                                  |
+| `make rebuild` | Rebuilds images from scratch and runs containers |
+| `make stop`    | Stops running containers                         |
+
+Once started, the Neo4j container will be accessible via http://localhost:7474.
+
+Log in with the username `neo4j` and whatever password you've configured (`neo4j` is the default out-of-the-box password).
 
 ## Creating a user
 ```bash
