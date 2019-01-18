@@ -15,13 +15,13 @@ type MoveService struct {
 // MoveOperation represents a move operation of a file from one directory to another.
 type MoveOperation struct {
 	// SourceID is the resource ID of the file we wish to move.
-	SourceID uuid.UUID `json:"source_id"`
+	SourceID uuid.UUID `json:"sourceID"`
 
 	// DestinationID is the resource ID of the folder to which we wish to move the file.
-	DestinationID uuid.UUID `json:"destination_id"`
+	DestinationID uuid.UUID `json:"destinationID"`
 
 	// NewName is the new name of the file, in the event the client wishes to rename the file.
-	NewName string `json:"new_name"`
+	NewName string `json:"newName"`
 }
 
 // Move moves a file

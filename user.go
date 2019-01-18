@@ -11,8 +11,8 @@ import (
 
 type User struct {
 	ID           uuid.UUID `json:"id"`
-	EmailAddress string    `json:"email_address"`
-	FullName     string    `json:"full_name"`
+	EmailAddress string    `json:"emailAddress"`
+	FullName     string    `json:"fullName"`
 }
 
 func CreateUser(session neo4j.Session, user User) error {

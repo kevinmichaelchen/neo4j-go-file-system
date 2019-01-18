@@ -37,7 +37,7 @@ Log in with the username `neo4j` and whatever password you've configured (`neo4j
 
 ## Creating a user
 ```bash
-curl http://localhost:8080/user -H 'Origin: http://localhost:3000' -d '{"email_address": "kevin.chen@irisvr.com",  "full_name": "Kevin Chen"}'
+curl http://localhost:8080/user -H 'Origin: http://localhost:3000' -d '{"emailAddress": "kevin.chen@irisvr.com",  "fullName": "Kevin Chen"}'
 ```
 
 ## Reading
