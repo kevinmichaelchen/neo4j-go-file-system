@@ -21,14 +21,15 @@ type MoveOperation struct {
 	DestinationID uuid.UUID `json:"destinationID"`
 
 	// NewName is the new name of the file, in the event the client wishes to rename the file.
-	NewName string `json:"newName"`
+	// We use a pointer to indicate that this field is optional, in which case no rename occurs.
+	NewName *string `json:"newName"`
 }
 
 // Move moves a file
 func (s *MoveService) Move(w http.ResponseWriter, r *http.Request) {
-	var resource MoveOperation
+	var moveOperation MoveOperation
 	decoder := json.NewDecoder(r.Body)
-	if err := decoder.Decode(&resource); err != nil {
+	if err := decoder.Decode(&moveOperation); err != nil {
 		requestUtils.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
 	}
@@ -40,7 +41,12 @@ func (s *MoveService) Move(w http.ResponseWriter, r *http.Request) {
 	session := GetSession(driver)
 	defer session.Close()
 
-	// TODO validate move operation, confirm src and dest exist and you have permission to read/write
+	// TODO look up source file; verify it exists and user can write to it
+	// TODO look up destination directory; verify it exists and current user can write to it
+
+	if moveOperation.NewName != nil {
+		// TODO validate new name is not too long; check if it's actually different
+	}
 
 	requestUtils.RespondWithJSON(w, http.StatusOK, map[string]string{"msg": "Success"})
 }
