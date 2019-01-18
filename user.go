@@ -18,7 +18,7 @@ type User struct {
 func CreateUser(session neo4j.Session, user User) error {
 	_, err := session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		return transaction.Run(
-			`CREATE (User {id: $id, email_address: $email_address, full_name: $full_name})`, userToMap(user))
+			`CREATE (User {resource_id: $id, email_address: $email_address, full_name: $full_name})`, userToMap(user))
 	})
 	if err != nil {
 		return err

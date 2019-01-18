@@ -17,7 +17,7 @@ type Organization struct {
 func CreateOrganization(session neo4j.Session, organization Organization) error {
 	_, err := session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		return transaction.Run(
-			`CREATE (Organization {id: $id, name: $name})`, orgToMap(organization))
+			`CREATE (Organization {resource_id: $id, name: $name})`, orgToMap(organization))
 	})
 	if err != nil {
 		return err
