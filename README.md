@@ -46,3 +46,4 @@ curl http://localhost:8080/user -H 'Origin: http://localhost:3000' -d '{"email_a
 - [Neo4j with Docker](https://neo4j.com/developer/docker/)
 - [neo4j-go-driver](https://github.com/neo4j/neo4j-go-driver) repo
 - [seabolt](https://github.com/neo4j-drivers/seabolt) repo
+- [The Dark Side of Neo4j](https://neo4j.com/blog/dark-side-neo4j-worst-practices/)
