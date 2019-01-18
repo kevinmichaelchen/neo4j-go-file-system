@@ -14,6 +14,7 @@ type App struct {
 	DriverInfo          DriverInfo
 	UserService         UserService
 	OrganizationService OrganizationService
+	MoveService         MoveService
 }
 
 func NewApp(driverInfo DriverInfo) *App {
@@ -21,6 +22,7 @@ func NewApp(driverInfo DriverInfo) *App {
 		DriverInfo:          driverInfo,
 		UserService:         UserService{DriverInfo: driverInfo},
 		OrganizationService: OrganizationService{DriverInfo: driverInfo},
+		MoveService:         MoveService{DriverInfo: driverInfo},
 	}
 	a.initializeRoutes()
 	return a
@@ -32,6 +34,7 @@ func (a *App) initializeRoutes() {
 	a.Router.HandleFunc("/hello", HelloWorld).Methods(http.MethodGet)
 	a.Router.HandleFunc("/user", a.UserService.CreateUser).Methods(http.MethodPost)
 	a.Router.HandleFunc("/organization", a.OrganizationService.CreateOrganization).Methods(http.MethodPost)
+	a.Router.HandleFunc("/move", a.MoveService.Move).Methods(http.MethodPost)
 	// TODO POST /org-membership w/ userID orgID
 }
 
