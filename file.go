@@ -6,7 +6,8 @@ import (
 )
 
 type File struct {
-
+	ResourceID uuid.UUID `json:"resourceID"`
+	Name       string    `json:"name"`
 }
 
 func fileExists(session neo4j.Session, uuid uuid.UUID) (bool, error) {

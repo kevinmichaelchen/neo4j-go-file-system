@@ -10,7 +10,7 @@ import (
 )
 
 type User struct {
-	ID           uuid.UUID `json:"id"`
+	ResourceID   uuid.UUID `json:"resourceID"`
 	EmailAddress string    `json:"emailAddress"`
 	FullName     string    `json:"fullName"`
 }
@@ -18,7 +18,7 @@ type User struct {
 func CreateUser(session neo4j.Session, user User) error {
 	_, err := session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		return transaction.Run(
-			`CREATE (User {resource_id: $id, email_address: $email_address, full_name: $full_name})`, userToMap(user))
+			`CREATE (User {resource_id: $resource_id, email_address: $email_address, full_name: $full_name})`, userToMap(user))
 	})
 	if err != nil {
 		return err
@@ -40,7 +40,7 @@ func userExists(session neo4j.Session, user User) (bool, error) {
 
 func userToMap(user User) map[string]interface{} {
 	return map[string]interface{}{
-		"id":            user.ID.String(),
+		"resource_id":            user.ResourceID.String(),
 		"email_address": user.EmailAddress,
 		"full_name":     user.FullName,
 	}
@@ -67,7 +67,7 @@ func (s *UserService) CreateUser(w http.ResponseWriter, r *http.Request) {
 	defer session.Close()
 
 	// Set the ID
-	resource.ID = uuid.Must(uuid.NewRandom())
+	resource.ResourceID = uuid.Must(uuid.NewRandom())
 
 	// TODO validate user resource
 	exists, err := userExists(session, resource)

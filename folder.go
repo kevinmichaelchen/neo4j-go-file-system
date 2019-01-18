@@ -6,7 +6,8 @@ import (
 )
 
 type Folder struct {
-
+	ResourceID uuid.UUID `json:"resourceID"`
+	Name       string    `json:"name"`
 }
 
 func folderExists(session neo4j.Session, uuid uuid.UUID) (bool, error) {

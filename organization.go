@@ -10,14 +10,14 @@ import (
 )
 
 type Organization struct {
-	ID   uuid.UUID `json:"id"`
-	Name string    `json:"name"`
+	ResourceID uuid.UUID `json:"resourceID"`
+	Name       string    `json:"name"`
 }
 
 func CreateOrganization(session neo4j.Session, organization Organization) error {
 	_, err := session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		return transaction.Run(
-			`CREATE (Organization {resource_id: $id, name: $name})`, orgToMap(organization))
+			`CREATE (Organization {resource_id: $resource_id, name: $name})`, orgToMap(organization))
 	})
 	if err != nil {
 		return err
@@ -39,7 +39,7 @@ func organizationExists(session neo4j.Session, organization Organization) (bool,
 
 func orgToMap(organization Organization) map[string]interface{} {
 	return map[string]interface{}{
-		"id":   organization.ID.String(),
+		"resource_id":   organization.ResourceID.String(),
 		"name": organization.Name,
 	}
 }
@@ -65,7 +65,7 @@ func (s *OrganizationService) CreateOrganization(w http.ResponseWriter, r *http.
 	defer session.Close()
 
 	// Set the ID
-	resource.ID = uuid.Must(uuid.NewRandom())
+	resource.ResourceID = uuid.Must(uuid.NewRandom())
 
 	// TODO validate org resource
 
