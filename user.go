@@ -40,7 +40,7 @@ func userExists(session neo4j.Session, user User) (bool, error) {
 
 func userToMap(user User) map[string]interface{} {
 	return map[string]interface{}{
-		"resource_id":            user.ResourceID.String(),
+		"resource_id":   user.ResourceID.String(),
 		"email_address": user.EmailAddress,
 		"full_name":     user.FullName,
 	}

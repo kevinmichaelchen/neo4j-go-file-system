@@ -15,6 +15,8 @@ type App struct {
 	UserService         UserService
 	OrganizationService OrganizationService
 	MoveService         MoveService
+	FileService         FileService
+	FolderService       FolderService
 }
 
 func NewApp(driverInfo DriverInfo) *App {
@@ -23,6 +25,8 @@ func NewApp(driverInfo DriverInfo) *App {
 		UserService:         UserService{DriverInfo: driverInfo},
 		OrganizationService: OrganizationService{DriverInfo: driverInfo},
 		MoveService:         MoveService{DriverInfo: driverInfo},
+		FileService:         FileService{DriverInfo: driverInfo},
+		FolderService:       FolderService{DriverInfo: driverInfo},
 	}
 	a.initializeRoutes()
 	return a
@@ -35,6 +39,7 @@ func (a *App) initializeRoutes() {
 	a.Router.HandleFunc("/user", a.UserService.CreateUser).Methods(http.MethodPost)
 	a.Router.HandleFunc("/organization", a.OrganizationService.CreateOrganization).Methods(http.MethodPost)
 	a.Router.HandleFunc("/move", a.MoveService.Move).Methods(http.MethodPost)
+	a.Router.HandleFunc("/file/{id:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}}", a.FileService.GetFile).Methods(http.MethodGet)
 	// TODO POST /org-membership w/ userID orgID
 }
 

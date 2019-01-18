@@ -6,12 +6,17 @@ import (
 )
 
 type Folder struct {
-	ResourceID uuid.UUID `json:"resourceID"`
-	Name       string    `json:"name"`
+	ResourceID uuid.UUID  `json:"resourceID"`
+	ParentID   *uuid.UUID `json:"parentID"`
+	Name       string     `json:"name"`
 }
 
-func folderExists(session neo4j.Session, uuid uuid.UUID) (bool, error) {
-	res, err := session.Run(`MATCH (f:Folder {resource_id: $resource_id}) RETURN f.name`, map[string]interface{}{"resource_id": uuid.String()})
+type FolderService struct {
+	DriverInfo DriverInfo
+}
+
+func folderExists(session neo4j.Session, folderID uuid.UUID) (bool, error) {
+	res, err := session.Run(`MATCH (f:Folder {resource_id: $resource_id}) RETURN f.name`, map[string]interface{}{"resource_id": folderID.String()})
 	if err != nil {
 		return false, err
 	}

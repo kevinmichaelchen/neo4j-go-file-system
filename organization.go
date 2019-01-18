@@ -39,8 +39,8 @@ func organizationExists(session neo4j.Session, organization Organization) (bool,
 
 func orgToMap(organization Organization) map[string]interface{} {
 	return map[string]interface{}{
-		"resource_id":   organization.ResourceID.String(),
-		"name": organization.Name,
+		"resource_id": organization.ResourceID.String(),
+		"name":        organization.Name,
 	}
 }
 
