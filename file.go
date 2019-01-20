@@ -57,7 +57,7 @@ func getFileByID(session neo4j.Session, fileID uuid.UUID) (*File, error) {
 	if err != nil {
 		return nil, err
 	}
-	// TODO this code can be safer
+	// TODO should this code be safer (e.g., check for uuid parsing errors? check type casts?)
 	if result.Next() {
 		record := result.Record()
 		return &File{
