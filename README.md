@@ -35,9 +35,20 @@ Once started, the Neo4j container will be accessible via http://localhost:7474.
 
 Log in with the username `neo4j` and whatever password you've configured (`neo4j` is the default out-of-the-box password).
 
-## Creating a user
+## REST API
+### Creating a user
 ```bash
 curl http://localhost:8080/user -H 'Origin: http://localhost:3000' -d '{"emailAddress": "kevin.chen@irisvr.com",  "fullName": "Kevin Chen"}'
+```
+
+### Getting a file
+```bash
+curl http://localhost:8080/file/9c73cde3-d8f9-4048-bfd9-00e0484fdb89 -H 'Origin: http://localhost:3000'
+```
+
+### Moving a file
+```bash
+curl -X POST http://localhost:8080/move -H 'Origin: http://localhost:3000' -d '{"sourceID": "7a1ced19-5396-4c44-bc30-4953d59453d5", "destinationID": "0871b5af-4954-4d21-9e1f-3781e269374a", "newName": "cloud-auth-moved"}'
 ```
 
 ## Reading
