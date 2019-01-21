@@ -26,9 +26,14 @@ func getFolderByID(session neo4j.Session, folderID uuid.UUID) (*Folder, error) {
 			ResourceID: uuid.Must(uuid.Parse(record.GetByIndex(0).(string))),
 			Name:       record.GetByIndex(2).(string),
 		}
-		parentID, err := uuid.Parse(record.GetByIndex(1).(string))
-		if err == nil {
-			f.ParentID = &parentID
+		parentIDString := record.GetByIndex(1)
+
+		// A folder might not have a parent, so we do a nil check to avoid type assertion errors
+		if parentIDString != nil {
+			parentID, err := uuid.Parse(parentIDString.(string))
+			if err == nil {
+				f.ParentID = &parentID
+			}
 		}
 
 		return f, nil
