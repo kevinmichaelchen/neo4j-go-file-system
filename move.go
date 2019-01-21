@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -41,8 +42,27 @@ func (s *MoveService) Move(w http.ResponseWriter, r *http.Request) {
 	session := GetSession(driver)
 	defer session.Close()
 
-	// TODO look up source file; verify it exists and user can write to it
-	// TODO look up destination directory; verify it exists and current user can write to it
+	source, err := getFileByID(session, moveOperation.SourceID)
+	if err != nil {
+		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	if source == nil {
+		requestUtils.RespondWithError(w, http.StatusNotFound, fmt.Sprintf("No file found for: %s", moveOperation.SourceID.String()))
+		return
+	}
+	// TODO verify user can write to source file
+
+	dest, err := getFolderByID(session, moveOperation.DestinationID)
+	if err != nil {
+		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	if dest == nil {
+		requestUtils.RespondWithError(w, http.StatusNotFound, fmt.Sprintf("No folder found for: %s", moveOperation.DestinationID.String()))
+		return
+	}
+	// TODO verify user can write to destination folder
 
 	if moveOperation.NewName != nil {
 		// TODO validate new name is not too long; check if it's actually different
