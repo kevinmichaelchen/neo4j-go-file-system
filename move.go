@@ -65,7 +65,7 @@ func (s *MoveService) Move(w http.ResponseWriter, r *http.Request) {
 	// TODO verify user can write to destination folder
 
 	if moveOperation.NewName != nil {
-		// TODO validate new name is not too long; check if it's actually different
+		// TODO validate new name is not too long
 	}
 
 	// Delete the old CONTAINS_FILE relationship
@@ -92,6 +92,21 @@ func (s *MoveService) Move(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
 			return
+		}
+	}
+
+	// Update the file's name if it was changed
+	if moveOperation.NewName != nil {
+		_, err = tx.Run(`MATCH (f:File {resource_id: $resource_id}) SET f.name = $name RETURN f.name`,
+			map[string]interface{}{"resource_id": source.ResourceID.String(), "name": *moveOperation.NewName})
+
+		// Rollback if there's an error
+		if err != nil {
+			err = tx.Rollback()
+			if err != nil {
+				requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
+				return
+			}
 		}
 	}
 
