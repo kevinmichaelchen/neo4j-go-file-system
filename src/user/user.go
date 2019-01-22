@@ -2,13 +2,11 @@ package user
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
-
-	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
 
 	"github.com/google/uuid"
 	requestUtils "github.com/kevinmichaelchen/my-go-utils/request"
-	"github.com/neo4j/neo4j-go-driver/neo4j"
 )
 
 type User struct {
@@ -17,39 +15,18 @@ type User struct {
 	FullName     string    `json:"fullName"`
 }
 
-func CreateUser(session neo4j.Session, user User) error {
-	_, err := session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
-		return transaction.Run(
-			`CREATE (User {resource_id: $resource_id, email_address: $email_address, full_name: $full_name})`, userToMap(user))
-	})
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func userExists(session neo4j.Session, user User) (bool, error) {
-	res, err := session.Run(`MATCH (u:User {email_address: $email_address}) RETURN u.email_address`, map[string]interface{}{"email_address": user.EmailAddress})
-	if err != nil {
-		return false, err
-	}
-	if res.Next() {
-		e := res.Record().GetByIndex(0).(string)
-		return e != "", nil
-	}
-	return false, nil
-}
-
-func userToMap(user User) map[string]interface{} {
-	return map[string]interface{}{
-		"resource_id":   user.ResourceID.String(),
-		"email_address": user.EmailAddress,
-		"full_name":     user.FullName,
-	}
-}
-
 type Controller struct {
-	DriverInfo neo.DriverInfo
+	Service Service
+}
+
+type Service interface {
+	CreateUser(user User) (*User, *ServiceError)
+}
+
+type ServiceError struct {
+	HttpCode     int
+	ErrorMessage string
+	Error        error
 }
 
 // CreateUserRequestHandler creates a user
@@ -62,32 +39,12 @@ func (c *Controller) CreateUserRequestHandler(w http.ResponseWriter, r *http.Req
 	}
 	defer r.Body.Close()
 
-	driver := neo.GetDriver(c.DriverInfo)
-	defer driver.Close()
-
-	session := neo.GetSession(driver)
-	defer session.Close()
-
-	// Set the ID
-	resource.ResourceID = uuid.Must(uuid.NewRandom())
-
-	// TODO validate user resource
-	exists, err := userExists(session, resource)
-	if err != nil {
-		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-	if exists {
-		requestUtils.RespondWithError(w, http.StatusBadRequest, "User already exists with that email")
+	response, serviceError := c.Service.CreateUser(resource)
+	if serviceError != nil {
+		log.Println(serviceError.Error.Error())
+		requestUtils.RespondWithError(w, serviceError.HttpCode, serviceError.ErrorMessage)
 		return
 	}
 
-	err = CreateUser(session, resource)
-
-	if err != nil {
-		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	requestUtils.RespondWithJSON(w, http.StatusOK, map[string]string{"msg": "Created user"})
+	requestUtils.RespondWithJSON(w, http.StatusOK, response)
 }
