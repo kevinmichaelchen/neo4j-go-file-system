@@ -5,7 +5,6 @@ import (
 
 	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
 
-	"github.com/google/uuid"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/user"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
@@ -25,9 +24,6 @@ func (s *Service) CreateUser(resource user.User) (*user.User, *service.Error) {
 
 	session := neo.GetSession(driver)
 	defer session.Close()
-
-	// Set the ID
-	resource.ResourceID = uuid.Must(uuid.NewRandom())
 
 	// TODO validate user resource
 	exists, err := userExists(session, resource)
@@ -72,7 +68,7 @@ func userExists(session neo4j.Session, user user.User) (bool, error) {
 
 func userToMap(user user.User) map[string]interface{} {
 	return map[string]interface{}{
-		"resource_id":   user.ResourceID.String(),
+		"resource_id":   user.ResourceID,
 		"email_address": user.EmailAddress,
 		"full_name":     user.FullName,
 	}

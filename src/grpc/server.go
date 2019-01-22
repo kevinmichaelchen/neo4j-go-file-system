@@ -2,12 +2,13 @@ package grpc
 
 import (
 	"fmt"
+	"log"
+	"net"
+
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/move"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/organization"
-	"log"
-	"net"
 
 	pb "github.com/kevinmichaelchen/neo4j-go-file-system/pb"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/user"
@@ -25,24 +26,35 @@ type Server struct {
 	FolderService       folder.Service
 }
 
-func (service *Server) CreateUser(ctx context.Context, in *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
+func (s *Server) CreateUser(ctx context.Context, in *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
+	u, svcError := s.UserService.CreateUser(user.User{
+		EmailAddress: in.User.EmailAddress,
+		FullName:     in.User.FullName,
+	})
+	if svcError.Error != nil {
+		return nil, svcError.Error
+	}
+	return &pb.CreateUserResponse{User: &pb.User{
+		UserID:       u.ResourceID,
+		EmailAddress: u.EmailAddress,
+		FullName:     u.FullName,
+	}}, nil
+}
+
+func (s *Server) GetUser(ctx context.Context, in *pb.GetUserRequest) (*pb.GetUserResponse, error) {
 	return nil, nil
 }
 
-func (service *Server) GetUser(ctx context.Context, in *pb.GetUserRequest) (*pb.GetUserResponse, error) {
+func (s *Server) UpdateUser(ctx context.Context, in *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
 	return nil, nil
 }
 
-func (service *Server) UpdateUser(ctx context.Context, in *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
+func (s *Server) DeleteUser(ctx context.Context, in *pb.DeleteUserRequest) (*pb.DeleteUserResponse, error) {
 	return nil, nil
 }
 
-func (service *Server) DeleteUser(ctx context.Context, in *pb.DeleteUserRequest) (*pb.DeleteUserResponse, error) {
-	return nil, nil
-}
-
-func (service *Server) Run() {
-	address := fmt.Sprintf(":%d", service.Port)
+func (s *Server) Run() {
+	address := fmt.Sprintf(":%d", s.Port)
 	log.Printf("Serving gRPC on %s\n", address)
 	lis, err := net.Listen("tcp", address)
 	if err != nil {
@@ -52,7 +64,7 @@ func (service *Server) Run() {
 	server := grpc.NewServer()
 
 	// Register our services
-	pb.RegisterUserServiceServer(server, service)
+	pb.RegisterUserServiceServer(server, s)
 
 	// Register reflection service on gRPC server.
 	reflection.Register(server)
