@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package proto;
+
+message File {
+    string fileID = 1;
+    string revisionID = 2;
+    string name = 3;
+    string parentID = 4;
+}
+
+message CreateFileRequest {
+    string userID = 1;
+    string revisionID = 2;
+    string name = 3;
+    // If null, then file assumed to be at root.
+    string parentID = 4;
+}
+
+// TODO handle name collisions
+message CreateFileResponse {
+    File file = 1;
+}
+
+message DeleteFileRequest {
+    string userID = 1;
+    string fileID = 2;
+}
+
+message DeleteFileResponse {
+    File file = 1;
+}
+
+message UpdateFileRequest {
+    string userID = 1;
+    string fileID = 2;
+    // The name of the file (optionally used for renames)
+    string name = 3;
+    // The ID of the parent file (optionally used for moves)
+    string parentID = 4;
+}
+
+message UpdateFileResponse {
+    File file = 1;
+}
+
+service FileService {
+    rpc CreateFile (CreateFileRequest) returns (CreateFileResponse) {}
+    rpc DeleteFile (DeleteFileRequest) returns (DeleteFileResponse) {}
+    rpc UpdateFile (UpdateFileRequest) returns (UpdateFileResponse) {}
+}
