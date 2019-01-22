@@ -52,6 +52,8 @@ curl -X POST http://localhost:8080/move -H 'Origin: http://localhost:3000' -d '{
 ```
 
 ## Testing gRPC endpoints with grpcurl
+[grpcurl](https://github.com/fullstorydev/grpcurl) lets us interact with a gRPC server as easily as we use REST APIs and `curl`.
+Without it, we'd have a difficult time inspecting binary payloads on the command line.
 ```
 go get github.com/fullstorydev/grpcurl
 go install github.com/fullstorydev/grpcurl/cmd/grpcurl
