@@ -34,12 +34,13 @@ func createObjects(session neo4j.Session) error {
 		result, err = transaction.Run(
 			`CREATE 
 				(IrisVR:Organization {name: 'IrisVR', resource_id: 'bdb77ea5-b0b2-4ecf-8605-4369b5b73577'}),
-				(Kevin:User {full_name:'Kevin Chen', email_address: 'kevin.chen@irisvr.com', resource_id: 'fb59357e-a17e-45a4-9f2b-d967cf800c21'}),
-				(Robin:User {full_name:'Robin Kim', email_address: 'robin@irisvr.com', resource_id: 'a08754ca-8a2c-4090-a761-54d8777f3ed4'}),
-				(Graham:User {full_name:'Graham Hagger', email_address: 'graham@irisvr.com', resource_id: 'ce1d1610-4ad3-4fa1-9008-28aa86dbbeb9'}),
-				(Ezra:User {full_name:'Ezra Smith', email_address: 'ezra@irisvr.com', resource_id: '1e018e77-1b66-4d95-8a1f-dba47ae190f4'}),
-				(Shane:User {full_name:'Shane Scranton', email_address: 'shane@irisvr.com', resource_id: '3f1c0785-7b65-47fa-b9ab-243afe4fd8f5'}),
-				(Nate:User {full_name:'Nate Beatty', email_address: 'nate@irisvr.com', resource_id: 'a5666488-d5fd-4ce9-ab47-702ece52b733'}),
+
+				(Kevin:User {full_name:'Kevin Chen', email_address: 'kevin.chen@irisvr.com', resource_id: 1}),
+				(Robin:User {full_name:'Robin Kim', email_address: 'robin@irisvr.com', resource_id: 2}),
+				(Graham:User {full_name:'Graham Hagger', email_address: 'graham@irisvr.com', resource_id: 3}),
+				(Ezra:User {full_name:'Ezra Smith', email_address: 'ezra@irisvr.com', resource_id: 4}),
+				(Shane:User {full_name:'Shane Scranton', email_address: 'shane@irisvr.com', resource_id: 5}),
+				(Nate:User {full_name:'Nate Beatty', email_address: 'nate@irisvr.com', resource_id: 6}),
 
 				(CloudFolder:Folder {name:'cloud', resource_id: '0871b5af-4954-4d21-9e1f-3781e269374a'}),
 				(CloudAuthFolder:Folder {name:'cloud-auth', resource_id: 'be94511e-c8b1-4e62-b37d-2e35704ea6c2'}),

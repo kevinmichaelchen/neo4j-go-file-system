@@ -7,14 +7,13 @@ import (
 
 	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
 
-	"github.com/google/uuid"
 	requestUtils "github.com/kevinmichaelchen/my-go-utils/request"
 )
 
 type User struct {
-	ResourceID   uuid.UUID `json:"resourceID"`
-	EmailAddress string    `json:"emailAddress"`
-	FullName     string    `json:"fullName"`
+	ResourceID   int64  `json:"resourceID"`
+	EmailAddress string `json:"emailAddress"`
+	FullName     string `json:"fullName"`
 }
 
 type Controller struct {
