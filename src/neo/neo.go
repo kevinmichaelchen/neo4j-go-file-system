@@ -1,6 +1,12 @@
 package neo
 
-import "github.com/neo4j/neo4j-go-driver/neo4j"
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
+	"github.com/neo4j/neo4j-go-driver/neo4j"
+)
 
 func GetDriver(driverInfo DriverInfo) neo4j.Driver {
 	driver, err := neo4j.NewDriver(driverInfo.ConnectionUri, neo4j.BasicAuth(driverInfo.Username, driverInfo.Password, ""))
@@ -105,6 +111,17 @@ func InitializeObjects(driverInfo DriverInfo) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func RollbackIfError(tx neo4j.Transaction, originalError error) *service.Error {
+	if originalError != nil {
+		err := tx.Rollback()
+		if err != nil {
+			return service.NewError(http.StatusInternalServerError, fmt.Sprintf("Could not rollback transaction: %s", err.Error()), err)
+		}
+		return service.NewError(http.StatusInternalServerError, originalError.Error(), originalError)
+	}
+	return nil
 }
 
 type DriverInfo struct {

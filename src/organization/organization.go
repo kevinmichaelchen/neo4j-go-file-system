@@ -42,5 +42,4 @@ func (c *Controller) CreateOrganizationRequestHandler(w http.ResponseWriter, r *
 	}
 
 	requestUtils.RespondWithJSON(w, http.StatusOK, response)
-
 }

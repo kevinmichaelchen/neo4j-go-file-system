@@ -5,3 +5,11 @@ type Error struct {
 	ErrorMessage string
 	Error        error
 }
+
+func NewError(httpCode int, errorMessage string, err error) *Error {
+	return &Error{
+		HttpCode:     httpCode,
+		ErrorMessage: errorMessage,
+		Error:        err,
+	}
+}
