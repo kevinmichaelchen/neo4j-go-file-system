@@ -13,7 +13,7 @@ type Folder struct {
 	Name       string     `json:"name"`
 }
 
-type Service struct {
+type Controller struct {
 	DriverInfo neo.DriverInfo
 }
 

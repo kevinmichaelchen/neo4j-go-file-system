@@ -19,21 +19,21 @@ import (
 type App struct {
 	Router              *mux.Router
 	DriverInfo          neo.DriverInfo
-	UserService         user.Service
-	OrganizationService organization.Service
-	MoveService         move.Service
-	FileService         file.Service
-	FolderService       folder.Service
+	UserService         user.Controller
+	OrganizationService organization.Controller
+	MoveService         move.Controller
+	FileService         file.Controller
+	FolderService       folder.Controller
 }
 
 func NewApp(driverInfo neo.DriverInfo) *App {
 	a := &App{
 		DriverInfo:          driverInfo,
-		UserService:         user.Service{DriverInfo: driverInfo},
-		OrganizationService: organization.Service{DriverInfo: driverInfo},
-		MoveService:         move.Service{DriverInfo: driverInfo},
-		FileService:         file.Service{DriverInfo: driverInfo},
-		FolderService:       folder.Service{DriverInfo: driverInfo},
+		UserService:         user.Controller{DriverInfo: driverInfo},
+		OrganizationService: organization.Controller{DriverInfo: driverInfo},
+		MoveService:         move.Controller{DriverInfo: driverInfo},
+		FileService:         file.Controller{DriverInfo: driverInfo},
+		FolderService:       folder.Controller{DriverInfo: driverInfo},
 	}
 	a.initializeRoutes()
 	return a

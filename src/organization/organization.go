@@ -46,12 +46,12 @@ func orgToMap(organization Organization) map[string]interface{} {
 	}
 }
 
-type Service struct {
+type Controller struct {
 	DriverInfo neo.DriverInfo
 }
 
 // CreateOrganizationRequestHandler creates an org
-func (s *Service) CreateOrganizationRequestHandler(w http.ResponseWriter, r *http.Request) {
+func (c *Controller) CreateOrganizationRequestHandler(w http.ResponseWriter, r *http.Request) {
 	var resource Organization
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&resource); err != nil {
@@ -60,7 +60,7 @@ func (s *Service) CreateOrganizationRequestHandler(w http.ResponseWriter, r *htt
 	}
 	defer r.Body.Close()
 
-	driver := neo.GetDriver(s.DriverInfo)
+	driver := neo.GetDriver(c.DriverInfo)
 	defer driver.Close()
 
 	session := neo.GetSession(driver)

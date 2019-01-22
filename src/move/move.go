@@ -13,7 +13,7 @@ import (
 	requestUtils "github.com/kevinmichaelchen/my-go-utils/request"
 )
 
-type Service struct {
+type Controller struct {
 	DriverInfo neo.DriverInfo
 }
 
@@ -31,7 +31,7 @@ type MoveOperation struct {
 }
 
 // MoveRequestHandler moves a file
-func (s *Service) MoveRequestHandler(w http.ResponseWriter, r *http.Request) {
+func (c *Controller) MoveRequestHandler(w http.ResponseWriter, r *http.Request) {
 	var moveOperation MoveOperation
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&moveOperation); err != nil {
@@ -40,7 +40,7 @@ func (s *Service) MoveRequestHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	driver := neo.GetDriver(s.DriverInfo)
+	driver := neo.GetDriver(c.DriverInfo)
 	defer driver.Close()
 
 	session := neo.GetSession(driver)

@@ -48,12 +48,12 @@ func userToMap(user User) map[string]interface{} {
 	}
 }
 
-type Service struct {
+type Controller struct {
 	DriverInfo neo.DriverInfo
 }
 
 // CreateUserRequestHandler creates a user
-func (s *Service) CreateUserRequestHandler(w http.ResponseWriter, r *http.Request) {
+func (c *Controller) CreateUserRequestHandler(w http.ResponseWriter, r *http.Request) {
 	var resource User
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&resource); err != nil {
@@ -62,7 +62,7 @@ func (s *Service) CreateUserRequestHandler(w http.ResponseWriter, r *http.Reques
 	}
 	defer r.Body.Close()
 
-	driver := neo.GetDriver(s.DriverInfo)
+	driver := neo.GetDriver(c.DriverInfo)
 	defer driver.Close()
 
 	session := neo.GetSession(driver)

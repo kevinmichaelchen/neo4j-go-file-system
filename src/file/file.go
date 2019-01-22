@@ -17,11 +17,11 @@ type File struct {
 	Name       string    `json:"name"`
 }
 
-type Service struct {
+type Controller struct {
 	DriverInfo neo.DriverInfo
 }
 
-func (s *Service) GetFileRequestHandler(w http.ResponseWriter, r *http.Request) {
+func (c *Controller) GetFileRequestHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	idString := vars["id"]
 	id, err := uuid.Parse(idString)
@@ -30,7 +30,7 @@ func (s *Service) GetFileRequestHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	driver := neo.GetDriver(s.DriverInfo)
+	driver := neo.GetDriver(c.DriverInfo)
 	defer driver.Close()
 
 	session := neo.GetSession(driver)
