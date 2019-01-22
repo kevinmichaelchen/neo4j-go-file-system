@@ -32,28 +32,16 @@ func (s *NeoService) CreateOrganization(resource organization.Organization) (*or
 
 	exists, err := organizationExists(session, resource)
 	if err != nil {
-		return nil, &service.Error{
-			HttpCode:     http.StatusInternalServerError,
-			ErrorMessage: err.Error(),
-			Error:        err,
-		}
+		return nil, service.NewError(http.StatusInternalServerError, err.Error(), err)
 	}
 	if exists {
-		return nil, &service.Error{
-			HttpCode:     http.StatusBadRequest,
-			ErrorMessage: "Org already exists with that name",
-			Error:        nil,
-		}
+		return nil, service.NewError(http.StatusBadRequest, "Org already exists with that name", nil)
 	}
 
 	err = createOrganization(session, resource)
 
 	if err != nil {
-		return nil, &service.Error{
-			HttpCode:     http.StatusInternalServerError,
-			ErrorMessage: err.Error(),
-			Error:        err,
-		}
+		return nil, service.NewError(http.StatusInternalServerError, err.Error(), err)
 	}
 
 	return &resource, nil

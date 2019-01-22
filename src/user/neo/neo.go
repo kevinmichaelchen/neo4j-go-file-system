@@ -32,28 +32,16 @@ func (s *NeoService) CreateUser(resource user.User) (*user.User, *service.Error)
 	// TODO validate user resource
 	exists, err := userExists(session, resource)
 	if err != nil {
-		return nil, &service.Error{
-			HttpCode:     http.StatusInternalServerError,
-			ErrorMessage: err.Error(),
-			Error:        err,
-		}
+		return nil, service.NewError(http.StatusInternalServerError, err.Error(), err)
 	}
 	if exists {
-		return nil, &service.Error{
-			HttpCode:     http.StatusBadRequest,
-			ErrorMessage: "User already exists with that email",
-			Error:        nil,
-		}
+		return nil, service.NewError(http.StatusBadRequest, "User already exists with that email", nil)
 	}
 
 	err = createUser(session, resource)
 
 	if err != nil {
-		return nil, &service.Error{
-			HttpCode:     http.StatusInternalServerError,
-			ErrorMessage: err.Error(),
-			Error:        err,
-		}
+		return nil, service.NewError(http.StatusInternalServerError, err.Error(), err)
 	}
 
 	return &resource, nil
