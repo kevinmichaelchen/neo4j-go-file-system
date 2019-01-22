@@ -34,11 +34,11 @@ type App struct {
 func NewApp(driverInfo neo.DriverInfo) *App {
 	a := &App{
 		DriverInfo:          driverInfo,
-		UserService:         user.Controller{Service: userNeo.NewNeoService(driverInfo)},
-		OrganizationService: organization.Controller{Service: orgNeo.NewNeoService(driverInfo)},
-		MoveService:         move.Controller{Service: moveNeo.NewNeoService(driverInfo)},
-		FileService:         file.Controller{Service: fileNeo.NewNeoService(driverInfo)},
-		FolderService:       folder.Controller{Service: folderNeo.NewNeoService(driverInfo)},
+		UserService:         user.Controller{Service: userNeo.NewService(driverInfo)},
+		OrganizationService: organization.Controller{Service: orgNeo.NewService(driverInfo)},
+		MoveService:         move.Controller{Service: moveNeo.NewService(driverInfo)},
+		FileService:         file.Controller{Service: fileNeo.NewService(driverInfo)},
+		FolderService:       folder.Controller{Service: folderNeo.NewService(driverInfo)},
 	}
 	a.initializeRoutes()
 	return a

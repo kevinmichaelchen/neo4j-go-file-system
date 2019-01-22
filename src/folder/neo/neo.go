@@ -7,12 +7,12 @@ import (
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 )
 
-type NeoService struct {
+type Service struct {
 	DriverInfo neo.DriverInfo
 }
 
-func NewNeoService(driverInfo neo.DriverInfo) *NeoService {
-	return &NeoService{DriverInfo: driverInfo}
+func NewService(driverInfo neo.DriverInfo) *Service {
+	return &Service{DriverInfo: driverInfo}
 }
 
 func GetFolderByID(session neo4j.Session, folderID uuid.UUID) (*folder.Folder, error) {

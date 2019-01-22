@@ -11,15 +11,15 @@ import (
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 )
 
-type NeoService struct {
+type Service struct {
 	DriverInfo neo.DriverInfo
 }
 
-func NewNeoService(driverInfo neo.DriverInfo) *NeoService {
-	return &NeoService{DriverInfo: driverInfo}
+func NewService(driverInfo neo.DriverInfo) *Service {
+	return &Service{DriverInfo: driverInfo}
 }
 
-func (s *NeoService) CreateUser(resource user.User) (*user.User, *service.Error) {
+func (s *Service) CreateUser(resource user.User) (*user.User, *service.Error) {
 	driver := neo.GetDriver(s.DriverInfo)
 	defer driver.Close()
 
