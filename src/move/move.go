@@ -2,20 +2,14 @@ package move
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 
-	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
-	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
-	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
 
 	"github.com/google/uuid"
 	requestUtils "github.com/kevinmichaelchen/my-go-utils/request"
 )
-
-type Service struct {
-	DriverInfo neo.DriverInfo
-}
 
 // MoveOperation represents a move operation of a file from one directory to another.
 type MoveOperation struct {
@@ -30,95 +24,30 @@ type MoveOperation struct {
 	NewName *string `json:"newName"`
 }
 
+type Controller struct {
+	Service Service
+}
+
+type Service interface {
+	Move(operation MoveOperation) (*MoveOperation, *service.Error)
+}
+
 // MoveRequestHandler moves a file
-func (s *Service) MoveRequestHandler(w http.ResponseWriter, r *http.Request) {
-	var moveOperation MoveOperation
+func (c *Controller) MoveRequestHandler(w http.ResponseWriter, r *http.Request) {
+	var resource MoveOperation
 	decoder := json.NewDecoder(r.Body)
-	if err := decoder.Decode(&moveOperation); err != nil {
+	if err := decoder.Decode(&resource); err != nil {
 		requestUtils.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
 	}
 	defer r.Body.Close()
 
-	driver := neo.GetDriver(s.DriverInfo)
-	defer driver.Close()
-
-	session := neo.GetSession(driver)
-	defer session.Close()
-
-	source, err := file.GetFileByID(session, moveOperation.SourceID)
-	if err != nil {
-		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-	if source == nil {
-		requestUtils.RespondWithError(w, http.StatusNotFound, fmt.Sprintf("No file found for: %s", moveOperation.SourceID.String()))
-		return
-	}
-	// TODO verify user can write to source file
-
-	dest, err := folder.GetFolderByID(session, moveOperation.DestinationID)
-	if err != nil {
-		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-	if dest == nil {
-		requestUtils.RespondWithError(w, http.StatusNotFound, fmt.Sprintf("No folder found for: %s", moveOperation.DestinationID.String()))
-		return
-	}
-	// TODO verify user can write to destination folder
-
-	if moveOperation.NewName != nil {
-		// TODO validate new name is not too long
-	}
-
-	// Delete the old CONTAINS_FILE relationship
-	tx, err := session.BeginTransaction()
-	_, err = tx.Run(`MATCH (folder:Folder { resource_id: $old_parent_id })-[r:CONTAINS_FILE]->(file:File { resource_id: $file_id }) DELETE r`,
-		map[string]interface{}{"file_id": source.ResourceID.String(), "old_parent_id": source.ParentID.String()})
-
-	// Rollback if there's an error
-	if err != nil {
-		err = tx.Rollback()
-		if err != nil {
-			requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
-			return
-		}
-	}
-
-	// Create a new CONTAINS_FILE relationship
-	_, err = tx.Run(`MATCH (folder:Folder), (file:File) WHERE folder.resource_id = $new_parent_id AND file.resource_id = $file_id CREATE (folder)-[r:CONTAINS_FILE]->(file) RETURN type(r)`,
-		map[string]interface{}{"file_id": source.ResourceID.String(), "new_parent_id": dest.ResourceID.String()})
-
-	// Rollback if there's an error
-	if err != nil {
-		err = tx.Rollback()
-		if err != nil {
-			requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
-			return
-		}
-	}
-
-	// Update the file's name if it was changed
-	if moveOperation.NewName != nil {
-		_, err = tx.Run(`MATCH (f:File {resource_id: $resource_id}) SET f.name = $name RETURN f.name`,
-			map[string]interface{}{"resource_id": source.ResourceID.String(), "name": *moveOperation.NewName})
-
-		// Rollback if there's an error
-		if err != nil {
-			err = tx.Rollback()
-			if err != nil {
-				requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
-				return
-			}
-		}
-	}
-
-	err = tx.Commit()
-	if err != nil {
-		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
+	response, serviceError := c.Service.Move(resource)
+	if serviceError != nil {
+		log.Println(serviceError.Error.Error())
+		requestUtils.RespondWithError(w, serviceError.HttpCode, serviceError.ErrorMessage)
 		return
 	}
 
-	requestUtils.RespondWithJSON(w, http.StatusOK, map[string]string{"msg": "Success"})
+	requestUtils.RespondWithJSON(w, http.StatusOK, response)
 }

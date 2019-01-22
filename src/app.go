@@ -5,10 +5,15 @@ import (
 	"net/http"
 
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
+	fileNeo "github.com/kevinmichaelchen/neo4j-go-file-system/file/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
+	folderNeo "github.com/kevinmichaelchen/neo4j-go-file-system/folder/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/move"
+	moveNeo "github.com/kevinmichaelchen/neo4j-go-file-system/move/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/organization"
+	orgNeo "github.com/kevinmichaelchen/neo4j-go-file-system/organization/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/user"
+	userNeo "github.com/kevinmichaelchen/neo4j-go-file-system/user/neo"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -19,21 +24,21 @@ import (
 type App struct {
 	Router              *mux.Router
 	DriverInfo          neo.DriverInfo
-	UserService         user.Service
-	OrganizationService organization.Service
-	MoveService         move.Service
-	FileService         file.Service
-	FolderService       folder.Service
+	UserService         user.Controller
+	OrganizationService organization.Controller
+	MoveService         move.Controller
+	FileService         file.Controller
+	FolderService       folder.Controller
 }
 
 func NewApp(driverInfo neo.DriverInfo) *App {
 	a := &App{
 		DriverInfo:          driverInfo,
-		UserService:         user.Service{DriverInfo: driverInfo},
-		OrganizationService: organization.Service{DriverInfo: driverInfo},
-		MoveService:         move.Service{DriverInfo: driverInfo},
-		FileService:         file.Service{DriverInfo: driverInfo},
-		FolderService:       folder.Service{DriverInfo: driverInfo},
+		UserService:         user.Controller{Service: userNeo.NewNeoService(driverInfo)},
+		OrganizationService: organization.Controller{Service: orgNeo.NewNeoService(driverInfo)},
+		MoveService:         move.Controller{Service: moveNeo.NewNeoService(driverInfo)},
+		FileService:         file.Controller{Service: fileNeo.NewNeoService(driverInfo)},
+		FolderService:       folder.Controller{Service: folderNeo.NewNeoService(driverInfo)},
 	}
 	a.initializeRoutes()
 	return a

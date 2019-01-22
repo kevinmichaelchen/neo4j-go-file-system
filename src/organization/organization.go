@@ -2,13 +2,13 @@ package organization
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
-	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
 
 	"github.com/google/uuid"
 	requestUtils "github.com/kevinmichaelchen/my-go-utils/request"
-	"github.com/neo4j/neo4j-go-driver/neo4j"
 )
 
 type Organization struct {
@@ -16,42 +16,16 @@ type Organization struct {
 	Name       string    `json:"name"`
 }
 
-func CreateOrganization(session neo4j.Session, organization Organization) error {
-	_, err := session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
-		return transaction.Run(
-			`CREATE (Organization {resource_id: $resource_id, name: $name})`, orgToMap(organization))
-	})
-	if err != nil {
-		return err
-	}
-	return nil
+type Controller struct {
+	Service Service
 }
 
-func organizationExists(session neo4j.Session, organization Organization) (bool, error) {
-	res, err := session.Run(`MATCH (o:Organization {name: $name}) RETURN o.name`, map[string]interface{}{"name": organization.Name})
-	if err != nil {
-		return false, err
-	}
-	if res.Next() {
-		e := res.Record().GetByIndex(0).(string)
-		return e != "", nil
-	}
-	return false, nil
-}
-
-func orgToMap(organization Organization) map[string]interface{} {
-	return map[string]interface{}{
-		"resource_id": organization.ResourceID.String(),
-		"name":        organization.Name,
-	}
-}
-
-type Service struct {
-	DriverInfo neo.DriverInfo
+type Service interface {
+	CreateOrganization(organization Organization) (*Organization, *service.Error)
 }
 
 // CreateOrganizationRequestHandler creates an org
-func (s *Service) CreateOrganizationRequestHandler(w http.ResponseWriter, r *http.Request) {
+func (c *Controller) CreateOrganizationRequestHandler(w http.ResponseWriter, r *http.Request) {
 	var resource Organization
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&resource); err != nil {
@@ -60,33 +34,12 @@ func (s *Service) CreateOrganizationRequestHandler(w http.ResponseWriter, r *htt
 	}
 	defer r.Body.Close()
 
-	driver := neo.GetDriver(s.DriverInfo)
-	defer driver.Close()
-
-	session := neo.GetSession(driver)
-	defer session.Close()
-
-	// Set the ID
-	resource.ResourceID = uuid.Must(uuid.NewRandom())
-
-	// TODO validate org resource
-
-	exists, err := organizationExists(session, resource)
-	if err != nil {
-		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-	if exists {
-		requestUtils.RespondWithError(w, http.StatusBadRequest, "Org already exists with that name")
+	response, serviceError := c.Service.CreateOrganization(resource)
+	if serviceError != nil {
+		log.Println(serviceError.Error.Error())
+		requestUtils.RespondWithError(w, serviceError.HttpCode, serviceError.ErrorMessage)
 		return
 	}
 
-	err = CreateOrganization(session, resource)
-
-	if err != nil {
-		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	requestUtils.RespondWithJSON(w, http.StatusOK, map[string]string{"msg": "Created org"})
+	requestUtils.RespondWithJSON(w, http.StatusOK, response)
 }
