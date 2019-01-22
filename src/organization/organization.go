@@ -1,8 +1,10 @@
-package main
+package organization
 
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
 
 	"github.com/google/uuid"
 	requestUtils "github.com/kevinmichaelchen/my-go-utils/request"
@@ -44,12 +46,12 @@ func orgToMap(organization Organization) map[string]interface{} {
 	}
 }
 
-type OrganizationService struct {
-	DriverInfo DriverInfo
+type Service struct {
+	DriverInfo neo.DriverInfo
 }
 
-// CreateOrganization creates an org
-func (s *OrganizationService) CreateOrganization(w http.ResponseWriter, r *http.Request) {
+// CreateOrganizationRequestHandler creates an org
+func (s *Service) CreateOrganizationRequestHandler(w http.ResponseWriter, r *http.Request) {
 	var resource Organization
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&resource); err != nil {
@@ -58,10 +60,10 @@ func (s *OrganizationService) CreateOrganization(w http.ResponseWriter, r *http.
 	}
 	defer r.Body.Close()
 
-	driver := GetDriver(s.DriverInfo)
+	driver := neo.GetDriver(s.DriverInfo)
 	defer driver.Close()
 
-	session := GetSession(driver)
+	session := neo.GetSession(driver)
 	defer session.Close()
 
 	// Set the ID

@@ -4,29 +4,36 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/move"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/organization"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/user"
+
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	requestUtils "github.com/kevinmichaelchen/my-go-utils/request"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
 )
 
 type App struct {
 	Router              *mux.Router
-	DriverInfo          DriverInfo
-	UserService         UserService
-	OrganizationService OrganizationService
-	MoveService         MoveService
-	FileService         FileService
-	FolderService       FolderService
+	DriverInfo          neo.DriverInfo
+	UserService         user.Service
+	OrganizationService organization.Service
+	MoveService         move.Service
+	FileService         file.Service
+	FolderService       folder.Service
 }
 
-func NewApp(driverInfo DriverInfo) *App {
+func NewApp(driverInfo neo.DriverInfo) *App {
 	a := &App{
 		DriverInfo:          driverInfo,
-		UserService:         UserService{DriverInfo: driverInfo},
-		OrganizationService: OrganizationService{DriverInfo: driverInfo},
-		MoveService:         MoveService{DriverInfo: driverInfo},
-		FileService:         FileService{DriverInfo: driverInfo},
-		FolderService:       FolderService{DriverInfo: driverInfo},
+		UserService:         user.Service{DriverInfo: driverInfo},
+		OrganizationService: organization.Service{DriverInfo: driverInfo},
+		MoveService:         move.Service{DriverInfo: driverInfo},
+		FileService:         file.Service{DriverInfo: driverInfo},
+		FolderService:       folder.Service{DriverInfo: driverInfo},
 	}
 	a.initializeRoutes()
 	return a
@@ -35,15 +42,15 @@ func NewApp(driverInfo DriverInfo) *App {
 func (a *App) initializeRoutes() {
 	a.Router = mux.NewRouter()
 
-	a.Router.HandleFunc("/hello", HelloWorld).Methods(http.MethodGet)
-	a.Router.HandleFunc("/user", a.UserService.CreateUser).Methods(http.MethodPost)
-	a.Router.HandleFunc("/organization", a.OrganizationService.CreateOrganization).Methods(http.MethodPost)
-	a.Router.HandleFunc("/move", a.MoveService.Move).Methods(http.MethodPost)
-	a.Router.HandleFunc("/file/{id:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}}", a.FileService.GetFile).Methods(http.MethodGet)
+	a.Router.HandleFunc("/hello", HelloWorldRequestHandler).Methods(http.MethodGet)
+	a.Router.HandleFunc("/user", a.UserService.CreateUserRequestHandler).Methods(http.MethodPost)
+	a.Router.HandleFunc("/organization", a.OrganizationService.CreateOrganizationRequestHandler).Methods(http.MethodPost)
+	a.Router.HandleFunc("/move", a.MoveService.MoveRequestHandler).Methods(http.MethodPost)
+	a.Router.HandleFunc("/file/{id:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}}", a.FileService.GetFileRequestHandler).Methods(http.MethodGet)
 	// TODO POST /org-membership w/ userID orgID
 }
 
-func HelloWorld(w http.ResponseWriter, r *http.Request) {
+func HelloWorldRequestHandler(w http.ResponseWriter, r *http.Request) {
 	requestUtils.RespondWithJSON(w, http.StatusOK, map[string]string{"msg": "Hello world"})
 }
 

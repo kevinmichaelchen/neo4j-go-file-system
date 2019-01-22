@@ -1,6 +1,7 @@
-package main
+package folder
 
 import (
+	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 
 	"github.com/google/uuid"
@@ -12,11 +13,11 @@ type Folder struct {
 	Name       string     `json:"name"`
 }
 
-type FolderService struct {
-	DriverInfo DriverInfo
+type Service struct {
+	DriverInfo neo.DriverInfo
 }
 
-func getFolderByID(session neo4j.Session, folderID uuid.UUID) (*Folder, error) {
+func GetFolderByID(session neo4j.Session, folderID uuid.UUID) (*Folder, error) {
 	result, err := session.Run(`MATCH (child:Folder { resource_id: $resource_id }) OPTIONAL MATCH (child)<-[:CONTAINS_FOLDER]-(parent:Folder) RETURN child.resource_id, parent.resource_id, child.name`, map[string]interface{}{"resource_id": folderID.String()})
 	if err != nil {
 		return nil, err
@@ -43,7 +44,7 @@ func getFolderByID(session neo4j.Session, folderID uuid.UUID) (*Folder, error) {
 }
 
 func folderExists(session neo4j.Session, folderID uuid.UUID) (bool, error) {
-	f, err := getFolderByID(session, folderID)
+	f, err := GetFolderByID(session, folderID)
 	if err != nil {
 		return false, err
 	}
