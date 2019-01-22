@@ -9,8 +9,11 @@ services:
       - NEO_HOSTNAME=neo4j
       - NEO_USERNAME=neo4j
       - NEO_PASSWORD=${NEO_PASSWORD}
+      - APP_PORT=8080
+      - GRPC_PORT=50051
     ports:
       - "8080:8080"
+      - "50051:50051"
 
   neo4j:
     image: neo4j:latest

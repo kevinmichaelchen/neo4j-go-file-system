@@ -5,6 +5,8 @@ import (
 	"log"
 	"net"
 
+	"github.com/google/uuid"
+
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/move"
@@ -53,18 +55,48 @@ func (s *Server) DeleteUser(ctx context.Context, in *pb.DeleteUserRequest) (*pb.
 	return nil, nil
 }
 
+func (s *Server) CreateFile(ctx context.Context, in *pb.CreateFileRequest) (*pb.CreateFileResponse, error) {
+	return nil, nil
+}
+
+func (s *Server) GetFile(ctx context.Context, in *pb.GetFileRequest) (*pb.GetFileResponse, error) {
+	fileID, err := uuid.Parse(in.FileID)
+	if err != nil {
+		return nil, err
+	}
+	// TODO pass in in.UserID and perform security/authorization
+	f, svcErr := s.FileService.GetFile(fileID)
+	if svcErr != nil {
+		return nil, svcErr.Error
+	}
+	return &pb.GetFileResponse{File: &pb.File{
+		FileID:   f.ResourceID.String(),
+		ParentID: f.ParentID.String(),
+		Name:     f.Name,
+		// TODO revisionID
+	}}, nil
+}
+
+func (s *Server) UpdateFile(ctx context.Context, in *pb.UpdateFileRequest) (*pb.UpdateFileResponse, error) {
+	return nil, nil
+}
+
+func (s *Server) DeleteFile(ctx context.Context, in *pb.DeleteFileRequest) (*pb.DeleteFileResponse, error) {
+	return nil, nil
+}
+
 func (s *Server) Run() {
 	address := fmt.Sprintf(":%d", s.Port)
-	log.Printf("Serving gRPC on %s\n", address)
 	lis, err := net.Listen("tcp", address)
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
-	log.Println("Starting gRPC server...")
+	log.Printf("Starting gRPC server on %s...\n", address)
 	server := grpc.NewServer()
 
 	// Register our services
 	pb.RegisterUserServiceServer(server, s)
+	pb.RegisterFileServiceServer(server, s)
 
 	// Register reflection service on gRPC server.
 	reflection.Register(server)
