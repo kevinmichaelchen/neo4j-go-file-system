@@ -1,4 +1,4 @@
-package main
+package file
 
 import (
 	"fmt"
@@ -7,6 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	requestUtils "github.com/kevinmichaelchen/my-go-utils/request"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 )
 
@@ -16,11 +17,11 @@ type File struct {
 	Name       string    `json:"name"`
 }
 
-type FileService struct {
-	DriverInfo DriverInfo
+type Service struct {
+	DriverInfo neo.DriverInfo
 }
 
-func (s *FileService) GetFile(w http.ResponseWriter, r *http.Request) {
+func (s *Service) GetFileRequestHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	idString := vars["id"]
 	id, err := uuid.Parse(idString)
@@ -29,13 +30,13 @@ func (s *FileService) GetFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	driver := GetDriver(s.DriverInfo)
+	driver := neo.GetDriver(s.DriverInfo)
 	defer driver.Close()
 
-	session := GetSession(driver)
+	session := neo.GetSession(driver)
 	defer session.Close()
 
-	file, err := getFileByID(session, id)
+	file, err := GetFileByID(session, id)
 
 	if err != nil {
 		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
@@ -52,7 +53,7 @@ func (s *FileService) GetFile(w http.ResponseWriter, r *http.Request) {
 	requestUtils.RespondWithJSON(w, http.StatusOK, file)
 }
 
-func getFileByID(session neo4j.Session, fileID uuid.UUID) (*File, error) {
+func GetFileByID(session neo4j.Session, fileID uuid.UUID) (*File, error) {
 	result, err := session.Run(`MATCH (f:File)<-[:CONTAINS_FILE]-(parent:Folder) WHERE f.resource_id = $resource_id RETURN f.resource_id, parent.resource_id, f.name`, map[string]interface{}{"resource_id": fileID.String()})
 	if err != nil {
 		return nil, err
@@ -70,7 +71,7 @@ func getFileByID(session neo4j.Session, fileID uuid.UUID) (*File, error) {
 }
 
 func fileExists(session neo4j.Session, fileID uuid.UUID) (bool, error) {
-	f, err := getFileByID(session, fileID)
+	f, err := GetFileByID(session, fileID)
 	if err != nil {
 		return false, err
 	}

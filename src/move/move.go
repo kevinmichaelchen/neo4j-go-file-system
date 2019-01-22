@@ -1,16 +1,20 @@
-package main
+package move
 
 import (
 	"encoding/json"
 	"fmt"
 	"net/http"
 
+	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
+
 	"github.com/google/uuid"
 	requestUtils "github.com/kevinmichaelchen/my-go-utils/request"
 )
 
-type MoveService struct {
-	DriverInfo DriverInfo
+type Service struct {
+	DriverInfo neo.DriverInfo
 }
 
 // MoveOperation represents a move operation of a file from one directory to another.
@@ -26,8 +30,8 @@ type MoveOperation struct {
 	NewName *string `json:"newName"`
 }
 
-// Move moves a file
-func (s *MoveService) Move(w http.ResponseWriter, r *http.Request) {
+// MoveRequestHandler moves a file
+func (s *Service) MoveRequestHandler(w http.ResponseWriter, r *http.Request) {
 	var moveOperation MoveOperation
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&moveOperation); err != nil {
@@ -36,13 +40,13 @@ func (s *MoveService) Move(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	driver := GetDriver(s.DriverInfo)
+	driver := neo.GetDriver(s.DriverInfo)
 	defer driver.Close()
 
-	session := GetSession(driver)
+	session := neo.GetSession(driver)
 	defer session.Close()
 
-	source, err := getFileByID(session, moveOperation.SourceID)
+	source, err := file.GetFileByID(session, moveOperation.SourceID)
 	if err != nil {
 		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
@@ -53,7 +57,7 @@ func (s *MoveService) Move(w http.ResponseWriter, r *http.Request) {
 	}
 	// TODO verify user can write to source file
 
-	dest, err := getFolderByID(session, moveOperation.DestinationID)
+	dest, err := folder.GetFolderByID(session, moveOperation.DestinationID)
 	if err != nil {
 		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return

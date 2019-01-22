@@ -1,8 +1,10 @@
-package main
+package user
 
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
 
 	"github.com/google/uuid"
 	requestUtils "github.com/kevinmichaelchen/my-go-utils/request"
@@ -46,12 +48,12 @@ func userToMap(user User) map[string]interface{} {
 	}
 }
 
-type UserService struct {
-	DriverInfo DriverInfo
+type Service struct {
+	DriverInfo neo.DriverInfo
 }
 
-// CreateUser creates a user
-func (s *UserService) CreateUser(w http.ResponseWriter, r *http.Request) {
+// CreateUserRequestHandler creates a user
+func (s *Service) CreateUserRequestHandler(w http.ResponseWriter, r *http.Request) {
 	var resource User
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&resource); err != nil {
@@ -60,10 +62,10 @@ func (s *UserService) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	driver := GetDriver(s.DriverInfo)
+	driver := neo.GetDriver(s.DriverInfo)
 	defer driver.Close()
 
-	session := GetSession(driver)
+	session := neo.GetSession(driver)
 	defer session.Close()
 
 	// Set the ID
