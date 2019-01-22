@@ -3,11 +3,10 @@ package neo
 import (
 	"net/http"
 
-	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
-
 	"github.com/google/uuid"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
-	"github.com/kevinmichaelchen/neo4j-go-file-system/user"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/organization"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 )
 
@@ -19,7 +18,7 @@ func NewNeoService(driverInfo neo.DriverInfo) *NeoService {
 	return &NeoService{DriverInfo: driverInfo}
 }
 
-func (s *NeoService) CreateUser(resource user.User) (*user.User, *service.Error) {
+func (s *NeoService) CreateOrganization(resource organization.Organization) (*organization.Organization, *service.Error) {
 	driver := neo.GetDriver(s.DriverInfo)
 	defer driver.Close()
 
@@ -29,8 +28,9 @@ func (s *NeoService) CreateUser(resource user.User) (*user.User, *service.Error)
 	// Set the ID
 	resource.ResourceID = uuid.Must(uuid.NewRandom())
 
-	// TODO validate user resource
-	exists, err := userExists(session, resource)
+	// TODO validate org resource
+
+	exists, err := organizationExists(session, resource)
 	if err != nil {
 		return nil, &service.Error{
 			HttpCode:     http.StatusInternalServerError,
@@ -41,12 +41,12 @@ func (s *NeoService) CreateUser(resource user.User) (*user.User, *service.Error)
 	if exists {
 		return nil, &service.Error{
 			HttpCode:     http.StatusBadRequest,
-			ErrorMessage: "User already exists with that email",
+			ErrorMessage: "Org already exists with that name",
 			Error:        nil,
 		}
 	}
 
-	err = createUser(session, resource)
+	err = createOrganization(session, resource)
 
 	if err != nil {
 		return nil, &service.Error{
@@ -59,10 +59,10 @@ func (s *NeoService) CreateUser(resource user.User) (*user.User, *service.Error)
 	return &resource, nil
 }
 
-func createUser(session neo4j.Session, user user.User) error {
+func createOrganization(session neo4j.Session, organization organization.Organization) error {
 	_, err := session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		return transaction.Run(
-			`CREATE (User {resource_id: $resource_id, email_address: $email_address, full_name: $full_name})`, userToMap(user))
+			`CREATE (Organization {resource_id: $resource_id, name: $name})`, orgToMap(organization))
 	})
 	if err != nil {
 		return err
@@ -70,8 +70,8 @@ func createUser(session neo4j.Session, user user.User) error {
 	return nil
 }
 
-func userExists(session neo4j.Session, user user.User) (bool, error) {
-	res, err := session.Run(`MATCH (u:User {email_address: $email_address}) RETURN u.email_address`, map[string]interface{}{"email_address": user.EmailAddress})
+func organizationExists(session neo4j.Session, organization organization.Organization) (bool, error) {
+	res, err := session.Run(`MATCH (o:Organization {name: $name}) RETURN o.name`, map[string]interface{}{"name": organization.Name})
 	if err != nil {
 		return false, err
 	}
@@ -82,10 +82,9 @@ func userExists(session neo4j.Session, user user.User) (bool, error) {
 	return false, nil
 }
 
-func userToMap(user user.User) map[string]interface{} {
+func orgToMap(organization organization.Organization) map[string]interface{} {
 	return map[string]interface{}{
-		"resource_id":   user.ResourceID.String(),
-		"email_address": user.EmailAddress,
-		"full_name":     user.FullName,
+		"resource_id": organization.ResourceID.String(),
+		"name":        organization.Name,
 	}
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/move"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/organization"
+	orgNeo "github.com/kevinmichaelchen/neo4j-go-file-system/organization/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/user"
 	userNeo "github.com/kevinmichaelchen/neo4j-go-file-system/user/neo"
 
@@ -31,7 +32,7 @@ func NewApp(driverInfo neo.DriverInfo) *App {
 	a := &App{
 		DriverInfo:          driverInfo,
 		UserService:         user.Controller{Service: userNeo.NewNeoService(driverInfo)},
-		OrganizationService: organization.Controller{DriverInfo: driverInfo},
+		OrganizationService: organization.Controller{Service: orgNeo.NewNeoService(driverInfo)},
 		MoveService:         move.Controller{DriverInfo: driverInfo},
 		FileService:         file.Controller{DriverInfo: driverInfo},
 		FolderService:       folder.Controller{DriverInfo: driverInfo},

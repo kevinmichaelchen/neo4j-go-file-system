@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
+
 	"github.com/google/uuid"
 	requestUtils "github.com/kevinmichaelchen/my-go-utils/request"
 )
@@ -20,13 +22,7 @@ type Controller struct {
 }
 
 type Service interface {
-	CreateUser(user User) (*User, *ServiceError)
-}
-
-type ServiceError struct {
-	HttpCode     int
-	ErrorMessage string
-	Error        error
+	CreateUser(user User) (*User, *service.Error)
 }
 
 // CreateUserRequestHandler creates a user
