@@ -57,6 +57,7 @@ Without it, we'd have a difficult time inspecting binary payloads on the command
 ```
 go get github.com/fullstorydev/grpcurl
 go install github.com/fullstorydev/grpcurl/cmd/grpcurl
+grpcurl -import-path ./src/pb -proto file.proto list
 grpcurl -v -plaintext localhost:50051 list pb.FileService
 grpcurl -v -plaintext -d '{"userID": "4", "fileID": "7a1ced19-5396-4c44-bc30-4953d59453d5"}' localhost:50051 pb.FileService/GetFile
 ```
