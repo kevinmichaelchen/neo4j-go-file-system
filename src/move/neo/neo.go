@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
-	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
+	fileNeo "github.com/kevinmichaelchen/neo4j-go-file-system/file/neo"
+	folderNeo "github.com/kevinmichaelchen/neo4j-go-file-system/folder/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/move"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
@@ -26,7 +26,7 @@ func (s *NeoService) Move(resource move.MoveOperation) (*move.MoveOperation, *se
 	session := neo.GetSession(driver)
 	defer session.Close()
 
-	source, err := file.GetFileByID(session, resource.SourceID)
+	source, err := fileNeo.GetFileByID(session, resource.SourceID)
 	if err != nil {
 		return nil, service.NewError(http.StatusInternalServerError, err.Error(), err)
 	}
@@ -35,7 +35,7 @@ func (s *NeoService) Move(resource move.MoveOperation) (*move.MoveOperation, *se
 	}
 	// TODO verify user can write to source file
 
-	dest, err := folder.GetFolderByID(session, resource.DestinationID)
+	dest, err := folderNeo.GetFolderByID(session, resource.DestinationID)
 	if err != nil {
 		return nil, service.NewError(http.StatusInternalServerError, err.Error(), err)
 	}

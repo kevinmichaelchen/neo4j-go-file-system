@@ -5,7 +5,9 @@ import (
 	"net/http"
 
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
+	fileNeo "github.com/kevinmichaelchen/neo4j-go-file-system/file/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
+	folderNeo "github.com/kevinmichaelchen/neo4j-go-file-system/folder/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/move"
 	moveNeo "github.com/kevinmichaelchen/neo4j-go-file-system/move/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/organization"
@@ -35,8 +37,8 @@ func NewApp(driverInfo neo.DriverInfo) *App {
 		UserService:         user.Controller{Service: userNeo.NewNeoService(driverInfo)},
 		OrganizationService: organization.Controller{Service: orgNeo.NewNeoService(driverInfo)},
 		MoveService:         move.Controller{Service: moveNeo.NewNeoService(driverInfo)},
-		FileService:         file.Controller{DriverInfo: driverInfo},
-		FolderService:       folder.Controller{DriverInfo: driverInfo},
+		FileService:         file.Controller{Service: fileNeo.NewNeoService(driverInfo)},
+		FolderService:       folder.Controller{Service: folderNeo.NewNeoService(driverInfo)},
 	}
 	a.initializeRoutes()
 	return a

@@ -1,14 +1,14 @@
 package file
 
 import (
-	"fmt"
+	"log"
 	"net/http"
+
+	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	requestUtils "github.com/kevinmichaelchen/my-go-utils/request"
-	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
-	"github.com/neo4j/neo4j-go-driver/neo4j"
 )
 
 type File struct {
@@ -18,7 +18,11 @@ type File struct {
 }
 
 type Controller struct {
-	DriverInfo neo.DriverInfo
+	Service Service
+}
+
+type Service interface {
+	GetFile(fileID uuid.UUID) (*File, *service.Error)
 }
 
 func (c *Controller) GetFileRequestHandler(w http.ResponseWriter, r *http.Request) {
@@ -30,50 +34,12 @@ func (c *Controller) GetFileRequestHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	driver := neo.GetDriver(c.DriverInfo)
-	defer driver.Close()
-
-	session := neo.GetSession(driver)
-	defer session.Close()
-
-	file, err := GetFileByID(session, id)
-
-	if err != nil {
-		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
+	response, serviceError := c.Service.GetFile(id)
+	if serviceError != nil {
+		log.Println(serviceError.Error.Error())
+		requestUtils.RespondWithError(w, serviceError.HttpCode, serviceError.ErrorMessage)
 		return
 	}
 
-	if file == nil {
-		requestUtils.RespondWithError(w, http.StatusNotFound, fmt.Sprintf("No file found for ID: %s", idString))
-		return
-	}
-
-	// TODO verify user can read file
-
-	requestUtils.RespondWithJSON(w, http.StatusOK, file)
-}
-
-func GetFileByID(session neo4j.Session, fileID uuid.UUID) (*File, error) {
-	result, err := session.Run(`MATCH (f:File)<-[:CONTAINS_FILE]-(parent:Folder) WHERE f.resource_id = $resource_id RETURN f.resource_id, parent.resource_id, f.name`, map[string]interface{}{"resource_id": fileID.String()})
-	if err != nil {
-		return nil, err
-	}
-	// TODO should this code be safer (e.g., check for uuid parsing errors? check type casts?)
-	if result.Next() {
-		record := result.Record()
-		return &File{
-			ResourceID: uuid.Must(uuid.Parse(record.GetByIndex(0).(string))),
-			ParentID:   uuid.Must(uuid.Parse(record.GetByIndex(1).(string))),
-			Name:       record.GetByIndex(2).(string),
-		}, nil
-	}
-	return nil, nil
-}
-
-func fileExists(session neo4j.Session, fileID uuid.UUID) (bool, error) {
-	f, err := GetFileByID(session, fileID)
-	if err != nil {
-		return false, err
-	}
-	return f != nil, nil
+	requestUtils.RespondWithJSON(w, http.StatusOK, response)
 }
