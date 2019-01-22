@@ -34,7 +34,7 @@ type App struct {
 	FolderController       folder.Controller
 }
 
-func NewApp(driverInfo neo.DriverInfo) *App {
+func NewApp(driverInfo neo.DriverInfo, grpcPort int) *App {
 	userService := userNeo.NewService(driverInfo)
 	organizationService := orgNeo.NewService(driverInfo)
 	moveService := moveNeo.NewService(driverInfo)
@@ -43,7 +43,7 @@ func NewApp(driverInfo neo.DriverInfo) *App {
 
 	a := &App{
 		GrpcServer: grpc.Server{
-			Port:                50051,
+			Port:                grpcPort,
 			UserService:         userService,
 			OrganizationService: organizationService,
 			MoveService:         moveService,

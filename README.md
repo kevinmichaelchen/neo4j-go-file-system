@@ -51,6 +51,14 @@ curl http://localhost:8080/file/9c73cde3-d8f9-4048-bfd9-00e0484fdb89 -H 'Origin:
 curl -X POST http://localhost:8080/move -H 'Origin: http://localhost:3000' -d '{"sourceID": "7a1ced19-5396-4c44-bc30-4953d59453d5", "destinationID": "0871b5af-4954-4d21-9e1f-3781e269374a", "newName": "cloud-auth-moved"}'
 ```
 
+## Testing gRPC endpoints with grpcurl
+```
+go get github.com/fullstorydev/grpcurl
+go install github.com/fullstorydev/grpcurl/cmd/grpcurl
+grpcurl -v -plaintext localhost:50051 list pb.FileService
+grpcurl -v -plaintext -d '{"userID": "4", "fileID": "7a1ced19-5396-4c44-bc30-4953d59453d5"}' localhost:50051 pb.FileService/GetFile
+```
+
 ## Reading
 - [Docker Compose reference](https://docs.docker.com/compose/compose-file/)
 - [Background on Seabolt driver](https://medium.com/neo4j/neo4j-go-driver-is-out-fbb4ba5b3a30)
