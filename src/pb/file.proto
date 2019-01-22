@@ -22,6 +22,15 @@ message CreateFileResponse {
     File file = 1;
 }
 
+message GetFileRequest {
+    string userID = 1;
+    string fileID = 2;
+}
+
+message GetFileResponse {
+    File file = 1;
+}
+
 message DeleteFileRequest {
     string userID = 1;
     string fileID = 2;
@@ -46,6 +55,7 @@ message UpdateFileResponse {
 
 service FileService {
     rpc CreateFile (CreateFileRequest) returns (CreateFileResponse) {}
+    rpc GetFile (GetFileRequest) returns (GetFileResponse) {}
     rpc DeleteFile (DeleteFileRequest) returns (DeleteFileResponse) {}
     rpc UpdateFile (UpdateFileRequest) returns (UpdateFileResponse) {}
 }

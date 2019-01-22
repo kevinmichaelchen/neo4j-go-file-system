@@ -22,6 +22,15 @@ message CreateFolderResponse {
     Folder folder = 1;
 }
 
+message GetFolderRequest {
+    string userID = 1;
+    string folderID = 2;
+}
+
+message GetFolderResponse {
+    Folder folder = 1;
+}
+
 message DeleteFolderRequest {
     string userID = 1;
     string folderID = 2;
@@ -46,6 +55,7 @@ message UpdateFolderResponse {
 
 service FolderService {
     rpc CreateFolder (CreateFolderRequest) returns (CreateFolderResponse) {}
+    rpc GetFolder (GetFolderRequest) returns (GetFolderResponse) {}
     rpc DeleteFolder (DeleteFolderRequest) returns (DeleteFolderResponse) {}
     rpc UpdateFolder (UpdateFolderRequest) returns (UpdateFolderResponse) {}
 }
