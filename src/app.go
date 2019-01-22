@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/kevinmichaelchen/neo4j-go-file-system/grpc"
+
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
 	fileNeo "github.com/kevinmichaelchen/neo4j-go-file-system/file/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
@@ -22,25 +24,32 @@ import (
 )
 
 type App struct {
-	Router              *mux.Router
-	DriverInfo          neo.DriverInfo
-	UserService         user.Controller
-	OrganizationService organization.Controller
-	MoveService         move.Controller
-	FileService         file.Controller
-	FolderService       folder.Controller
+	Router                 *mux.Router
+	GrpcServer             grpc.Server
+	DriverInfo             neo.DriverInfo
+	UserController         user.Controller
+	OrganizationController organization.Controller
+	MoveController         move.Controller
+	FileController         file.Controller
+	FolderController       folder.Controller
 }
 
 func NewApp(driverInfo neo.DriverInfo) *App {
+	userService := userNeo.NewService(driverInfo)
 	a := &App{
-		DriverInfo:          driverInfo,
-		UserService:         user.Controller{Service: userNeo.NewService(driverInfo)},
-		OrganizationService: organization.Controller{Service: orgNeo.NewService(driverInfo)},
-		MoveService:         move.Controller{Service: moveNeo.NewService(driverInfo)},
-		FileService:         file.Controller{Service: fileNeo.NewService(driverInfo)},
-		FolderService:       folder.Controller{Service: folderNeo.NewService(driverInfo)},
+		GrpcServer: grpc.Server{
+			Port:        50051,
+			UserService: userService,
+		},
+		DriverInfo:             driverInfo,
+		UserController:         user.Controller{Service: userService},
+		OrganizationController: organization.Controller{Service: orgNeo.NewService(driverInfo)},
+		MoveController:         move.Controller{Service: moveNeo.NewService(driverInfo)},
+		FileController:         file.Controller{Service: fileNeo.NewService(driverInfo)},
+		FolderController:       folder.Controller{Service: folderNeo.NewService(driverInfo)},
 	}
 	a.initializeRoutes()
+	a.GrpcServer.Run()
 	return a
 }
 
@@ -48,10 +57,10 @@ func (a *App) initializeRoutes() {
 	a.Router = mux.NewRouter()
 
 	a.Router.HandleFunc("/hello", HelloWorldRequestHandler).Methods(http.MethodGet)
-	a.Router.HandleFunc("/user", a.UserService.CreateUserRequestHandler).Methods(http.MethodPost)
-	a.Router.HandleFunc("/organization", a.OrganizationService.CreateOrganizationRequestHandler).Methods(http.MethodPost)
-	a.Router.HandleFunc("/move", a.MoveService.MoveRequestHandler).Methods(http.MethodPost)
-	a.Router.HandleFunc("/file/{id:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}}", a.FileService.GetFileRequestHandler).Methods(http.MethodGet)
+	a.Router.HandleFunc("/user", a.UserController.CreateUserRequestHandler).Methods(http.MethodPost)
+	a.Router.HandleFunc("/organization", a.OrganizationController.CreateOrganizationRequestHandler).Methods(http.MethodPost)
+	a.Router.HandleFunc("/move", a.MoveController.MoveRequestHandler).Methods(http.MethodPost)
+	a.Router.HandleFunc("/file/{id:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}}", a.FileController.GetFileRequestHandler).Methods(http.MethodGet)
 	// TODO POST /org-membership w/ userID orgID
 }
 
