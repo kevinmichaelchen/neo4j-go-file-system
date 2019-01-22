@@ -26,7 +26,6 @@ import (
 type App struct {
 	Router                 *mux.Router
 	GrpcServer             grpc.Server
-	DriverInfo             neo.DriverInfo
 	UserController         user.Controller
 	OrganizationController organization.Controller
 	MoveController         move.Controller
@@ -50,7 +49,6 @@ func NewApp(driverInfo neo.DriverInfo, grpcPort int) *App {
 			FileService:         fileService,
 			FolderService:       folderService,
 		},
-		DriverInfo:             driverInfo,
 		UserController:         user.Controller{Service: userService},
 		OrganizationController: organization.Controller{Service: organizationService},
 		MoveController:         move.Controller{Service: moveService},
@@ -58,7 +56,6 @@ func NewApp(driverInfo neo.DriverInfo, grpcPort int) *App {
 		FolderController:       folder.Controller{Service: folderService},
 	}
 	a.initializeRoutes()
-	a.GrpcServer.Run()
 	return a
 }
 

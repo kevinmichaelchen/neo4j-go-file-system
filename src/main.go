@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"sync"
 
 	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
 )
@@ -45,5 +46,14 @@ func main() {
 	neo.InitializeObjects(driverInfo)
 
 	a := NewApp(driverInfo, grpcPort)
-	a.ServeRest(fmt.Sprintf(":%d", appPort), "http://localhost:3000")
+
+	var wg sync.WaitGroup
+
+	wg.Add(1)
+	go a.GrpcServer.Run()
+
+	wg.Add(1)
+	go a.ServeRest(fmt.Sprintf(":%d", appPort), "http://localhost:3000")
+
+	wg.Wait()
 }
