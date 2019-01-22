@@ -35,7 +35,7 @@ func createObjects(session neo4j.Session) error {
 			`CREATE 
 				(IrisVR:Organization {name: 'IrisVR', resource_id: 'bdb77ea5-b0b2-4ecf-8605-4369b5b73577'}),
 
-				(Kevin:User {full_name:'Kevin Chen', email_address: 'kevin.chen@irisvr.com', resource_id: 1'}),
+				(Kevin:User {full_name:'Kevin Chen', email_address: 'kevin.chen@irisvr.com', resource_id: 1}),
 				(Robin:User {full_name:'Robin Kim', email_address: 'robin@irisvr.com', resource_id: 2}),
 				(Graham:User {full_name:'Graham Hagger', email_address: 'graham@irisvr.com', resource_id: 3}),
 				(Ezra:User {full_name:'Ezra Smith', email_address: 'ezra@irisvr.com', resource_id: 4}),

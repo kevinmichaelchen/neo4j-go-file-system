@@ -10,7 +10,7 @@ import (
 	"github.com/kevinmichaelchen/neo4j-go-file-system/move"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/organization"
 
-	pb "github.com/kevinmichaelchen/neo4j-go-file-system/pb"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/pb"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/user"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"

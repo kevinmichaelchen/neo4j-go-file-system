@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package proto;
+package pb;
 
 message User {
     int64 userID = 1;
