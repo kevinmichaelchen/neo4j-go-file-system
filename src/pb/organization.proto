@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package proto;
+
+message Organization {
+    int64 organizationID = 1;
+    string name = 2;
+}
+
+message CreateOrganizationRequest {
+    string name = 1;
+}
+
+message CreateOrganizationResponse {
+    Organization organization = 1;
+}
+
+message GetOrganizationRequest {
+    int64 organizationID = 1;
+}
+
+message GetOrganizationResponse {
+    Organization organization = 1;
+}
+
+message UpdateOrganizationRequest {
+    int64 organizationID = 1;
+    string name = 2;
+}
+
+message UpdateOrganizationResponse {
+    Organization organization = 1;
+}
+
+message DeleteOrganizationRequest {
+    int64 organizationID = 1;
+}
+
+message DeleteOrganizationResponse {
+    Organization organization = 1;
+}
+
+message AddUserToOrganizationRequest {
+    int64 userID = 1;
+    int64 organizationID = 2;
+}
+
+message AddUserToOrganizationResponse {
+    Organization organization = 1;
+}
+
+message RemoveUserFromOrganizationRequest {
+    int64 userID = 1;
+    int64 organizationID = 2;
+}
+
+message RemoveUserFromOrganizationResponse {
+    Organization organization = 1;
+}
+
+service OrganizationService {
+    rpc CreateOrganization (CreateOrganizationRequest) returns (CreateOrganizationResponse) {}
+    rpc GetOrganization (GetOrganizationRequest) returns (GetOrganizationResponse) {}
+    rpc UpdateOrganization (UpdateOrganizationRequest) returns (UpdateOrganizationResponse) {}
+    rpc DeleteOrganization (DeleteOrganizationRequest) returns (DeleteOrganizationResponse) {}
+    rpc AddUserToOrganization (AddUserToOrganizationRequest) returns (AddUserToOrganizationResponse) {}
+    rpc RemoveUserFromOrganization (RemoveUserFromOrganizationRequest) returns (RemoveUserFromOrganizationResponse) {}
+}
