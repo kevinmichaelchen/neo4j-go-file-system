@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/google/uuid"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
+
+	"github.com/google/uuid"
 )
 
 type Folder struct {

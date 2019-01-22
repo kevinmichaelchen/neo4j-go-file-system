@@ -12,7 +12,7 @@ RUN cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_LIBDIR=lib .. && cmake --
 
 ENV GO111MODULE on
 WORKDIR /go/src/neo4j-go-file-system
-ADD . .
+ADD src .
 # install dependencies
 RUN go get -v ./...
 # build statically linked executable
