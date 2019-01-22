@@ -2,6 +2,10 @@ package grpc
 
 import (
 	"fmt"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/move"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/organization"
 	"log"
 	"net"
 
@@ -13,8 +17,12 @@ import (
 )
 
 type Server struct {
-	Port        int
-	UserService user.Service
+	Port                int
+	UserService         user.Service
+	OrganizationService organization.Service
+	MoveService         move.Service
+	FileService         file.Service
+	FolderService       folder.Service
 }
 
 func (service *Server) CreateUser(ctx context.Context, in *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {

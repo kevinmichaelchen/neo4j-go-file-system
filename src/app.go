@@ -36,17 +36,26 @@ type App struct {
 
 func NewApp(driverInfo neo.DriverInfo) *App {
 	userService := userNeo.NewService(driverInfo)
+	organizationService := orgNeo.NewService(driverInfo)
+	moveService := moveNeo.NewService(driverInfo)
+	fileService := fileNeo.NewService(driverInfo)
+	folderService := folderNeo.NewService(driverInfo)
+
 	a := &App{
 		GrpcServer: grpc.Server{
-			Port:        50051,
-			UserService: userService,
+			Port:                50051,
+			UserService:         userService,
+			OrganizationService: organizationService,
+			MoveService:         moveService,
+			FileService:         fileService,
+			FolderService:       folderService,
 		},
 		DriverInfo:             driverInfo,
 		UserController:         user.Controller{Service: userService},
-		OrganizationController: organization.Controller{Service: orgNeo.NewService(driverInfo)},
-		MoveController:         move.Controller{Service: moveNeo.NewService(driverInfo)},
-		FileController:         file.Controller{Service: fileNeo.NewService(driverInfo)},
-		FolderController:       folder.Controller{Service: folderNeo.NewService(driverInfo)},
+		OrganizationController: organization.Controller{Service: organizationService},
+		MoveController:         move.Controller{Service: moveService},
+		FileController:         file.Controller{Service: fileService},
+		FolderController:       folder.Controller{Service: folderService},
 	}
 	a.initializeRoutes()
 	a.GrpcServer.Run()
