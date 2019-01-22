@@ -45,7 +45,7 @@ message UpdateFileRequest {
     string fileID = 2;
     // The name of the file (optionally used for renames)
     string name = 3;
-    // The ID of the parent file (optionally used for moves)
+    // The ID of the parent folder (optionally used for moves)
     string parentID = 4;
 }
 
