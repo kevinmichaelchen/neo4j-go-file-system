@@ -27,6 +27,30 @@ type Server struct {
 	FolderService       folder.Service
 }
 
+func (s *Server) CreateOrganization(ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
+	return CreateOrganization(s.OrganizationService, ctx, in)
+}
+
+func (s *Server) GetOrganization(ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
+	return GetOrganization(s.OrganizationService, ctx, in)
+}
+
+func (s *Server) UpdateOrganization(ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
+	return UpdateOrganization(s.OrganizationService, ctx, in)
+}
+
+func (s *Server) DeleteOrganization(ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
+	return DeleteOrganization(s.OrganizationService, ctx, in)
+}
+
+func (s *Server) AddUserToOrganization(ctx context.Context, in *pb.AddUserToOrganizationRequest) (*pb.OrganizationResponse, error) {
+	return AddUserToOrganization(s.OrganizationService, ctx, in)
+}
+
+func (s *Server) RemoveUserFromOrganization(ctx context.Context, in *pb.RemoveUserFromOrganizationRequest) (*pb.OrganizationResponse, error) {
+	return RemoveUserFromOrganization(s.OrganizationService, ctx, in)
+}
+
 func (s *Server) CreateUser(ctx context.Context, in *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
 	return CreateUser(s.UserService, ctx, in)
 }
@@ -71,6 +95,7 @@ func (s *Server) Run() {
 	// Register our services
 	pb.RegisterUserServiceServer(server, s)
 	pb.RegisterFileServiceServer(server, s)
+	pb.RegisterOrganizationServiceServer(server, s)
 
 	// Register reflection service on gRPC server.
 	reflection.Register(server)

@@ -51,15 +51,30 @@ curl http://localhost:8080/file/9c73cde3-d8f9-4048-bfd9-00e0484fdb89 -H 'Origin:
 curl -X POST http://localhost:8080/move -H 'Origin: http://localhost:3000' -d '{"sourceID": "7a1ced19-5396-4c44-bc30-4953d59453d5", "destinationID": "0871b5af-4954-4d21-9e1f-3781e269374a", "newName": "cloud-auth-moved"}'
 ```
 
-## Testing gRPC endpoints with grpcurl
-[grpcurl](https://github.com/fullstorydev/grpcurl) lets us interact with a gRPC server as easily as we use REST APIs and `curl`.
-Without it, we'd have a difficult time inspecting binary payloads on the command line.
-```
+## gRPC API
+We can test out our gRPC API on the command line with [grpcurl](https://github.com/fullstorydev/grpcurl).
+It behaves like `curl`, but it can process binary payloads.
+
+To install it, run
+```bash
 go get github.com/fullstorydev/grpcurl
 go install github.com/fullstorydev/grpcurl/cmd/grpcurl
+```
+
+There are some calls you can make to see what kinds of methods your API supports:
+```bash
 grpcurl -import-path ./src/pb -proto file.proto list
 grpcurl -v -plaintext localhost:50051 list pb.FileService
+```
+
+### Files
+```bash
 grpcurl -v -plaintext -d '{"userID": "4", "fileID": "7a1ced19-5396-4c44-bc30-4953d59453d5"}' localhost:50051 pb.FileService/GetFile
+```
+
+### Organizations
+```bash
+grpcurl -v -plaintext -d '{"organization": {"organizationID": 2, "name": "My Custom Org"}}' localhost:50051 pb.OrganizationService/CreateOrganization
 ```
 
 ## Reading

@@ -6,54 +6,60 @@ import (
 	"golang.org/x/net/context"
 )
 
-func CreateOrganization(organizationService organization.Service, ctx context.Context, in *pb.CreateOrganizationRequest) (*pb.CreateOrganizationResponse, error) {
-	u, svcError := organizationService.CreateOrganization(organization.Organization{
-		Name: in.Name,
-	})
+func CreateOrganization(organizationService organization.Service, ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
+	u, svcError := organizationService.CreateOrganization(toOrganization(in.Organization))
 	if svcError.Error != nil {
 		return nil, svcError.Error
 	}
-	return &pb.CreateOrganizationResponse{Organization: toGrpcOrganization(u)}, nil
+	return &pb.OrganizationResponse{Organization: toGrpcOrganization(u)}, nil
 }
 
-func GetOrganization(organizationService organization.Service, ctx context.Context, in *pb.GetOrganizationRequest) (*pb.GetOrganizationResponse, error) {
+func GetOrganization(organizationService organization.Service, ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
 	u, svcError := organizationService.GetOrganization(organization.Organization{
-		ResourceID: in.OrganizationID,
+		ResourceID: in.Organization.Id,
 	})
 	if svcError.Error != nil {
 		return nil, svcError.Error
 	}
-	return &pb.GetOrganizationResponse{Organization: toGrpcOrganization(u)}, nil
+	return &pb.OrganizationResponse{Organization: toGrpcOrganization(u)}, nil
 }
 
-func UpdateOrganization(organizationService organization.Service, ctx context.Context, in *pb.UpdateOrganizationRequest) (*pb.UpdateOrganizationResponse, error) {
+func UpdateOrganization(organizationService organization.Service, ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
 	u, svcError := organizationService.UpdateOrganization(toOrganization(in.Organization))
 	if svcError.Error != nil {
 		return nil, svcError.Error
 	}
-	return &pb.UpdateOrganizationResponse{Organization: toGrpcOrganization(u)}, nil
+	return &pb.OrganizationResponse{Organization: toGrpcOrganization(u)}, nil
 }
 
-func DeleteOrganization(organizationService organization.Service, ctx context.Context, in *pb.DeleteOrganizationRequest) (*pb.DeleteOrganizationResponse, error) {
+func DeleteOrganization(organizationService organization.Service, ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
 	u, svcError := organizationService.DeleteOrganization(organization.Organization{
-		ResourceID: in.OrganizationID,
+		ResourceID: in.Organization.Id,
 	})
 	if svcError.Error != nil {
 		return nil, svcError.Error
 	}
-	return &pb.DeleteOrganizationResponse{Organization: toGrpcOrganization(u)}, nil
+	return &pb.OrganizationResponse{Organization: toGrpcOrganization(u)}, nil
+}
+
+func AddUserToOrganization(organizationService organization.Service, ctx context.Context, in *pb.AddUserToOrganizationRequest) (*pb.OrganizationResponse, error) {
+	return nil, nil
+}
+
+func RemoveUserFromOrganization(organizationService organization.Service, ctx context.Context, in *pb.RemoveUserFromOrganizationRequest) (*pb.OrganizationResponse, error) {
+	return nil, nil
 }
 
 func toOrganization(u *pb.Organization) organization.Organization {
 	return organization.Organization{
-		ResourceID: u.OrganizationID,
+		ResourceID: u.Id,
 		Name:       u.Name,
 	}
 }
 
 func toGrpcOrganization(u *organization.Organization) *pb.Organization {
 	return &pb.Organization{
-		OrganizationID: u.ResourceID,
-		Name:           u.Name,
+		Id:   u.ResourceID,
+		Name: u.Name,
 	}
 }

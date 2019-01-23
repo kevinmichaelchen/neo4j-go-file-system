@@ -3,39 +3,15 @@ syntax = "proto3";
 package pb;
 
 message Organization {
-    int64 organizationID = 1;
+    int64 id = 1;
     string name = 2;
 }
 
-message CreateOrganizationRequest {
-    string name = 1;
-}
-
-message CreateOrganizationResponse {
+message OrganizationCrudRequest {
     Organization organization = 1;
 }
 
-message GetOrganizationRequest {
-    int64 organizationID = 1;
-}
-
-message GetOrganizationResponse {
-    Organization organization = 1;
-}
-
-message UpdateOrganizationRequest {
-    Organization organization = 1;
-}
-
-message UpdateOrganizationResponse {
-    Organization organization = 1;
-}
-
-message DeleteOrganizationRequest {
-    int64 organizationID = 1;
-}
-
-message DeleteOrganizationResponse {
+message OrganizationResponse {
     Organization organization = 1;
 }
 
@@ -44,24 +20,16 @@ message AddUserToOrganizationRequest {
     int64 organizationID = 2;
 }
 
-message AddUserToOrganizationResponse {
-    Organization organization = 1;
-}
-
 message RemoveUserFromOrganizationRequest {
     int64 userID = 1;
     int64 organizationID = 2;
 }
 
-message RemoveUserFromOrganizationResponse {
-    Organization organization = 1;
-}
-
 service OrganizationService {
-    rpc CreateOrganization (CreateOrganizationRequest) returns (CreateOrganizationResponse) {}
-    rpc GetOrganization (GetOrganizationRequest) returns (GetOrganizationResponse) {}
-    rpc UpdateOrganization (UpdateOrganizationRequest) returns (UpdateOrganizationResponse) {}
-    rpc DeleteOrganization (DeleteOrganizationRequest) returns (DeleteOrganizationResponse) {}
-    rpc AddUserToOrganization (AddUserToOrganizationRequest) returns (AddUserToOrganizationResponse) {}
-    rpc RemoveUserFromOrganization (RemoveUserFromOrganizationRequest) returns (RemoveUserFromOrganizationResponse) {}
+    rpc CreateOrganization (OrganizationCrudRequest) returns (OrganizationResponse) {}
+    rpc GetOrganization (OrganizationCrudRequest) returns (OrganizationResponse) {}
+    rpc UpdateOrganization (OrganizationCrudRequest) returns (OrganizationResponse) {}
+    rpc DeleteOrganization (OrganizationCrudRequest) returns (OrganizationResponse) {}
+    rpc AddUserToOrganization (AddUserToOrganizationRequest) returns (OrganizationResponse) {}
+    rpc RemoveUserFromOrganization (RemoveUserFromOrganizationRequest) returns (OrganizationResponse) {}
 }

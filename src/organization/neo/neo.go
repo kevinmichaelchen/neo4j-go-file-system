@@ -3,7 +3,6 @@ package neo
 import (
 	"net/http"
 
-	"github.com/google/uuid"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/organization"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
@@ -24,9 +23,6 @@ func (s *Service) CreateOrganization(resource organization.Organization) (*organ
 
 	session := neo.GetSession(driver)
 	defer session.Close()
-
-	// Set the ID
-	resource.ResourceID = uuid.Must(uuid.NewRandom())
 
 	// TODO validate org resource
 
@@ -84,7 +80,7 @@ func organizationExists(session neo4j.Session, organization organization.Organiz
 
 func orgToMap(organization organization.Organization) map[string]interface{} {
 	return map[string]interface{}{
-		"resource_id": organization.ResourceID.String(),
+		"resource_id": organization.ResourceID,
 		"name":        organization.Name,
 	}
 }
