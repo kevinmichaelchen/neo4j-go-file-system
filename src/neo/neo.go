@@ -2,6 +2,7 @@ package neo
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
@@ -29,6 +30,22 @@ func createObjects(session neo4j.Session) error {
 		err    error
 		result neo4j.Result
 	)
+
+	_, err = session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
+		result, err = transaction.Run(
+			`MATCH (n) DETACH DELETE n`,
+			map[string]interface{}{})
+		if err != nil {
+			return nil, err
+		}
+
+		return nil, result.Err()
+	})
+
+	if err != nil {
+		log.Println(err.Error())
+		log.Fatalf("Failed to delete existing data")
+	}
 
 	_, err = session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		result, err = transaction.Run(
