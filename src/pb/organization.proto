@@ -24,8 +24,7 @@ message GetOrganizationResponse {
 }
 
 message UpdateOrganizationRequest {
-    int64 organizationID = 1;
-    string name = 2;
+    Organization organization = 1;
 }
 
 message UpdateOrganizationResponse {

@@ -7,13 +7,12 @@ import (
 
 	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
 
-	"github.com/google/uuid"
 	requestUtils "github.com/kevinmichaelchen/my-go-utils/request"
 )
 
 type Organization struct {
-	ResourceID uuid.UUID `json:"resourceID"`
-	Name       string    `json:"name"`
+	ResourceID int64  `json:"resourceID"`
+	Name       string `json:"name"`
 }
 
 type Controller struct {
@@ -22,6 +21,9 @@ type Controller struct {
 
 type Service interface {
 	CreateOrganization(organization Organization) (*Organization, *service.Error)
+	GetOrganization(organization Organization) (*Organization, *service.Error)
+	UpdateOrganization(organization Organization) (*Organization, *service.Error)
+	DeleteOrganization(organization Organization) (*Organization, *service.Error)
 }
 
 // CreateOrganizationRequestHandler creates an org

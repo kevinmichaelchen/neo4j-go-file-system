@@ -47,6 +47,18 @@ func (s *Service) CreateOrganization(resource organization.Organization) (*organ
 	return &resource, nil
 }
 
+func (s *Service) GetOrganization(resource organization.Organization) (*organization.Organization, *service.Error) {
+	return nil, service.Unimplemented()
+}
+
+func (s *Service) UpdateOrganization(resource organization.Organization) (*organization.Organization, *service.Error) {
+	return nil, service.Unimplemented()
+}
+
+func (s *Service) DeleteOrganization(resource organization.Organization) (*organization.Organization, *service.Error) {
+	return nil, service.Unimplemented()
+}
+
 func createOrganization(session neo4j.Session, organization organization.Organization) error {
 	_, err := session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		return transaction.Run(
