@@ -67,6 +67,7 @@ func createOrganization(session neo4j.Session, organization organization.Organiz
 }
 
 func organizationExists(session neo4j.Session, organization organization.Organization) (bool, error) {
+	// TODO ensure IDs are unique as well
 	res, err := session.Run(`MATCH (o:Organization {name: $name}) RETURN o.name`, map[string]interface{}{"name": organization.Name})
 	if err != nil {
 		return false, err
