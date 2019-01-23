@@ -27,7 +27,7 @@ type Server struct {
 	FolderService       folder.Service
 }
 
-func (s *Server) CreateOrganization(ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
+func (s *Server) CreateOrganization(ctx context.Context, in *pb.CreateOrgRequest) (*pb.CreateOrgResponse, error) {
 	return CreateOrganization(s.OrganizationService, ctx, in)
 }
 

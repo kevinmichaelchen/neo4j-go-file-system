@@ -6,12 +6,15 @@ import (
 	"golang.org/x/net/context"
 )
 
-func CreateOrganization(organizationService organization.Service, ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
-	u, svcError := organizationService.CreateOrganization(toOrganization(in.Organization))
+func CreateOrganization(organizationService organization.Service, ctx context.Context, in *pb.CreateOrgRequest) (*pb.CreateOrgResponse, error) {
+	o, svcError := organizationService.CreateOrganization(toOrganization(in.Organization))
 	if svcError.Error != nil {
 		return nil, svcError.Error
 	}
-	return &pb.OrganizationResponse{Organization: toGrpcOrganization(u)}, nil
+	// TODO this line is bombing w/ invalid memory address or nil pointer dereference
+	return &pb.CreateOrgResponse{Organization: &pb.Organization{
+		Id: o.ResourceID,
+		Name: o.Name}}, nil
 }
 
 func GetOrganization(organizationService organization.Service, ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
@@ -50,16 +53,16 @@ func RemoveUserFromOrganization(organizationService organization.Service, ctx co
 	return nil, nil
 }
 
-func toOrganization(u *pb.Organization) organization.Organization {
+func toOrganization(in *pb.Organization) organization.Organization {
 	return organization.Organization{
-		ResourceID: u.Id,
-		Name:       u.Name,
+		ResourceID: in.Id,
+		Name:       in.Name,
 	}
 }
 
-func toGrpcOrganization(u *organization.Organization) *pb.Organization {
+func toGrpcOrganization(in *organization.Organization) *pb.Organization {
 	return &pb.Organization{
-		Id:   u.ResourceID,
-		Name: u.Name,
+		Id:   in.ResourceID,
+		Name: in.Name,
 	}
 }
