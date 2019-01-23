@@ -22,6 +22,9 @@ type Controller struct {
 
 type Service interface {
 	CreateUser(user User) (*User, *service.Error)
+	GetUser(user User) (*User, *service.Error)
+	UpdateUser(user User) (*User, *service.Error)
+	DeleteUser(user User) (*User, *service.Error)
 }
 
 // CreateUserRequestHandler creates a user

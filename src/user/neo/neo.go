@@ -43,6 +43,18 @@ func (s *Service) CreateUser(resource user.User) (*user.User, *service.Error) {
 	return &resource, nil
 }
 
+func (s *Service) GetUser(resource user.User) (*user.User, *service.Error) {
+	return nil, service.Unimplemented()
+}
+
+func (s *Service) UpdateUser(resource user.User) (*user.User, *service.Error) {
+	return nil, service.Unimplemented()
+}
+
+func (s *Service) DeleteUser(resource user.User) (*user.User, *service.Error) {
+	return nil, service.Unimplemented()
+}
+
 func createUser(session neo4j.Session, user user.User) error {
 	_, err := session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		return transaction.Run(
