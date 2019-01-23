@@ -50,6 +50,24 @@ func NewError(httpCode int, errorMessage string, err error) *Error {
 	}
 }
 
+func NotFound(msg string) *Error {
+	return &Error{
+		HttpCode:     http.StatusNotFound,
+		GrpcCode:     codes.NotFound,
+		ErrorMessage: msg,
+		Error:        nil,
+	}
+}
+
+func AlreadyExists(msg string) *Error {
+	return &Error{
+		HttpCode:     http.StatusBadRequest,
+		GrpcCode:     codes.AlreadyExists,
+		ErrorMessage: msg,
+		Error:        nil,
+	}
+}
+
 func Internal(err error) *Error {
 	return &Error{
 		HttpCode:     http.StatusInternalServerError,

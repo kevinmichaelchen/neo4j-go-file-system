@@ -4,43 +4,44 @@ import (
 	"github.com/kevinmichaelchen/neo4j-go-file-system/pb"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/user"
 	"golang.org/x/net/context"
+	"google.golang.org/grpc/status"
 )
 
 func CreateUser(userService user.Service, ctx context.Context, in *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
-	u, svcError := userService.CreateUser(user.User{
+	u, svcErr := userService.CreateUser(user.User{
 		EmailAddress: in.User.EmailAddress,
 		FullName:     in.User.FullName,
 	})
-	if svcError.Error != nil {
-		return nil, svcError.Error
+	if svcErr != nil {
+		return nil, status.Error(svcErr.GrpcCode, svcErr.ErrorMessage)
 	}
 	return &pb.CreateUserResponse{User: toGrpcUser(u)}, nil
 }
 
 func GetUser(userService user.Service, ctx context.Context, in *pb.GetUserRequest) (*pb.GetUserResponse, error) {
-	u, svcError := userService.GetUser(user.User{
+	u, svcErr := userService.GetUser(user.User{
 		ResourceID: in.UserID,
 	})
-	if svcError.Error != nil {
-		return nil, svcError.Error
+	if svcErr != nil {
+		return nil, status.Error(svcErr.GrpcCode, svcErr.ErrorMessage)
 	}
 	return &pb.GetUserResponse{User: toGrpcUser(u)}, nil
 }
 
 func UpdateUser(userService user.Service, ctx context.Context, in *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
-	u, svcError := userService.UpdateUser(toUser(in.User))
-	if svcError.Error != nil {
-		return nil, svcError.Error
+	u, svcErr := userService.UpdateUser(toUser(in.User))
+	if svcErr != nil {
+		return nil, status.Error(svcErr.GrpcCode, svcErr.ErrorMessage)
 	}
 	return &pb.UpdateUserResponse{User: toGrpcUser(u)}, nil
 }
 
 func DeleteUser(userService user.Service, ctx context.Context, in *pb.DeleteUserRequest) (*pb.DeleteUserResponse, error) {
-	u, svcError := userService.DeleteUser(user.User{
+	u, svcErr := userService.DeleteUser(user.User{
 		ResourceID: in.UserID,
 	})
-	if svcError.Error != nil {
-		return nil, svcError.Error
+	if svcErr != nil {
+		return nil, status.Error(svcErr.GrpcCode, svcErr.ErrorMessage)
 	}
 	return &pb.DeleteUserResponse{User: toGrpcUser(u)}, nil
 }

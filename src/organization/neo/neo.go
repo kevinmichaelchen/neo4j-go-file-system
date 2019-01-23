@@ -1,9 +1,6 @@
 package neo
 
 import (
-	"net/http"
-
-	"github.com/google/uuid"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/organization"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
@@ -25,9 +22,6 @@ func (s *Service) CreateOrganization(resource organization.Organization) (*organ
 	session := neo.GetSession(driver)
 	defer session.Close()
 
-	// Set the ID
-	resource.ResourceID = uuid.Must(uuid.NewRandom())
-
 	// TODO validate org resource
 
 	exists, err := organizationExists(session, resource)
@@ -35,7 +29,7 @@ func (s *Service) CreateOrganization(resource organization.Organization) (*organ
 		return nil, service.Internal(err)
 	}
 	if exists {
-		return nil, service.NewError(http.StatusBadRequest, "Org already exists with that name", nil)
+		return nil, service.AlreadyExists("Org already exists with that name")
 	}
 
 	err = createOrganization(session, resource)
@@ -71,6 +65,7 @@ func createOrganization(session neo4j.Session, organization organization.Organiz
 }
 
 func organizationExists(session neo4j.Session, organization organization.Organization) (bool, error) {
+	// TODO ensure IDs are unique as well
 	res, err := session.Run(`MATCH (o:Organization {name: $name}) RETURN o.name`, map[string]interface{}{"name": organization.Name})
 	if err != nil {
 		return false, err
@@ -84,7 +79,7 @@ func organizationExists(session neo4j.Session, organization organization.Organiz
 
 func orgToMap(organization organization.Organization) map[string]interface{} {
 	return map[string]interface{}{
-		"resource_id": organization.ResourceID.String(),
+		"resource_id": organization.ResourceID,
 		"name":        organization.Name,
 	}
 }

@@ -2,7 +2,6 @@ package neo
 
 import (
 	"fmt"
-	"net/http"
 
 	fileNeo "github.com/kevinmichaelchen/neo4j-go-file-system/file/neo"
 	folderNeo "github.com/kevinmichaelchen/neo4j-go-file-system/folder/neo"
@@ -31,7 +30,7 @@ func (s *Service) Move(resource move.MoveOperation) (*move.MoveOperation, *servi
 		return nil, service.Internal(err)
 	}
 	if source == nil {
-		return nil, service.NewError(http.StatusNotFound, fmt.Sprintf("No file found for: %s", resource.SourceID.String()), nil)
+		return nil, service.NotFound(fmt.Sprintf("No file found for: %s", resource.SourceID.String()))
 	}
 	// TODO verify user can write to source file
 
@@ -40,7 +39,7 @@ func (s *Service) Move(resource move.MoveOperation) (*move.MoveOperation, *servi
 		return nil, service.Internal(err)
 	}
 	if dest == nil {
-		return nil, service.NewError(http.StatusNotFound, fmt.Sprintf("No folder found for: %s", resource.DestinationID.String()), nil)
+		return nil, service.NotFound(fmt.Sprintf("No folder found for: %s", resource.DestinationID.String()))
 	}
 	// TODO verify user can write to destination folder
 

@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"net/http"
 
 	"github.com/google/uuid"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
@@ -46,7 +45,7 @@ func (s *Service) GetFile(context context.Context, in file.File) (*file.File, *s
 	}
 
 	if resource == nil {
-		return nil, service.NewError(http.StatusNotFound, fmt.Sprintf("No file found for ID: %s", in.ResourceID.String()), nil)
+		return nil, service.NotFound(fmt.Sprintf("No file found for ID: %s", in.ResourceID.String()))
 	}
 
 	// TODO verify user can read file
