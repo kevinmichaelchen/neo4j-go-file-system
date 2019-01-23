@@ -31,7 +31,7 @@ func (s *Service) CreateUser(resource user.User) (*user.User, *service.Error) {
 		return nil, service.Internal(err)
 	}
 	if exists {
-		return nil, service.NewError(http.StatusBadRequest, "User already exists with that email", nil)
+		return nil, service.AlreadyExists("User already exists with that email")
 	}
 
 	err = createUser(session, resource)

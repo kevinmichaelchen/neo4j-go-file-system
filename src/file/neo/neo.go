@@ -3,14 +3,12 @@ package neo
 import (
 	"context"
 	"fmt"
-	"log"
-	"net/http"
-
 	"github.com/google/uuid"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
+	"log"
 )
 
 type Service struct {
@@ -46,7 +44,7 @@ func (s *Service) GetFile(context context.Context, in file.File) (*file.File, *s
 	}
 
 	if resource == nil {
-		return nil, service.NewError(http.StatusNotFound, fmt.Sprintf("No file found for ID: %s", in.ResourceID.String()), nil)
+		return nil, service.NotFound(fmt.Sprintf("No file found for ID: %s", in.ResourceID.String()))
 	}
 
 	// TODO verify user can read file
