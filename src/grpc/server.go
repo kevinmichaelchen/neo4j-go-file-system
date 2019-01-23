@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net"
-
-	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
+	"strings"
 
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
@@ -19,7 +18,6 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-// TODO use error codes https://github.com/grpc/grpc-go/blob/master/Documentation/rpc-errors.md
 type Server struct {
 	Port                int
 	UserService         user.Service
@@ -85,8 +83,36 @@ func (s *Server) DeleteFile(ctx context.Context, in *pb.DeleteFileRequest) (*pb.
 	return DeleteFile(s.FileService, ctx, in)
 }
 
-func checkForServiceError(service.Error) {
+func (s *Server) CreateFolder(ctx context.Context, in *pb.CreateFolderRequest) (*pb.FolderResponse, error) {
+	return CreateFolder(s.FolderService, ctx, in)
+}
 
+func (s *Server) GetFolder(ctx context.Context, in *pb.GetFolderRequest) (*pb.FolderResponse, error) {
+	return GetFolder(s.FolderService, ctx, in)
+}
+
+func (s *Server) UpdateFolder(ctx context.Context, in *pb.UpdateFolderRequest) (*pb.FolderResponse, error) {
+	return UpdateFolder(s.FolderService, ctx, in)
+}
+
+func (s *Server) DeleteFolder(ctx context.Context, in *pb.DeleteFolderRequest) (*pb.FolderResponse, error) {
+	return DeleteFolder(s.FolderService, ctx, in)
+}
+
+// optString is a utility function we use for passing "optional" strings to our service layer
+// Absent string fields come in as the empty string by default.
+// I'd prefer to work with string pointers rather than empty strings.
+// -Kevin
+func optString(s string) *string {
+	if strings.TrimSpace(s) == "" {
+		return nil
+	}
+	return &s
+}
+
+func getUserID(ctx context.Context) int {
+	// TODO properly fetch user ID from headers or metadata
+	return 1
 }
 
 func (s *Server) Run() {
@@ -100,8 +126,9 @@ func (s *Server) Run() {
 
 	// Register our services
 	pb.RegisterUserServiceServer(server, s)
-	pb.RegisterFileServiceServer(server, s)
 	pb.RegisterOrganizationServiceServer(server, s)
+	pb.RegisterFileServiceServer(server, s)
+	pb.RegisterFolderServiceServer(server, s)
 
 	// Register reflection service on gRPC server.
 	reflection.Register(server)

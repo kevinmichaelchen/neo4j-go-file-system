@@ -37,7 +37,7 @@ func (m *Folder) Reset()         { *m = Folder{} }
 func (m *Folder) String() string { return proto.CompactTextString(m) }
 func (*Folder) ProtoMessage()    {}
 func (*Folder) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folder_1c79036a9602420f, []int{0}
+	return fileDescriptor_folder_1c0d2e0cd74b2487, []int{0}
 }
 func (m *Folder) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Folder.Unmarshal(m, b)
@@ -85,11 +85,48 @@ func (m *Folder) GetParentID() string {
 	return ""
 }
 
+type FolderResponse struct {
+	Folder               *Folder  `protobuf:"bytes,1,opt,name=folder,proto3" json:"folder,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *FolderResponse) Reset()         { *m = FolderResponse{} }
+func (m *FolderResponse) String() string { return proto.CompactTextString(m) }
+func (*FolderResponse) ProtoMessage()    {}
+func (*FolderResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_folder_1c0d2e0cd74b2487, []int{1}
+}
+func (m *FolderResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_FolderResponse.Unmarshal(m, b)
+}
+func (m *FolderResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_FolderResponse.Marshal(b, m, deterministic)
+}
+func (dst *FolderResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FolderResponse.Merge(dst, src)
+}
+func (m *FolderResponse) XXX_Size() int {
+	return xxx_messageInfo_FolderResponse.Size(m)
+}
+func (m *FolderResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_FolderResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_FolderResponse proto.InternalMessageInfo
+
+func (m *FolderResponse) GetFolder() *Folder {
+	if m != nil {
+		return m.Folder
+	}
+	return nil
+}
+
 type CreateFolderRequest struct {
-	UserID     string `protobuf:"bytes,1,opt,name=userID,proto3" json:"userID,omitempty"`
-	RevisionID string `protobuf:"bytes,2,opt,name=revisionID,proto3" json:"revisionID,omitempty"`
-	Name       string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	// If null, then folder assumed to be at root.
+	UserID               int64    `protobuf:"varint,1,opt,name=userID,proto3" json:"userID,omitempty"`
+	RevisionID           string   `protobuf:"bytes,2,opt,name=revisionID,proto3" json:"revisionID,omitempty"`
+	Name                 string   `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	ParentID             string   `protobuf:"bytes,4,opt,name=parentID,proto3" json:"parentID,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -100,7 +137,7 @@ func (m *CreateFolderRequest) Reset()         { *m = CreateFolderRequest{} }
 func (m *CreateFolderRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateFolderRequest) ProtoMessage()    {}
 func (*CreateFolderRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folder_1c79036a9602420f, []int{1}
+	return fileDescriptor_folder_1c0d2e0cd74b2487, []int{2}
 }
 func (m *CreateFolderRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateFolderRequest.Unmarshal(m, b)
@@ -120,11 +157,11 @@ func (m *CreateFolderRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CreateFolderRequest proto.InternalMessageInfo
 
-func (m *CreateFolderRequest) GetUserID() string {
+func (m *CreateFolderRequest) GetUserID() int64 {
 	if m != nil {
 		return m.UserID
 	}
-	return ""
+	return 0
 }
 
 func (m *CreateFolderRequest) GetRevisionID() string {
@@ -148,47 +185,8 @@ func (m *CreateFolderRequest) GetParentID() string {
 	return ""
 }
 
-// TODO handle name collisions
-type CreateFolderResponse struct {
-	Folder               *Folder  `protobuf:"bytes,1,opt,name=folder,proto3" json:"folder,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *CreateFolderResponse) Reset()         { *m = CreateFolderResponse{} }
-func (m *CreateFolderResponse) String() string { return proto.CompactTextString(m) }
-func (*CreateFolderResponse) ProtoMessage()    {}
-func (*CreateFolderResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folder_1c79036a9602420f, []int{2}
-}
-func (m *CreateFolderResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_CreateFolderResponse.Unmarshal(m, b)
-}
-func (m *CreateFolderResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_CreateFolderResponse.Marshal(b, m, deterministic)
-}
-func (dst *CreateFolderResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CreateFolderResponse.Merge(dst, src)
-}
-func (m *CreateFolderResponse) XXX_Size() int {
-	return xxx_messageInfo_CreateFolderResponse.Size(m)
-}
-func (m *CreateFolderResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_CreateFolderResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_CreateFolderResponse proto.InternalMessageInfo
-
-func (m *CreateFolderResponse) GetFolder() *Folder {
-	if m != nil {
-		return m.Folder
-	}
-	return nil
-}
-
 type GetFolderRequest struct {
-	UserID               string   `protobuf:"bytes,1,opt,name=userID,proto3" json:"userID,omitempty"`
+	UserID               int64    `protobuf:"varint,1,opt,name=userID,proto3" json:"userID,omitempty"`
 	FolderID             string   `protobuf:"bytes,2,opt,name=folderID,proto3" json:"folderID,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -199,7 +197,7 @@ func (m *GetFolderRequest) Reset()         { *m = GetFolderRequest{} }
 func (m *GetFolderRequest) String() string { return proto.CompactTextString(m) }
 func (*GetFolderRequest) ProtoMessage()    {}
 func (*GetFolderRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folder_1c79036a9602420f, []int{3}
+	return fileDescriptor_folder_1c0d2e0cd74b2487, []int{3}
 }
 func (m *GetFolderRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetFolderRequest.Unmarshal(m, b)
@@ -219,11 +217,11 @@ func (m *GetFolderRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_GetFolderRequest proto.InternalMessageInfo
 
-func (m *GetFolderRequest) GetUserID() string {
+func (m *GetFolderRequest) GetUserID() int64 {
 	if m != nil {
 		return m.UserID
 	}
-	return ""
+	return 0
 }
 
 func (m *GetFolderRequest) GetFolderID() string {
@@ -233,134 +231,10 @@ func (m *GetFolderRequest) GetFolderID() string {
 	return ""
 }
 
-type GetFolderResponse struct {
-	Folder               *Folder  `protobuf:"bytes,1,opt,name=folder,proto3" json:"folder,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *GetFolderResponse) Reset()         { *m = GetFolderResponse{} }
-func (m *GetFolderResponse) String() string { return proto.CompactTextString(m) }
-func (*GetFolderResponse) ProtoMessage()    {}
-func (*GetFolderResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folder_1c79036a9602420f, []int{4}
-}
-func (m *GetFolderResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetFolderResponse.Unmarshal(m, b)
-}
-func (m *GetFolderResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetFolderResponse.Marshal(b, m, deterministic)
-}
-func (dst *GetFolderResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetFolderResponse.Merge(dst, src)
-}
-func (m *GetFolderResponse) XXX_Size() int {
-	return xxx_messageInfo_GetFolderResponse.Size(m)
-}
-func (m *GetFolderResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetFolderResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_GetFolderResponse proto.InternalMessageInfo
-
-func (m *GetFolderResponse) GetFolder() *Folder {
-	if m != nil {
-		return m.Folder
-	}
-	return nil
-}
-
-type DeleteFolderRequest struct {
-	UserID               string   `protobuf:"bytes,1,opt,name=userID,proto3" json:"userID,omitempty"`
-	FolderID             string   `protobuf:"bytes,2,opt,name=folderID,proto3" json:"folderID,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *DeleteFolderRequest) Reset()         { *m = DeleteFolderRequest{} }
-func (m *DeleteFolderRequest) String() string { return proto.CompactTextString(m) }
-func (*DeleteFolderRequest) ProtoMessage()    {}
-func (*DeleteFolderRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folder_1c79036a9602420f, []int{5}
-}
-func (m *DeleteFolderRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_DeleteFolderRequest.Unmarshal(m, b)
-}
-func (m *DeleteFolderRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_DeleteFolderRequest.Marshal(b, m, deterministic)
-}
-func (dst *DeleteFolderRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DeleteFolderRequest.Merge(dst, src)
-}
-func (m *DeleteFolderRequest) XXX_Size() int {
-	return xxx_messageInfo_DeleteFolderRequest.Size(m)
-}
-func (m *DeleteFolderRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_DeleteFolderRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_DeleteFolderRequest proto.InternalMessageInfo
-
-func (m *DeleteFolderRequest) GetUserID() string {
-	if m != nil {
-		return m.UserID
-	}
-	return ""
-}
-
-func (m *DeleteFolderRequest) GetFolderID() string {
-	if m != nil {
-		return m.FolderID
-	}
-	return ""
-}
-
-type DeleteFolderResponse struct {
-	Folder               *Folder  `protobuf:"bytes,1,opt,name=folder,proto3" json:"folder,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *DeleteFolderResponse) Reset()         { *m = DeleteFolderResponse{} }
-func (m *DeleteFolderResponse) String() string { return proto.CompactTextString(m) }
-func (*DeleteFolderResponse) ProtoMessage()    {}
-func (*DeleteFolderResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folder_1c79036a9602420f, []int{6}
-}
-func (m *DeleteFolderResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_DeleteFolderResponse.Unmarshal(m, b)
-}
-func (m *DeleteFolderResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_DeleteFolderResponse.Marshal(b, m, deterministic)
-}
-func (dst *DeleteFolderResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DeleteFolderResponse.Merge(dst, src)
-}
-func (m *DeleteFolderResponse) XXX_Size() int {
-	return xxx_messageInfo_DeleteFolderResponse.Size(m)
-}
-func (m *DeleteFolderResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_DeleteFolderResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_DeleteFolderResponse proto.InternalMessageInfo
-
-func (m *DeleteFolderResponse) GetFolder() *Folder {
-	if m != nil {
-		return m.Folder
-	}
-	return nil
-}
-
 type UpdateFolderRequest struct {
-	UserID   string `protobuf:"bytes,1,opt,name=userID,proto3" json:"userID,omitempty"`
-	FolderID string `protobuf:"bytes,2,opt,name=folderID,proto3" json:"folderID,omitempty"`
-	// The name of the folder (optionally used for renames)
-	Name string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	// The ID of the parent folder (optionally used for moves)
+	UserID               int64    `protobuf:"varint,1,opt,name=userID,proto3" json:"userID,omitempty"`
+	FolderID             string   `protobuf:"bytes,2,opt,name=folderID,proto3" json:"folderID,omitempty"`
+	Name                 string   `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	ParentID             string   `protobuf:"bytes,4,opt,name=parentID,proto3" json:"parentID,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -371,7 +245,7 @@ func (m *UpdateFolderRequest) Reset()         { *m = UpdateFolderRequest{} }
 func (m *UpdateFolderRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateFolderRequest) ProtoMessage()    {}
 func (*UpdateFolderRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folder_1c79036a9602420f, []int{7}
+	return fileDescriptor_folder_1c0d2e0cd74b2487, []int{4}
 }
 func (m *UpdateFolderRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateFolderRequest.Unmarshal(m, b)
@@ -391,11 +265,11 @@ func (m *UpdateFolderRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_UpdateFolderRequest proto.InternalMessageInfo
 
-func (m *UpdateFolderRequest) GetUserID() string {
+func (m *UpdateFolderRequest) GetUserID() int64 {
 	if m != nil {
 		return m.UserID
 	}
-	return ""
+	return 0
 }
 
 func (m *UpdateFolderRequest) GetFolderID() string {
@@ -419,54 +293,59 @@ func (m *UpdateFolderRequest) GetParentID() string {
 	return ""
 }
 
-type UpdateFolderResponse struct {
-	Folder               *Folder  `protobuf:"bytes,1,opt,name=folder,proto3" json:"folder,omitempty"`
+type DeleteFolderRequest struct {
+	UserID               int64    `protobuf:"varint,1,opt,name=userID,proto3" json:"userID,omitempty"`
+	FolderID             string   `protobuf:"bytes,2,opt,name=folderID,proto3" json:"folderID,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *UpdateFolderResponse) Reset()         { *m = UpdateFolderResponse{} }
-func (m *UpdateFolderResponse) String() string { return proto.CompactTextString(m) }
-func (*UpdateFolderResponse) ProtoMessage()    {}
-func (*UpdateFolderResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folder_1c79036a9602420f, []int{8}
+func (m *DeleteFolderRequest) Reset()         { *m = DeleteFolderRequest{} }
+func (m *DeleteFolderRequest) String() string { return proto.CompactTextString(m) }
+func (*DeleteFolderRequest) ProtoMessage()    {}
+func (*DeleteFolderRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_folder_1c0d2e0cd74b2487, []int{5}
 }
-func (m *UpdateFolderResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_UpdateFolderResponse.Unmarshal(m, b)
+func (m *DeleteFolderRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DeleteFolderRequest.Unmarshal(m, b)
 }
-func (m *UpdateFolderResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_UpdateFolderResponse.Marshal(b, m, deterministic)
+func (m *DeleteFolderRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DeleteFolderRequest.Marshal(b, m, deterministic)
 }
-func (dst *UpdateFolderResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UpdateFolderResponse.Merge(dst, src)
+func (dst *DeleteFolderRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteFolderRequest.Merge(dst, src)
 }
-func (m *UpdateFolderResponse) XXX_Size() int {
-	return xxx_messageInfo_UpdateFolderResponse.Size(m)
+func (m *DeleteFolderRequest) XXX_Size() int {
+	return xxx_messageInfo_DeleteFolderRequest.Size(m)
 }
-func (m *UpdateFolderResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_UpdateFolderResponse.DiscardUnknown(m)
+func (m *DeleteFolderRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteFolderRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UpdateFolderResponse proto.InternalMessageInfo
+var xxx_messageInfo_DeleteFolderRequest proto.InternalMessageInfo
 
-func (m *UpdateFolderResponse) GetFolder() *Folder {
+func (m *DeleteFolderRequest) GetUserID() int64 {
 	if m != nil {
-		return m.Folder
+		return m.UserID
 	}
-	return nil
+	return 0
+}
+
+func (m *DeleteFolderRequest) GetFolderID() string {
+	if m != nil {
+		return m.FolderID
+	}
+	return ""
 }
 
 func init() {
 	proto.RegisterType((*Folder)(nil), "pb.Folder")
+	proto.RegisterType((*FolderResponse)(nil), "pb.FolderResponse")
 	proto.RegisterType((*CreateFolderRequest)(nil), "pb.CreateFolderRequest")
-	proto.RegisterType((*CreateFolderResponse)(nil), "pb.CreateFolderResponse")
 	proto.RegisterType((*GetFolderRequest)(nil), "pb.GetFolderRequest")
-	proto.RegisterType((*GetFolderResponse)(nil), "pb.GetFolderResponse")
-	proto.RegisterType((*DeleteFolderRequest)(nil), "pb.DeleteFolderRequest")
-	proto.RegisterType((*DeleteFolderResponse)(nil), "pb.DeleteFolderResponse")
 	proto.RegisterType((*UpdateFolderRequest)(nil), "pb.UpdateFolderRequest")
-	proto.RegisterType((*UpdateFolderResponse)(nil), "pb.UpdateFolderResponse")
+	proto.RegisterType((*DeleteFolderRequest)(nil), "pb.DeleteFolderRequest")
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -481,10 +360,10 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type FolderServiceClient interface {
-	CreateFolder(ctx context.Context, in *CreateFolderRequest, opts ...grpc.CallOption) (*CreateFolderResponse, error)
-	GetFolder(ctx context.Context, in *GetFolderRequest, opts ...grpc.CallOption) (*GetFolderResponse, error)
-	DeleteFolder(ctx context.Context, in *DeleteFolderRequest, opts ...grpc.CallOption) (*DeleteFolderResponse, error)
-	UpdateFolder(ctx context.Context, in *UpdateFolderRequest, opts ...grpc.CallOption) (*UpdateFolderResponse, error)
+	CreateFolder(ctx context.Context, in *CreateFolderRequest, opts ...grpc.CallOption) (*FolderResponse, error)
+	GetFolder(ctx context.Context, in *GetFolderRequest, opts ...grpc.CallOption) (*FolderResponse, error)
+	UpdateFolder(ctx context.Context, in *UpdateFolderRequest, opts ...grpc.CallOption) (*FolderResponse, error)
+	DeleteFolder(ctx context.Context, in *DeleteFolderRequest, opts ...grpc.CallOption) (*FolderResponse, error)
 }
 
 type folderServiceClient struct {
@@ -495,8 +374,8 @@ func NewFolderServiceClient(cc *grpc.ClientConn) FolderServiceClient {
 	return &folderServiceClient{cc}
 }
 
-func (c *folderServiceClient) CreateFolder(ctx context.Context, in *CreateFolderRequest, opts ...grpc.CallOption) (*CreateFolderResponse, error) {
-	out := new(CreateFolderResponse)
+func (c *folderServiceClient) CreateFolder(ctx context.Context, in *CreateFolderRequest, opts ...grpc.CallOption) (*FolderResponse, error) {
+	out := new(FolderResponse)
 	err := c.cc.Invoke(ctx, "/pb.FolderService/CreateFolder", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -504,8 +383,8 @@ func (c *folderServiceClient) CreateFolder(ctx context.Context, in *CreateFolder
 	return out, nil
 }
 
-func (c *folderServiceClient) GetFolder(ctx context.Context, in *GetFolderRequest, opts ...grpc.CallOption) (*GetFolderResponse, error) {
-	out := new(GetFolderResponse)
+func (c *folderServiceClient) GetFolder(ctx context.Context, in *GetFolderRequest, opts ...grpc.CallOption) (*FolderResponse, error) {
+	out := new(FolderResponse)
 	err := c.cc.Invoke(ctx, "/pb.FolderService/GetFolder", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -513,18 +392,18 @@ func (c *folderServiceClient) GetFolder(ctx context.Context, in *GetFolderReques
 	return out, nil
 }
 
-func (c *folderServiceClient) DeleteFolder(ctx context.Context, in *DeleteFolderRequest, opts ...grpc.CallOption) (*DeleteFolderResponse, error) {
-	out := new(DeleteFolderResponse)
-	err := c.cc.Invoke(ctx, "/pb.FolderService/DeleteFolder", in, out, opts...)
+func (c *folderServiceClient) UpdateFolder(ctx context.Context, in *UpdateFolderRequest, opts ...grpc.CallOption) (*FolderResponse, error) {
+	out := new(FolderResponse)
+	err := c.cc.Invoke(ctx, "/pb.FolderService/UpdateFolder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *folderServiceClient) UpdateFolder(ctx context.Context, in *UpdateFolderRequest, opts ...grpc.CallOption) (*UpdateFolderResponse, error) {
-	out := new(UpdateFolderResponse)
-	err := c.cc.Invoke(ctx, "/pb.FolderService/UpdateFolder", in, out, opts...)
+func (c *folderServiceClient) DeleteFolder(ctx context.Context, in *DeleteFolderRequest, opts ...grpc.CallOption) (*FolderResponse, error) {
+	out := new(FolderResponse)
+	err := c.cc.Invoke(ctx, "/pb.FolderService/DeleteFolder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -533,10 +412,10 @@ func (c *folderServiceClient) UpdateFolder(ctx context.Context, in *UpdateFolder
 
 // FolderServiceServer is the server API for FolderService service.
 type FolderServiceServer interface {
-	CreateFolder(context.Context, *CreateFolderRequest) (*CreateFolderResponse, error)
-	GetFolder(context.Context, *GetFolderRequest) (*GetFolderResponse, error)
-	DeleteFolder(context.Context, *DeleteFolderRequest) (*DeleteFolderResponse, error)
-	UpdateFolder(context.Context, *UpdateFolderRequest) (*UpdateFolderResponse, error)
+	CreateFolder(context.Context, *CreateFolderRequest) (*FolderResponse, error)
+	GetFolder(context.Context, *GetFolderRequest) (*FolderResponse, error)
+	UpdateFolder(context.Context, *UpdateFolderRequest) (*FolderResponse, error)
+	DeleteFolder(context.Context, *DeleteFolderRequest) (*FolderResponse, error)
 }
 
 func RegisterFolderServiceServer(s *grpc.Server, srv FolderServiceServer) {
@@ -579,24 +458,6 @@ func _FolderService_GetFolder_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FolderService_DeleteFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteFolderRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FolderServiceServer).DeleteFolder(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/pb.FolderService/DeleteFolder",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FolderServiceServer).DeleteFolder(ctx, req.(*DeleteFolderRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _FolderService_UpdateFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateFolderRequest)
 	if err := dec(in); err != nil {
@@ -615,6 +476,24 @@ func _FolderService_UpdateFolder_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FolderService_DeleteFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteFolderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FolderServiceServer).DeleteFolder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.FolderService/DeleteFolder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FolderServiceServer).DeleteFolder(ctx, req.(*DeleteFolderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _FolderService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "pb.FolderService",
 	HandlerType: (*FolderServiceServer)(nil),
@@ -628,41 +507,39 @@ var _FolderService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _FolderService_GetFolder_Handler,
 		},
 		{
-			MethodName: "DeleteFolder",
-			Handler:    _FolderService_DeleteFolder_Handler,
-		},
-		{
 			MethodName: "UpdateFolder",
 			Handler:    _FolderService_UpdateFolder_Handler,
+		},
+		{
+			MethodName: "DeleteFolder",
+			Handler:    _FolderService_DeleteFolder_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "folder.proto",
 }
 
-func init() { proto.RegisterFile("folder.proto", fileDescriptor_folder_1c79036a9602420f) }
+func init() { proto.RegisterFile("folder.proto", fileDescriptor_folder_1c0d2e0cd74b2487) }
 
-var fileDescriptor_folder_1c79036a9602420f = []byte{
-	// 322 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x54, 0x41, 0x4f, 0xb3, 0x40,
-	0x10, 0x6d, 0xf9, 0x1a, 0xf2, 0x75, 0xc4, 0x44, 0x17, 0x54, 0xc2, 0xc1, 0x98, 0x3d, 0x79, 0xe2,
-	0x50, 0x0f, 0x26, 0x5c, 0x21, 0x35, 0x5c, 0x6b, 0xfc, 0x01, 0x60, 0xc7, 0x84, 0xa4, 0xc2, 0xba,
-	0x6c, 0x9b, 0x78, 0xf0, 0x8f, 0xf8, 0x6b, 0x0d, 0x3b, 0x48, 0x96, 0x4a, 0x0c, 0x35, 0xbd, 0x31,
-	0x33, 0xbb, 0xef, 0x3d, 0xde, 0x9b, 0x2c, 0x38, 0x2f, 0xd5, 0x66, 0x8d, 0x32, 0x14, 0xb2, 0x52,
-	0x15, 0xb3, 0x44, 0xce, 0x15, 0xd8, 0x4b, 0xdd, 0x63, 0x01, 0xfc, 0xa7, 0x69, 0x9a, 0xf8, 0xd3,
-	0x9b, 0xe9, 0xed, 0x7c, 0xd5, 0xd5, 0xec, 0x1a, 0x40, 0xe2, 0xae, 0xa8, 0x8b, 0xaa, 0x4c, 0x13,
-	0xdf, 0xd2, 0x53, 0xa3, 0xc3, 0x18, 0xcc, 0xca, 0xec, 0x15, 0xfd, 0x7f, 0x7a, 0xa2, 0xbf, 0x1b,
-	0x3c, 0x91, 0x49, 0x2c, 0x55, 0x9a, 0xf8, 0x33, 0xc2, 0xfb, 0xae, 0xf9, 0x07, 0xb8, 0xb1, 0xc4,
-	0x4c, 0x21, 0x71, 0xaf, 0xf0, 0x6d, 0x8b, 0xb5, 0x62, 0x97, 0x60, 0x6f, 0x6b, 0x43, 0x40, 0x5b,
-	0x1d, 0x9d, 0x3e, 0x02, 0xaf, 0x4f, 0x5f, 0x8b, 0xaa, 0xac, 0x91, 0x71, 0xb0, 0xe9, 0x97, 0x35,
-	0xff, 0xc9, 0x02, 0x42, 0x91, 0x87, 0xed, 0x99, 0x76, 0xc2, 0x97, 0x70, 0xf6, 0x80, 0x6a, 0x9c,
-	0x6e, 0xd3, 0x52, 0xab, 0x6f, 0x29, 0xbf, 0x87, 0x73, 0x03, 0xe7, 0x00, 0x01, 0x29, 0xb8, 0x09,
-	0x6e, 0x70, 0xac, 0x77, 0xbf, 0x69, 0x88, 0xc0, 0xeb, 0x43, 0x1d, 0x20, 0xe3, 0x1d, 0xdc, 0x27,
-	0xb1, 0xce, 0x8e, 0x20, 0xe3, 0x2f, 0xf1, 0xf5, 0xa9, 0xc7, 0xcb, 0x5e, 0x7c, 0x5a, 0x70, 0x4a,
-	0xad, 0x47, 0x94, 0xbb, 0xe2, 0x19, 0x59, 0x0c, 0x8e, 0xb9, 0x0c, 0xec, 0xaa, 0xb9, 0x35, 0xb0,
-	0x9d, 0x81, 0xff, 0x73, 0x40, 0xc4, 0x7c, 0xc2, 0x22, 0x98, 0x77, 0x69, 0x32, 0xaf, 0x39, 0xb8,
-	0xbf, 0x24, 0xc1, 0xc5, 0x5e, 0xb7, 0xbb, 0x1b, 0x83, 0x63, 0xa6, 0x40, 0x02, 0x06, 0x22, 0x26,
-	0x01, 0x43, 0x81, 0x11, 0x88, 0xe9, 0x09, 0x81, 0x0c, 0x04, 0x44, 0x20, 0x43, 0xf6, 0xf1, 0x49,
-	0x6e, 0xeb, 0x77, 0xe1, 0xee, 0x2b, 0x00, 0x00, 0xff, 0xff, 0xc7, 0xd7, 0x3e, 0x09, 0x27, 0x04,
-	0x00, 0x00,
+var fileDescriptor_folder_1c0d2e0cd74b2487 = []byte{
+	// 293 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x93, 0xc1, 0x4b, 0xc3, 0x30,
+	0x14, 0xc6, 0x5d, 0x37, 0x8a, 0x7b, 0x56, 0x91, 0x57, 0xd1, 0xb2, 0x83, 0x48, 0x4e, 0x9e, 0x7a,
+	0x98, 0x82, 0xa7, 0x9d, 0x2c, 0x93, 0x5e, 0x2b, 0xfe, 0x01, 0xad, 0x7b, 0x42, 0x61, 0x36, 0x31,
+	0xc9, 0x06, 0x1e, 0x3c, 0xfa, 0x7f, 0x4b, 0x93, 0xae, 0x44, 0xc9, 0x64, 0x83, 0xdd, 0xfa, 0xf2,
+	0xf2, 0xbd, 0x2f, 0xef, 0xf7, 0x51, 0x88, 0xde, 0xf8, 0x72, 0x41, 0x32, 0x15, 0x92, 0x6b, 0x8e,
+	0x81, 0xa8, 0x98, 0x86, 0x70, 0x6e, 0xce, 0x70, 0x02, 0xc7, 0xb6, 0x9b, 0x67, 0xc9, 0xe0, 0x66,
+	0x70, 0x3b, 0x2e, 0xfa, 0x1a, 0xaf, 0x01, 0x24, 0xad, 0x6b, 0x55, 0xf3, 0x26, 0xcf, 0x92, 0xc0,
+	0x74, 0x9d, 0x13, 0x44, 0x18, 0x35, 0xe5, 0x3b, 0x25, 0x43, 0xd3, 0x31, 0xdf, 0xed, 0x3c, 0x51,
+	0x4a, 0x6a, 0x74, 0x9e, 0x25, 0x23, 0x3b, 0x6f, 0x53, 0xb3, 0x7b, 0x38, 0xb3, 0xae, 0x05, 0x29,
+	0xc1, 0x1b, 0x45, 0xc8, 0x20, 0xb4, 0x6e, 0xc6, 0xfb, 0x64, 0x0a, 0xa9, 0xa8, 0xd2, 0xee, 0x4e,
+	0xd7, 0x61, 0x5f, 0x10, 0x3f, 0x4a, 0x2a, 0x35, 0x6d, 0xb4, 0x1f, 0x2b, 0x52, 0x1a, 0x2f, 0x21,
+	0x5c, 0xa9, 0xfe, 0xd9, 0xc3, 0xa2, 0xab, 0x0e, 0xfe, 0xe8, 0x39, 0x9c, 0x3f, 0x91, 0xde, 0xcd,
+	0xdb, 0x85, 0x19, 0xfc, 0x86, 0xc9, 0x3e, 0x21, 0x7e, 0x11, 0x8b, 0x9d, 0xd7, 0xf8, 0x67, 0xd4,
+	0xde, 0x2b, 0xe4, 0x10, 0x67, 0xb4, 0xa4, 0x03, 0x58, 0x4f, 0xbf, 0x03, 0x38, 0xb5, 0x53, 0x9e,
+	0x49, 0xae, 0xeb, 0x57, 0xc2, 0x19, 0x44, 0x6e, 0x3c, 0x78, 0xd5, 0x46, 0xe8, 0x09, 0x6c, 0x82,
+	0x4e, 0xb6, 0x5d, 0xfe, 0xec, 0x08, 0x1f, 0x60, 0xdc, 0xe3, 0xc5, 0x8b, 0xf6, 0xca, 0x5f, 0xda,
+	0x5b, 0x84, 0x33, 0x88, 0x5c, 0x9e, 0xd6, 0xd7, 0x43, 0x78, 0xbb, 0xdc, 0x65, 0x62, 0xe5, 0x1e,
+	0x4a, 0x7e, 0x79, 0x15, 0x9a, 0x7f, 0xe9, 0xee, 0x27, 0x00, 0x00, 0xff, 0xff, 0xfc, 0x74, 0xc4,
+	0x51, 0x5b, 0x03, 0x00, 0x00,
 }
