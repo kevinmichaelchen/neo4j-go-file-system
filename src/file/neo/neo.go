@@ -3,12 +3,13 @@ package neo
 import (
 	"context"
 	"fmt"
+	"log"
+
 	"github.com/google/uuid"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
-	"log"
 )
 
 type Service struct {

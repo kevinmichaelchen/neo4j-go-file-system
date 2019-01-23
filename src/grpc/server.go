@@ -5,6 +5,8 @@ import (
 	"log"
 	"net"
 
+	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
+
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/move"
@@ -27,7 +29,7 @@ type Server struct {
 	FolderService       folder.Service
 }
 
-func (s *Server) CreateOrganization(ctx context.Context, in *pb.CreateOrgRequest) (*pb.CreateOrgResponse, error) {
+func (s *Server) CreateOrganization(ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
 	return CreateOrganization(s.OrganizationService, ctx, in)
 }
 
@@ -81,6 +83,10 @@ func (s *Server) UpdateFile(ctx context.Context, in *pb.UpdateFileRequest) (*pb.
 
 func (s *Server) DeleteFile(ctx context.Context, in *pb.DeleteFileRequest) (*pb.DeleteFileResponse, error) {
 	return DeleteFile(s.FileService, ctx, in)
+}
+
+func checkForServiceError(service.Error) {
+
 }
 
 func (s *Server) Run() {

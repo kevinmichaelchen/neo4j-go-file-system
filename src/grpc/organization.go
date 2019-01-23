@@ -4,45 +4,45 @@ import (
 	"github.com/kevinmichaelchen/neo4j-go-file-system/organization"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/pb"
 	"golang.org/x/net/context"
+	"google.golang.org/grpc/status"
 )
 
-func CreateOrganization(organizationService organization.Service, ctx context.Context, in *pb.CreateOrgRequest) (*pb.CreateOrgResponse, error) {
-	o, svcError := organizationService.CreateOrganization(toOrganization(in.Organization))
-	if svcError.Error != nil {
-		return nil, svcError.Error
+func CreateOrganization(organizationService organization.Service, ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
+	o, svcErr := organizationService.CreateOrganization(toOrganization(in.Organization))
+
+	if svcErr != nil {
+		return nil, status.Error(svcErr.GrpcCode, svcErr.ErrorMessage)
 	}
-	// TODO this line is bombing w/ invalid memory address or nil pointer dereference
-	return &pb.CreateOrgResponse{Organization: &pb.Organization{
-		Id: o.ResourceID,
-		Name: o.Name}}, nil
+
+	return &pb.OrganizationResponse{Organization: toGrpcOrganization(o)}, nil
 }
 
 func GetOrganization(organizationService organization.Service, ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
-	u, svcError := organizationService.GetOrganization(organization.Organization{
+	o, svcErr := organizationService.GetOrganization(organization.Organization{
 		ResourceID: in.Organization.Id,
 	})
-	if svcError.Error != nil {
-		return nil, svcError.Error
+	if svcErr != nil {
+		return nil, status.Error(svcErr.GrpcCode, svcErr.ErrorMessage)
 	}
-	return &pb.OrganizationResponse{Organization: toGrpcOrganization(u)}, nil
+	return &pb.OrganizationResponse{Organization: toGrpcOrganization(o)}, nil
 }
 
 func UpdateOrganization(organizationService organization.Service, ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
-	u, svcError := organizationService.UpdateOrganization(toOrganization(in.Organization))
-	if svcError.Error != nil {
-		return nil, svcError.Error
+	o, svcErr := organizationService.UpdateOrganization(toOrganization(in.Organization))
+	if svcErr != nil {
+		return nil, status.Error(svcErr.GrpcCode, svcErr.ErrorMessage)
 	}
-	return &pb.OrganizationResponse{Organization: toGrpcOrganization(u)}, nil
+	return &pb.OrganizationResponse{Organization: toGrpcOrganization(o)}, nil
 }
 
 func DeleteOrganization(organizationService organization.Service, ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
-	u, svcError := organizationService.DeleteOrganization(organization.Organization{
+	o, svcErr := organizationService.DeleteOrganization(organization.Organization{
 		ResourceID: in.Organization.Id,
 	})
-	if svcError.Error != nil {
-		return nil, svcError.Error
+	if svcErr != nil {
+		return nil, status.Error(svcErr.GrpcCode, svcErr.ErrorMessage)
 	}
-	return &pb.OrganizationResponse{Organization: toGrpcOrganization(u)}, nil
+	return &pb.OrganizationResponse{Organization: toGrpcOrganization(o)}, nil
 }
 
 func AddUserToOrganization(organizationService organization.Service, ctx context.Context, in *pb.AddUserToOrganizationRequest) (*pb.OrganizationResponse, error) {

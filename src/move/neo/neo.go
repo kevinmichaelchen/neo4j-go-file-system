@@ -2,6 +2,7 @@ package neo
 
 import (
 	"fmt"
+
 	fileNeo "github.com/kevinmichaelchen/neo4j-go-file-system/file/neo"
 	folderNeo "github.com/kevinmichaelchen/neo4j-go-file-system/folder/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/move"

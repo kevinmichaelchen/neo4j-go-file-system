@@ -35,7 +35,7 @@ func (m *Organization) Reset()         { *m = Organization{} }
 func (m *Organization) String() string { return proto.CompactTextString(m) }
 func (*Organization) ProtoMessage()    {}
 func (*Organization) Descriptor() ([]byte, []int) {
-	return fileDescriptor_organization_5335db9296eabdb7, []int{0}
+	return fileDescriptor_organization_b4ac988073079e62, []int{0}
 }
 func (m *Organization) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Organization.Unmarshal(m, b)
@@ -80,7 +80,7 @@ func (m *OrganizationCrudRequest) Reset()         { *m = OrganizationCrudRequest
 func (m *OrganizationCrudRequest) String() string { return proto.CompactTextString(m) }
 func (*OrganizationCrudRequest) ProtoMessage()    {}
 func (*OrganizationCrudRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_organization_5335db9296eabdb7, []int{1}
+	return fileDescriptor_organization_b4ac988073079e62, []int{1}
 }
 func (m *OrganizationCrudRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_OrganizationCrudRequest.Unmarshal(m, b)
@@ -107,82 +107,6 @@ func (m *OrganizationCrudRequest) GetOrganization() *Organization {
 	return nil
 }
 
-type CreateOrgRequest struct {
-	Organization         *Organization `protobuf:"bytes,1,opt,name=organization,proto3" json:"organization,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
-	XXX_unrecognized     []byte        `json:"-"`
-	XXX_sizecache        int32         `json:"-"`
-}
-
-func (m *CreateOrgRequest) Reset()         { *m = CreateOrgRequest{} }
-func (m *CreateOrgRequest) String() string { return proto.CompactTextString(m) }
-func (*CreateOrgRequest) ProtoMessage()    {}
-func (*CreateOrgRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_organization_5335db9296eabdb7, []int{2}
-}
-func (m *CreateOrgRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_CreateOrgRequest.Unmarshal(m, b)
-}
-func (m *CreateOrgRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_CreateOrgRequest.Marshal(b, m, deterministic)
-}
-func (dst *CreateOrgRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CreateOrgRequest.Merge(dst, src)
-}
-func (m *CreateOrgRequest) XXX_Size() int {
-	return xxx_messageInfo_CreateOrgRequest.Size(m)
-}
-func (m *CreateOrgRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_CreateOrgRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_CreateOrgRequest proto.InternalMessageInfo
-
-func (m *CreateOrgRequest) GetOrganization() *Organization {
-	if m != nil {
-		return m.Organization
-	}
-	return nil
-}
-
-type CreateOrgResponse struct {
-	Organization         *Organization `protobuf:"bytes,1,opt,name=organization,proto3" json:"organization,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
-	XXX_unrecognized     []byte        `json:"-"`
-	XXX_sizecache        int32         `json:"-"`
-}
-
-func (m *CreateOrgResponse) Reset()         { *m = CreateOrgResponse{} }
-func (m *CreateOrgResponse) String() string { return proto.CompactTextString(m) }
-func (*CreateOrgResponse) ProtoMessage()    {}
-func (*CreateOrgResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_organization_5335db9296eabdb7, []int{3}
-}
-func (m *CreateOrgResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_CreateOrgResponse.Unmarshal(m, b)
-}
-func (m *CreateOrgResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_CreateOrgResponse.Marshal(b, m, deterministic)
-}
-func (dst *CreateOrgResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CreateOrgResponse.Merge(dst, src)
-}
-func (m *CreateOrgResponse) XXX_Size() int {
-	return xxx_messageInfo_CreateOrgResponse.Size(m)
-}
-func (m *CreateOrgResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_CreateOrgResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_CreateOrgResponse proto.InternalMessageInfo
-
-func (m *CreateOrgResponse) GetOrganization() *Organization {
-	if m != nil {
-		return m.Organization
-	}
-	return nil
-}
-
 type OrganizationResponse struct {
 	Organization         *Organization `protobuf:"bytes,1,opt,name=organization,proto3" json:"organization,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
@@ -194,7 +118,7 @@ func (m *OrganizationResponse) Reset()         { *m = OrganizationResponse{} }
 func (m *OrganizationResponse) String() string { return proto.CompactTextString(m) }
 func (*OrganizationResponse) ProtoMessage()    {}
 func (*OrganizationResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_organization_5335db9296eabdb7, []int{4}
+	return fileDescriptor_organization_b4ac988073079e62, []int{2}
 }
 func (m *OrganizationResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_OrganizationResponse.Unmarshal(m, b)
@@ -233,7 +157,7 @@ func (m *AddUserToOrganizationRequest) Reset()         { *m = AddUserToOrganizat
 func (m *AddUserToOrganizationRequest) String() string { return proto.CompactTextString(m) }
 func (*AddUserToOrganizationRequest) ProtoMessage()    {}
 func (*AddUserToOrganizationRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_organization_5335db9296eabdb7, []int{5}
+	return fileDescriptor_organization_b4ac988073079e62, []int{3}
 }
 func (m *AddUserToOrganizationRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AddUserToOrganizationRequest.Unmarshal(m, b)
@@ -279,7 +203,7 @@ func (m *RemoveUserFromOrganizationRequest) Reset()         { *m = RemoveUserFro
 func (m *RemoveUserFromOrganizationRequest) String() string { return proto.CompactTextString(m) }
 func (*RemoveUserFromOrganizationRequest) ProtoMessage()    {}
 func (*RemoveUserFromOrganizationRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_organization_5335db9296eabdb7, []int{6}
+	return fileDescriptor_organization_b4ac988073079e62, []int{4}
 }
 func (m *RemoveUserFromOrganizationRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RemoveUserFromOrganizationRequest.Unmarshal(m, b)
@@ -316,8 +240,6 @@ func (m *RemoveUserFromOrganizationRequest) GetOrganizationID() int64 {
 func init() {
 	proto.RegisterType((*Organization)(nil), "pb.Organization")
 	proto.RegisterType((*OrganizationCrudRequest)(nil), "pb.OrganizationCrudRequest")
-	proto.RegisterType((*CreateOrgRequest)(nil), "pb.CreateOrgRequest")
-	proto.RegisterType((*CreateOrgResponse)(nil), "pb.CreateOrgResponse")
 	proto.RegisterType((*OrganizationResponse)(nil), "pb.OrganizationResponse")
 	proto.RegisterType((*AddUserToOrganizationRequest)(nil), "pb.AddUserToOrganizationRequest")
 	proto.RegisterType((*RemoveUserFromOrganizationRequest)(nil), "pb.RemoveUserFromOrganizationRequest")
@@ -335,7 +257,7 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type OrganizationServiceClient interface {
-	CreateOrganization(ctx context.Context, in *CreateOrgRequest, opts ...grpc.CallOption) (*CreateOrgResponse, error)
+	CreateOrganization(ctx context.Context, in *OrganizationCrudRequest, opts ...grpc.CallOption) (*OrganizationResponse, error)
 	GetOrganization(ctx context.Context, in *OrganizationCrudRequest, opts ...grpc.CallOption) (*OrganizationResponse, error)
 	UpdateOrganization(ctx context.Context, in *OrganizationCrudRequest, opts ...grpc.CallOption) (*OrganizationResponse, error)
 	DeleteOrganization(ctx context.Context, in *OrganizationCrudRequest, opts ...grpc.CallOption) (*OrganizationResponse, error)
@@ -351,8 +273,8 @@ func NewOrganizationServiceClient(cc *grpc.ClientConn) OrganizationServiceClient
 	return &organizationServiceClient{cc}
 }
 
-func (c *organizationServiceClient) CreateOrganization(ctx context.Context, in *CreateOrgRequest, opts ...grpc.CallOption) (*CreateOrgResponse, error) {
-	out := new(CreateOrgResponse)
+func (c *organizationServiceClient) CreateOrganization(ctx context.Context, in *OrganizationCrudRequest, opts ...grpc.CallOption) (*OrganizationResponse, error) {
+	out := new(OrganizationResponse)
 	err := c.cc.Invoke(ctx, "/pb.OrganizationService/CreateOrganization", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -407,7 +329,7 @@ func (c *organizationServiceClient) RemoveUserFromOrganization(ctx context.Conte
 
 // OrganizationServiceServer is the server API for OrganizationService service.
 type OrganizationServiceServer interface {
-	CreateOrganization(context.Context, *CreateOrgRequest) (*CreateOrgResponse, error)
+	CreateOrganization(context.Context, *OrganizationCrudRequest) (*OrganizationResponse, error)
 	GetOrganization(context.Context, *OrganizationCrudRequest) (*OrganizationResponse, error)
 	UpdateOrganization(context.Context, *OrganizationCrudRequest) (*OrganizationResponse, error)
 	DeleteOrganization(context.Context, *OrganizationCrudRequest) (*OrganizationResponse, error)
@@ -420,7 +342,7 @@ func RegisterOrganizationServiceServer(s *grpc.Server, srv OrganizationServiceSe
 }
 
 func _OrganizationService_CreateOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateOrgRequest)
+	in := new(OrganizationCrudRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -432,7 +354,7 @@ func _OrganizationService_CreateOrganization_Handler(srv interface{}, ctx contex
 		FullMethod: "/pb.OrganizationService/CreateOrganization",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrganizationServiceServer).CreateOrganization(ctx, req.(*CreateOrgRequest))
+		return srv.(OrganizationServiceServer).CreateOrganization(ctx, req.(*OrganizationCrudRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -560,29 +482,27 @@ var _OrganizationService_serviceDesc = grpc.ServiceDesc{
 	Metadata: "organization.proto",
 }
 
-func init() { proto.RegisterFile("organization.proto", fileDescriptor_organization_5335db9296eabdb7) }
+func init() { proto.RegisterFile("organization.proto", fileDescriptor_organization_b4ac988073079e62) }
 
-var fileDescriptor_organization_5335db9296eabdb7 = []byte{
-	// 329 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x94, 0x41, 0x4f, 0x83, 0x40,
-	0x10, 0x85, 0x2d, 0x35, 0x4d, 0x1c, 0x9b, 0x5a, 0xc7, 0x56, 0x9b, 0xea, 0xa1, 0x92, 0x68, 0x7a,
-	0xea, 0xa1, 0xfa, 0x07, 0x0c, 0x44, 0xc5, 0x68, 0x48, 0x56, 0xb9, 0x6a, 0xa0, 0x3b, 0x69, 0x48,
-	0x84, 0xc5, 0x05, 0x7a, 0xf0, 0xb7, 0x7b, 0x30, 0xd0, 0xc6, 0x2e, 0xa8, 0x98, 0x88, 0xde, 0x60,
-	0x87, 0xf7, 0x3d, 0x78, 0xf3, 0x02, 0xa0, 0x90, 0x73, 0x37, 0xf4, 0x5f, 0xdd, 0xc4, 0x17, 0xe1,
-	0x24, 0x92, 0x22, 0x11, 0xa8, 0x45, 0x9e, 0x3e, 0x85, 0xb6, 0xad, 0x4c, 0xb0, 0x03, 0x9a, 0xcf,
-	0x07, 0x8d, 0x51, 0x63, 0xdc, 0x64, 0x9a, 0xcf, 0x11, 0x61, 0x33, 0x74, 0x03, 0x1a, 0x68, 0xa3,
-	0xc6, 0x78, 0x8b, 0xe5, 0xd7, 0xba, 0x0d, 0x07, 0xaa, 0xc6, 0x90, 0x29, 0x67, 0xf4, 0x92, 0x52,
-	0x9c, 0xe0, 0x39, 0xb4, 0x55, 0xa3, 0x1c, 0xb4, 0x3d, 0xed, 0x4e, 0x22, 0x6f, 0xa2, 0x4a, 0x58,
-	0xe1, 0x29, 0xfd, 0x1a, 0xba, 0x86, 0x24, 0x37, 0x21, 0x5b, 0xce, 0xeb, 0x91, 0x2c, 0xd8, 0x55,
-	0x48, 0x71, 0x24, 0xc2, 0x98, 0x7e, 0x89, 0xba, 0x85, 0x5e, 0x61, 0x5a, 0x8f, 0xf6, 0x08, 0x47,
-	0x17, 0x9c, 0x3b, 0x31, 0xc9, 0x07, 0x51, 0xc4, 0x2e, 0x3f, 0x77, 0x1f, 0x5a, 0x69, 0x4c, 0xd2,
-	0x32, 0x57, 0xd9, 0xaf, 0xee, 0xf0, 0x14, 0x3a, 0x2a, 0xc7, 0x32, 0xf3, 0x4d, 0x34, 0x59, 0xe9,
-	0x54, 0x9f, 0xc1, 0x31, 0xa3, 0x40, 0x2c, 0x28, 0xb3, 0xb8, 0x94, 0x22, 0xf8, 0x07, 0x93, 0xe9,
-	0x5b, 0x13, 0xf6, 0x54, 0xee, 0x3d, 0xc9, 0x85, 0x3f, 0x23, 0x34, 0x00, 0x3f, 0x52, 0x5f, 0x57,
-	0xa9, 0x97, 0x45, 0x52, 0xde, 0xeb, 0xb0, 0x5f, 0x3a, 0x5d, 0xa6, 0xaa, 0x6f, 0xe0, 0x0d, 0xec,
-	0x5c, 0x51, 0x52, 0x20, 0x1c, 0x96, 0x43, 0x55, 0xaa, 0x36, 0x1c, 0x7c, 0x4a, 0x7c, 0xcd, 0xba,
-	0x03, 0x74, 0x22, 0x5e, 0x7e, 0xa1, 0x3a, 0x38, 0x93, 0x9e, 0xe9, 0xaf, 0x70, 0x0e, 0xf4, 0xbf,
-	0xec, 0x02, 0x8e, 0x32, 0x51, 0x55, 0x4d, 0x2a, 0xb1, 0x4f, 0x30, 0xfc, 0xbe, 0x02, 0x78, 0x92,
-	0x29, 0x7f, 0xac, 0x48, 0x95, 0x81, 0xd7, 0xca, 0x7f, 0x1b, 0x67, 0xef, 0x01, 0x00, 0x00, 0xff,
-	0xff, 0x59, 0x4c, 0x49, 0x26, 0x4c, 0x04, 0x00, 0x00,
+var fileDescriptor_organization_b4ac988073079e62 = []byte{
+	// 304 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x93, 0xcd, 0x4e, 0xbb, 0x40,
+	0x14, 0xc5, 0xff, 0xd0, 0xa6, 0xc9, 0xff, 0xda, 0x54, 0x73, 0xfd, 0x22, 0xd5, 0x05, 0x92, 0x68,
+	0xba, 0x62, 0x81, 0xbe, 0x80, 0x29, 0xd1, 0xd4, 0x48, 0x9a, 0x8c, 0xb2, 0xd5, 0x40, 0xe7, 0xc6,
+	0x90, 0x08, 0x83, 0xc3, 0xd0, 0x85, 0x0f, 0xe0, 0x73, 0x1b, 0x90, 0xc5, 0x50, 0x15, 0x13, 0x83,
+	0x3b, 0x60, 0x38, 0xbf, 0x73, 0x3f, 0xce, 0x00, 0x0a, 0xf9, 0x14, 0x65, 0xc9, 0x6b, 0xa4, 0x12,
+	0x91, 0xb9, 0xb9, 0x14, 0x4a, 0xa0, 0x99, 0xc7, 0x8e, 0x07, 0xe3, 0xa5, 0x76, 0x82, 0x13, 0x30,
+	0x13, 0x6e, 0x19, 0xb6, 0x31, 0x1b, 0x30, 0x33, 0xe1, 0x88, 0x30, 0xcc, 0xa2, 0x94, 0x2c, 0xd3,
+	0x36, 0x66, 0xff, 0x59, 0xfd, 0xec, 0x2c, 0xe1, 0x50, 0xd7, 0xcc, 0x65, 0xc9, 0x19, 0xbd, 0x94,
+	0x54, 0x28, 0xbc, 0x80, 0xb1, 0x6e, 0x54, 0x83, 0xb6, 0xbc, 0x1d, 0x37, 0x8f, 0x5d, 0x5d, 0xc2,
+	0x5a, 0x7f, 0x39, 0xb7, 0xb0, 0xd7, 0x3a, 0xa5, 0x22, 0x17, 0x59, 0x41, 0xbf, 0xa4, 0x3d, 0xc0,
+	0xf1, 0x25, 0xe7, 0x61, 0x41, 0xf2, 0x5e, 0xb4, 0xb1, 0x1f, 0x35, 0x1e, 0xc0, 0xa8, 0x2c, 0x48,
+	0x2e, 0xfc, 0xa6, 0xcd, 0xe6, 0x0d, 0xcf, 0x60, 0xa2, 0x73, 0x16, 0x7e, 0xdd, 0xf4, 0x80, 0x6d,
+	0x7c, 0x75, 0x56, 0x70, 0xc2, 0x28, 0x15, 0x6b, 0xaa, 0x2c, 0xae, 0xa4, 0x48, 0xff, 0xc0, 0xc4,
+	0x7b, 0x1b, 0xc2, 0xae, 0xce, 0xbd, 0x23, 0xb9, 0x4e, 0x56, 0x84, 0x01, 0xe0, 0x5c, 0x52, 0xa4,
+	0xa8, 0xb5, 0xb5, 0xa3, 0xcd, 0x91, 0x68, 0x3b, 0x99, 0x5a, 0x9f, 0xe6, 0xd5, 0xcc, 0xd7, 0xf9,
+	0x87, 0x37, 0xb0, 0x7d, 0x4d, 0xaa, 0x1f, 0x56, 0x00, 0x18, 0xe6, 0xbc, 0xb7, 0xd2, 0x02, 0x40,
+	0x9f, 0x9e, 0xa9, 0x2f, 0x5c, 0x08, 0xfb, 0x5f, 0xa6, 0x02, 0xed, 0x4a, 0xd4, 0x15, 0x98, 0x4e,
+	0xec, 0x23, 0x4c, 0xbf, 0x0f, 0x03, 0x9e, 0x56, 0xca, 0x1f, 0xc3, 0xd2, 0x65, 0x10, 0x8f, 0xea,
+	0xbb, 0x7a, 0xfe, 0x1e, 0x00, 0x00, 0xff, 0xff, 0x22, 0x8a, 0x71, 0xb9, 0xc1, 0x03, 0x00, 0x00,
 }

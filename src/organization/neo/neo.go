@@ -1,8 +1,6 @@
 package neo
 
 import (
-	"net/http"
-
 	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/organization"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
