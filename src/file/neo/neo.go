@@ -1,7 +1,9 @@
 package neo
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -19,7 +21,11 @@ func NewService(driverInfo neo.DriverInfo) *Service {
 	return &Service{DriverInfo: driverInfo}
 }
 
-func (s *Service) GetFile(fileID uuid.UUID) (*file.File, *service.Error) {
+func (s *Service) CreateFile(context context.Context, fileID uuid.UUID) (*file.File, *service.Error) {
+	return nil, service.Unimplemented()
+}
+
+func (s *Service) GetFile(context context.Context, fileID uuid.UUID) (*file.File, *service.Error) {
 	driver := neo.GetDriver(s.DriverInfo)
 	defer driver.Close()
 
@@ -28,8 +34,15 @@ func (s *Service) GetFile(fileID uuid.UUID) (*file.File, *service.Error) {
 
 	resource, err := GetFileByID(session, fileID)
 
+	userID, err := service.GetUserID(context)
 	if err != nil {
-		return nil, service.NewError(http.StatusInternalServerError, err.Error(), err)
+		return nil, service.NewError(http.StatusUnauthorized, err.Error(), err)
+	}
+
+	log.Printf("Got USER ID %d\n", userID)
+
+	if err != nil {
+		return nil, service.Internal(err)
 	}
 
 	if resource == nil {
@@ -39,6 +52,14 @@ func (s *Service) GetFile(fileID uuid.UUID) (*file.File, *service.Error) {
 	// TODO verify user can read file
 
 	return resource, nil
+}
+
+func (s *Service) UpdateFile(context context.Context, fileID uuid.UUID) (*file.File, *service.Error) {
+	return nil, service.Unimplemented()
+}
+
+func (s *Service) DeleteFile(context context.Context, fileID uuid.UUID) (*file.File, *service.Error) {
+	return nil, service.Unimplemented()
 }
 
 func GetFileByID(session neo4j.Session, fileID uuid.UUID) (*file.File, error) {

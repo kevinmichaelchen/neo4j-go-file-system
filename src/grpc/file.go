@@ -4,7 +4,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/pb"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
 	"golang.org/x/net/context"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func CreateFile(fileService file.Service, ctx context.Context, in *pb.CreateFileRequest) (*pb.CreateFileResponse, error) {
@@ -14,10 +17,11 @@ func CreateFile(fileService file.Service, ctx context.Context, in *pb.CreateFile
 func GetFile(fileService file.Service, ctx context.Context, in *pb.GetFileRequest) (*pb.GetFileResponse, error) {
 	fileID, err := uuid.Parse(in.FileID)
 	if err != nil {
-		return nil, err
+		return nil, status.Error(codes.InvalidArgument, "invalid file ID")
 	}
-	// TODO pass in in.UserID and perform security/authorization
-	f, svcErr := fileService.GetFile(fileID)
+	// TODO fetch userID from the context
+	userID := 11
+	f, svcErr := fileService.GetFile(service.CreateUserContext(userID), fileID)
 	if svcErr != nil {
 		return nil, svcErr.Error
 	}

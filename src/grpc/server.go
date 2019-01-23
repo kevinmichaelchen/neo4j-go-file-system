@@ -17,6 +17,7 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
+// TODO use error codes https://github.com/grpc/grpc-go/blob/master/Documentation/rpc-errors.md
 type Server struct {
 	Port                int
 	UserService         user.Service

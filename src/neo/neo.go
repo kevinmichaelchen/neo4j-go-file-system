@@ -120,7 +120,7 @@ func RollbackIfError(tx neo4j.Transaction, originalError error) *service.Error {
 		if err != nil {
 			return service.NewError(http.StatusInternalServerError, fmt.Sprintf("Could not rollback transaction: %s", err.Error()), err)
 		}
-		return service.NewError(http.StatusInternalServerError, originalError.Error(), originalError)
+		return service.Internal(originalError)
 	}
 	return nil
 }
