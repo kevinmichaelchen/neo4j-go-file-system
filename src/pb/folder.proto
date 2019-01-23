@@ -9,53 +9,37 @@ message Folder {
     string parentID = 4;
 }
 
-message CreateFolderRequest {
-    string userID = 1;
-    string revisionID = 2;
-    string name = 3;
-    // If null, then folder assumed to be at root.
-    string parentID = 4;
+message FolderResponse {
+    Folder folder = 1;
 }
 
-// TODO handle name collisions
-message CreateFolderResponse {
-    Folder folder = 1;
+message CreateFolderRequest {
+    int64 userID = 1;
+    string revisionID = 2;
+    string name = 3;
+    string parentID = 4;
 }
 
 message GetFolderRequest {
-    string userID = 1;
+    int64 userID = 1;
     string folderID = 2;
-}
-
-message GetFolderResponse {
-    Folder folder = 1;
-}
-
-message DeleteFolderRequest {
-    string userID = 1;
-    string folderID = 2;
-}
-
-message DeleteFolderResponse {
-    Folder folder = 1;
 }
 
 message UpdateFolderRequest {
-    string userID = 1;
+    int64 userID = 1;
     string folderID = 2;
-    // The name of the folder (optionally used for renames)
     string name = 3;
-    // The ID of the parent folder (optionally used for moves)
     string parentID = 4;
 }
 
-message UpdateFolderResponse {
-    Folder folder = 1;
+message DeleteFolderRequest {
+    int64 userID = 1;
+    string folderID = 2;
 }
 
 service FolderService {
-    rpc CreateFolder (CreateFolderRequest) returns (CreateFolderResponse) {}
-    rpc GetFolder (GetFolderRequest) returns (GetFolderResponse) {}
-    rpc DeleteFolder (DeleteFolderRequest) returns (DeleteFolderResponse) {}
-    rpc UpdateFolder (UpdateFolderRequest) returns (UpdateFolderResponse) {}
+    rpc CreateFolder (CreateFolderRequest) returns (FolderResponse) {}
+    rpc GetFolder (GetFolderRequest) returns (FolderResponse) {}
+    rpc UpdateFolder (UpdateFolderRequest) returns (FolderResponse) {}
+    rpc DeleteFolder (DeleteFolderRequest) returns (FolderResponse) {}
 }

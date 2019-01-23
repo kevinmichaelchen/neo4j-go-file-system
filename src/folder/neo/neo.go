@@ -2,6 +2,7 @@ package neo
 
 import (
 	"context"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
@@ -18,19 +19,51 @@ func NewService(driverInfo neo.DriverInfo) *Service {
 	return &Service{DriverInfo: driverInfo}
 }
 
-func (s *Service) CreateFolder(ctx context.Context, folder folder.Folder) (*folder.Folder, *service.Error) {
+func (s *Service) CreateFolder(ctx context.Context, folder folder.FolderInput) (*folder.Folder, *service.Error) {
+	if folder.ParentID != nil {
+		_, err := uuid.Parse(*folder.ParentID)
+		if err != nil {
+			return nil, service.InvalidArgument("invalid folder ID")
+		}
+	}
+
 	return nil, service.Unimplemented()
 }
 
-func (s *Service) GetFolder(ctx context.Context, folder folder.Folder) (*folder.Folder, *service.Error) {
+func (s *Service) GetFolder(ctx context.Context, folder folder.FolderInput) (*folder.Folder, *service.Error) {
+	_, err := uuid.Parse(folder.ResourceID)
+	if err != nil {
+		return nil, service.InvalidArgument("invalid folder ID")
+	}
+
 	return nil, service.Unimplemented()
 }
 
-func (s *Service) UpdateFolder(ctx context.Context, folder folder.Folder) (*folder.Folder, *service.Error) {
+func (s *Service) UpdateFolder(ctx context.Context, in folder.FolderInput) (*folder.Folder, *service.Error) {
+	if strings.TrimSpace(in.ResourceID) == "" {
+		return nil, service.InvalidArgument("must provide folder ID")
+	}
+
+	_, err := uuid.Parse(in.ResourceID)
+	if err != nil {
+		return nil, service.InvalidArgument("invalid folder ID")
+	}
+
+	if in.ParentID != nil {
+		_, err := uuid.Parse(*in.ParentID)
+		if err != nil {
+			return nil, service.InvalidArgument("invalid parent ID")
+		}
+	}
+
 	return nil, service.Unimplemented()
 }
 
-func (s *Service) DeleteFolder(ctx context.Context, folder folder.Folder) (*folder.Folder, *service.Error) {
+func (s *Service) DeleteFolder(ctx context.Context, folder folder.FolderInput) (*folder.Folder, *service.Error) {
+	_, err := uuid.Parse(folder.ResourceID)
+	if err != nil {
+		return nil, service.InvalidArgument("invalid folder ID")
+	}
 	return nil, service.Unimplemented()
 }
 

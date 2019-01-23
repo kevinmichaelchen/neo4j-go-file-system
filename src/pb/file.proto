@@ -10,7 +10,7 @@ message File {
 }
 
 message CreateFileRequest {
-    string userID = 1;
+    int64 userID = 1;
     string revisionID = 2;
     string name = 3;
     // If null, then file assumed to be at root.
@@ -23,7 +23,7 @@ message CreateFileResponse {
 }
 
 message GetFileRequest {
-    string userID = 1;
+    int64 userID = 1;
     string fileID = 2;
 }
 
@@ -32,7 +32,7 @@ message GetFileResponse {
 }
 
 message DeleteFileRequest {
-    string userID = 1;
+    int64 userID = 1;
     string fileID = 2;
 }
 
@@ -41,7 +41,7 @@ message DeleteFileResponse {
 }
 
 message UpdateFileRequest {
-    string userID = 1;
+    int64 userID = 1;
     string fileID = 2;
     // The name of the file (optionally used for renames)
     string name = 3;

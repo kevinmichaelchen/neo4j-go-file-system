@@ -21,12 +21,7 @@ func GetUserID(ctx context.Context) (int, *Error) {
 	}
 	userID, ok := userIDPayload.(int)
 	if !ok {
-		return 0, &Error{
-			HttpCode:     http.StatusBadRequest,
-			GrpcCode:     codes.InvalidArgument,
-			ErrorMessage: "User ID is invalid. Should be an int.",
-			Error:        nil,
-		}
+		return 0, InvalidArgument("User ID is invalid. Should be an int.")
 	}
 	return userID, nil
 }
@@ -42,10 +37,19 @@ type Error struct {
 	Error        error
 }
 
-func NewError(httpCode int, errorMessage string, err error) *Error {
+func InvalidArgument(msg string) *Error {
+	return &Error{
+		HttpCode:     http.StatusBadRequest,
+		GrpcCode:     codes.InvalidArgument,
+		ErrorMessage: msg,
+		Error:        nil,
+	}
+}
+
+func NewError(httpCode int, msg string, err error) *Error {
 	return &Error{
 		HttpCode:     httpCode,
-		ErrorMessage: errorMessage,
+		ErrorMessage: msg,
 		Error:        err,
 	}
 }
