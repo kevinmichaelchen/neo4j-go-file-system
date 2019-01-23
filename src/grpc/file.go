@@ -21,7 +21,7 @@ func GetFile(fileService file.Service, ctx context.Context, in *pb.GetFileReques
 	}
 	// TODO fetch userID from the context
 	userID := 11
-	f, svcErr := fileService.GetFile(service.CreateUserContext(userID), fileID)
+	f, svcErr := fileService.GetFile(service.CreateUserContext(userID), file.File{ResourceID: fileID})
 	if svcErr != nil {
 		return nil, svcErr.Error
 	}

@@ -2,8 +2,9 @@ package service
 
 import (
 	"context"
-	"google.golang.org/grpc/codes"
 	"net/http"
+
+	"google.golang.org/grpc/codes"
 )
 
 const UserIDContextKey = "userID"

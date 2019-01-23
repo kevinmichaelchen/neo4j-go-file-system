@@ -1,7 +1,10 @@
 package folder
 
 import (
+	"context"
+
 	"github.com/google/uuid"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
 )
 
 type Folder struct {
@@ -15,4 +18,8 @@ type Controller struct {
 }
 
 type Service interface {
+	CreateFolder(ctx context.Context, folder Folder) (*Folder, *service.Error)
+	GetFolder(ctx context.Context, folder Folder) (*Folder, *service.Error)
+	UpdateFolder(ctx context.Context, folder Folder) (*Folder, *service.Error)
+	DeleteFolder(ctx context.Context, folder Folder) (*Folder, *service.Error)
 }

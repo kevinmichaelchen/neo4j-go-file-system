@@ -1,9 +1,12 @@
 package neo
 
 import (
+	"context"
+
 	"github.com/google/uuid"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/neo"
+	"github.com/kevinmichaelchen/neo4j-go-file-system/service"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 )
 
@@ -13,6 +16,22 @@ type Service struct {
 
 func NewService(driverInfo neo.DriverInfo) *Service {
 	return &Service{DriverInfo: driverInfo}
+}
+
+func (s *Service) CreateFolder(ctx context.Context, folder folder.Folder) (*folder.Folder, *service.Error) {
+	return nil, service.Unimplemented()
+}
+
+func (s *Service) GetFolder(ctx context.Context, folder folder.Folder) (*folder.Folder, *service.Error) {
+	return nil, service.Unimplemented()
+}
+
+func (s *Service) UpdateFolder(ctx context.Context, folder folder.Folder) (*folder.Folder, *service.Error) {
+	return nil, service.Unimplemented()
+}
+
+func (s *Service) DeleteFolder(ctx context.Context, folder folder.Folder) (*folder.Folder, *service.Error) {
+	return nil, service.Unimplemented()
 }
 
 func GetFolderByID(session neo4j.Session, folderID uuid.UUID) (*folder.Folder, error) {

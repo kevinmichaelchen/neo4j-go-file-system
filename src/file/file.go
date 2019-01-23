@@ -24,7 +24,7 @@ type Controller struct {
 
 type Service interface {
 	CreateFile(ctx context.Context, file File) (*File, *service.Error)
-	GetFile(ctx context.Context, fileID uuid.UUID) (*File, *service.Error)
+	GetFile(ctx context.Context, file File) (*File, *service.Error)
 	UpdateFile(ctx context.Context, file File) (*File, *service.Error)
 	DeleteFile(ctx context.Context, file File) (*File, *service.Error)
 }
@@ -38,7 +38,7 @@ func (c *Controller) GetFileRequestHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	response, serviceError := c.Service.GetFile(service.CreateUserContext(11), fileID)
+	response, serviceError := c.Service.GetFile(service.CreateUserContext(11), File{ResourceID: fileID})
 	if serviceError != nil {
 		log.Println(serviceError.Error.Error())
 		requestUtils.RespondWithError(w, serviceError.HttpCode, serviceError.ErrorMessage)
