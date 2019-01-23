@@ -1,6 +1,7 @@
 package file
 
 import (
+	"context"
 	"log"
 	"net/http"
 
@@ -22,19 +23,22 @@ type Controller struct {
 }
 
 type Service interface {
-	GetFile(fileID uuid.UUID) (*File, *service.Error)
+	CreateFile(ctx context.Context, file File) (*File, *service.Error)
+	GetFile(ctx context.Context, file File) (*File, *service.Error)
+	UpdateFile(ctx context.Context, file File) (*File, *service.Error)
+	DeleteFile(ctx context.Context, file File) (*File, *service.Error)
 }
 
 func (c *Controller) GetFileRequestHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	idString := vars["id"]
-	id, err := uuid.Parse(idString)
+	fileIDString := vars["id"]
+	fileID, err := uuid.Parse(fileIDString)
 	if err != nil {
 		requestUtils.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	response, serviceError := c.Service.GetFile(id)
+	response, serviceError := c.Service.GetFile(service.CreateUserContext(11), File{ResourceID: fileID})
 	if serviceError != nil {
 		log.Println(serviceError.Error.Error())
 		requestUtils.RespondWithError(w, serviceError.HttpCode, serviceError.ErrorMessage)

@@ -28,7 +28,7 @@ func (s *Service) CreateUser(resource user.User) (*user.User, *service.Error) {
 	// TODO validate user resource
 	exists, err := userExists(session, resource)
 	if err != nil {
-		return nil, service.NewError(http.StatusInternalServerError, err.Error(), err)
+		return nil, service.Internal(err)
 	}
 	if exists {
 		return nil, service.NewError(http.StatusBadRequest, "User already exists with that email", nil)
@@ -37,7 +37,7 @@ func (s *Service) CreateUser(resource user.User) (*user.User, *service.Error) {
 	err = createUser(session, resource)
 
 	if err != nil {
-		return nil, service.NewError(http.StatusInternalServerError, err.Error(), err)
+		return nil, service.Internal(err)
 	}
 
 	return &resource, nil

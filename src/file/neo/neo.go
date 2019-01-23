@@ -1,7 +1,9 @@
 package neo
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -19,26 +21,45 @@ func NewService(driverInfo neo.DriverInfo) *Service {
 	return &Service{DriverInfo: driverInfo}
 }
 
-func (s *Service) GetFile(fileID uuid.UUID) (*file.File, *service.Error) {
+func (s *Service) CreateFile(context context.Context, in file.File) (*file.File, *service.Error) {
+	return nil, service.Unimplemented()
+}
+
+func (s *Service) GetFile(context context.Context, in file.File) (*file.File, *service.Error) {
 	driver := neo.GetDriver(s.DriverInfo)
 	defer driver.Close()
 
 	session := neo.GetSession(driver)
 	defer session.Close()
 
-	resource, err := GetFileByID(session, fileID)
+	resource, err := GetFileByID(session, in.ResourceID)
+
+	userID, svcErr := service.GetUserID(context)
+	if err != nil {
+		return nil, svcErr
+	}
+
+	log.Printf("Got USER ID %d\n", userID)
 
 	if err != nil {
-		return nil, service.NewError(http.StatusInternalServerError, err.Error(), err)
+		return nil, service.Internal(err)
 	}
 
 	if resource == nil {
-		return nil, service.NewError(http.StatusNotFound, fmt.Sprintf("No file found for ID: %s", fileID.String()), nil)
+		return nil, service.NewError(http.StatusNotFound, fmt.Sprintf("No file found for ID: %s", in.ResourceID.String()), nil)
 	}
 
 	// TODO verify user can read file
 
 	return resource, nil
+}
+
+func (s *Service) UpdateFile(context context.Context, in file.File) (*file.File, *service.Error) {
+	return nil, service.Unimplemented()
+}
+
+func (s *Service) DeleteFile(context context.Context, in file.File) (*file.File, *service.Error) {
+	return nil, service.Unimplemented()
 }
 
 func GetFileByID(session neo4j.Session, fileID uuid.UUID) (*file.File, error) {

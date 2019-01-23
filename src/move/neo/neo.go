@@ -28,7 +28,7 @@ func (s *Service) Move(resource move.MoveOperation) (*move.MoveOperation, *servi
 
 	source, err := fileNeo.GetFileByID(session, resource.SourceID)
 	if err != nil {
-		return nil, service.NewError(http.StatusInternalServerError, err.Error(), err)
+		return nil, service.Internal(err)
 	}
 	if source == nil {
 		return nil, service.NewError(http.StatusNotFound, fmt.Sprintf("No file found for: %s", resource.SourceID.String()), nil)
@@ -37,7 +37,7 @@ func (s *Service) Move(resource move.MoveOperation) (*move.MoveOperation, *servi
 
 	dest, err := folderNeo.GetFolderByID(session, resource.DestinationID)
 	if err != nil {
-		return nil, service.NewError(http.StatusInternalServerError, err.Error(), err)
+		return nil, service.Internal(err)
 	}
 	if dest == nil {
 		return nil, service.NewError(http.StatusNotFound, fmt.Sprintf("No folder found for: %s", resource.DestinationID.String()), nil)
@@ -80,7 +80,7 @@ func (s *Service) Move(resource move.MoveOperation) (*move.MoveOperation, *servi
 
 	err = tx.Commit()
 	if err != nil {
-		return nil, service.NewError(http.StatusInternalServerError, err.Error(), err)
+		return nil, service.Internal(err)
 	}
 
 	return &resource, nil

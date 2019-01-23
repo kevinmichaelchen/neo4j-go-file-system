@@ -32,7 +32,7 @@ func (s *Service) CreateOrganization(resource organization.Organization) (*organ
 
 	exists, err := organizationExists(session, resource)
 	if err != nil {
-		return nil, service.NewError(http.StatusInternalServerError, err.Error(), err)
+		return nil, service.Internal(err)
 	}
 	if exists {
 		return nil, service.NewError(http.StatusBadRequest, "Org already exists with that name", nil)
@@ -41,7 +41,7 @@ func (s *Service) CreateOrganization(resource organization.Organization) (*organ
 	err = createOrganization(session, resource)
 
 	if err != nil {
-		return nil, service.NewError(http.StatusInternalServerError, err.Error(), err)
+		return nil, service.Internal(err)
 	}
 
 	return &resource, nil
