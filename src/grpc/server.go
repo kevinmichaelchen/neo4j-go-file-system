@@ -5,8 +5,6 @@ import (
 	"log"
 	"net"
 
-	"github.com/google/uuid"
-
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/move"
@@ -29,60 +27,35 @@ type Server struct {
 }
 
 func (s *Server) CreateUser(ctx context.Context, in *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
-	u, svcError := s.UserService.CreateUser(user.User{
-		EmailAddress: in.User.EmailAddress,
-		FullName:     in.User.FullName,
-	})
-	if svcError.Error != nil {
-		return nil, svcError.Error
-	}
-	return &pb.CreateUserResponse{User: &pb.User{
-		UserID:       u.ResourceID,
-		EmailAddress: u.EmailAddress,
-		FullName:     u.FullName,
-	}}, nil
+	return CreateUser(s.UserService, ctx, in)
 }
 
 func (s *Server) GetUser(ctx context.Context, in *pb.GetUserRequest) (*pb.GetUserResponse, error) {
-	return nil, nil
+	return GetUser(s.UserService, ctx, in)
 }
 
 func (s *Server) UpdateUser(ctx context.Context, in *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
-	return nil, nil
+	return UpdateUser(s.UserService, ctx, in)
 }
 
 func (s *Server) DeleteUser(ctx context.Context, in *pb.DeleteUserRequest) (*pb.DeleteUserResponse, error) {
-	return nil, nil
+	return DeleteUser(s.UserService, ctx, in)
 }
 
 func (s *Server) CreateFile(ctx context.Context, in *pb.CreateFileRequest) (*pb.CreateFileResponse, error) {
-	return nil, nil
+	return CreateFile(s.FileService, ctx, in)
 }
 
 func (s *Server) GetFile(ctx context.Context, in *pb.GetFileRequest) (*pb.GetFileResponse, error) {
-	fileID, err := uuid.Parse(in.FileID)
-	if err != nil {
-		return nil, err
-	}
-	// TODO pass in in.UserID and perform security/authorization
-	f, svcErr := s.FileService.GetFile(fileID)
-	if svcErr != nil {
-		return nil, svcErr.Error
-	}
-	return &pb.GetFileResponse{File: &pb.File{
-		FileID:   f.ResourceID.String(),
-		ParentID: f.ParentID.String(),
-		Name:     f.Name,
-		// TODO revisionID
-	}}, nil
+	return GetFile(s.FileService, ctx, in)
 }
 
 func (s *Server) UpdateFile(ctx context.Context, in *pb.UpdateFileRequest) (*pb.UpdateFileResponse, error) {
-	return nil, nil
+	return UpdateFile(s.FileService, ctx, in)
 }
 
 func (s *Server) DeleteFile(ctx context.Context, in *pb.DeleteFileRequest) (*pb.DeleteFileResponse, error) {
-	return nil, nil
+	return DeleteFile(s.FileService, ctx, in)
 }
 
 func (s *Server) Run() {
