@@ -53,19 +53,19 @@ func (s *Server) RemoveUserFromOrganization(ctx context.Context, in *pb.RemoveUs
 	return RemoveUserFromOrganization(s.OrganizationService, ctx, in)
 }
 
-func (s *Server) CreateUser(ctx context.Context, in *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
+func (s *Server) CreateUser(ctx context.Context, in *pb.UserRequest) (*pb.UserResponse, error) {
 	return CreateUser(s.UserService, ctx, in)
 }
 
-func (s *Server) GetUser(ctx context.Context, in *pb.GetUserRequest) (*pb.GetUserResponse, error) {
+func (s *Server) GetUser(ctx context.Context, in *pb.UserRequest) (*pb.UserResponse, error) {
 	return GetUser(s.UserService, ctx, in)
 }
 
-func (s *Server) UpdateUser(ctx context.Context, in *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
+func (s *Server) UpdateUser(ctx context.Context, in *pb.UserRequest) (*pb.UserResponse, error) {
 	return UpdateUser(s.UserService, ctx, in)
 }
 
-func (s *Server) DeleteUser(ctx context.Context, in *pb.DeleteUserRequest) (*pb.DeleteUserResponse, error) {
+func (s *Server) DeleteUser(ctx context.Context, in *pb.UserRequest) (*pb.UserResponse, error) {
 	return DeleteUser(s.UserService, ctx, in)
 }
 

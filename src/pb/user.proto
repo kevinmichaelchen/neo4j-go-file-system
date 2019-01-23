@@ -3,46 +3,22 @@ syntax = "proto3";
 package pb;
 
 message User {
-    int64 userID = 1;
+    int64 id = 1;
     string emailAddress = 2;
     string fullName = 3;
 }
 
-message CreateUserRequest {
+message UserRequest {
     User user = 1;
 }
 
-message CreateUserResponse {
-    User user = 1;
-}
-
-message GetUserRequest {
-    int64 userID = 1;
-}
-
-message GetUserResponse {
-    User user = 1;
-}
-
-message UpdateUserRequest {
-    User user = 1;
-}
-
-message UpdateUserResponse {
-    User user = 1;
-}
-
-message DeleteUserRequest {
-    int64 userID = 1;
-}
-
-message DeleteUserResponse {
+message UserResponse {
     User user = 1;
 }
 
 service UserService {
-    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {}
-    rpc GetUser (GetUserRequest) returns (GetUserResponse) {}
-    rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse) {}
-    rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse) {}
+    rpc CreateUser (UserRequest) returns (UserResponse) {}
+    rpc GetUser (UserRequest) returns (UserResponse) {}
+    rpc UpdateUser (UserRequest) returns (UserResponse) {}
+    rpc DeleteUser (UserRequest) returns (UserResponse) {}
 }
