@@ -74,7 +74,7 @@ grpcurl -v -plaintext -d '{"userID": "4", "fileID": "7a1ced19-5396-4c44-bc30-495
 
 ### Organizations
 ```bash
-grpcurl -v -plaintext -d '{"organization": {"organizationID": 2, "name": "My Custom Org"}}' localhost:50051 pb.OrganizationService/CreateOrganization
+grpcurl -v -plaintext -d '{"organization": {"id": 2, "name": "My Custom Org"}}' localhost:50051 pb.OrganizationService/CreateOrganization
 ```
 
 ## Reading
