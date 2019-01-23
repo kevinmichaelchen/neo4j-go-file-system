@@ -34,9 +34,9 @@ func (s *Service) GetFile(context context.Context, fileID uuid.UUID) (*file.File
 
 	resource, err := GetFileByID(session, fileID)
 
-	userID, err := service.GetUserID(context)
+	userID, svcErr := service.GetUserID(context)
 	if err != nil {
-		return nil, service.NewError(http.StatusUnauthorized, err.Error(), err)
+		return nil, svcErr
 	}
 
 	log.Printf("Got USER ID %d\n", userID)

@@ -2,17 +2,30 @@ package service
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/grpc/codes"
 	"net/http"
 )
 
 const UserIDContextKey = "userID"
 
-func GetUserID(ctx context.Context) (int, error) {
-	userID, ok := ctx.Value(UserIDContextKey).(int)
+func GetUserID(ctx context.Context) (int, *Error) {
+	userIDPayload := ctx.Value(UserIDContextKey)
+	if userIDPayload == nil {
+		return 0, &Error{
+			HttpCode:     http.StatusUnauthorized,
+			GrpcCode:     codes.Unauthenticated,
+			ErrorMessage: "User ID not found",
+			Error:        nil,
+		}
+	}
+	userID, ok := userIDPayload.(int)
 	if !ok {
-		return 0, errors.New("userID not found")
+		return 0, &Error{
+			HttpCode:     http.StatusBadRequest,
+			GrpcCode:     codes.InvalidArgument,
+			ErrorMessage: "User ID is invalid. Should be an int.",
+			Error:        nil,
+		}
 	}
 	return userID, nil
 }
@@ -38,18 +51,18 @@ func NewError(httpCode int, errorMessage string, err error) *Error {
 
 func Internal(err error) *Error {
 	return &Error{
-		HttpCode: http.StatusInternalServerError,
-		GrpcCode: codes.Internal,
+		HttpCode:     http.StatusInternalServerError,
+		GrpcCode:     codes.Internal,
 		ErrorMessage: err.Error(),
-		Error: err,
+		Error:        err,
 	}
 }
 
 func Unimplemented() *Error {
 	return &Error{
-		HttpCode: http.StatusNotImplemented,
-		GrpcCode: codes.Unimplemented,
+		HttpCode:     http.StatusNotImplemented,
+		GrpcCode:     codes.Unimplemented,
 		ErrorMessage: "Unimplemented",
-		Error: nil,
+		Error:        nil,
 	}
 }
