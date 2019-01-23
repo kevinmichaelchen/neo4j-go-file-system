@@ -23,7 +23,7 @@ func GetFile(fileService file.Service, ctx context.Context, in *pb.GetFileReques
 	userID := 11
 	f, svcErr := fileService.GetFile(service.CreateUserContext(userID), file.File{ResourceID: fileID})
 	if svcErr != nil {
-		return nil, svcErr.Error
+		return nil, status.Error(svcErr.GrpcCode, svcErr.ErrorMessage)
 	}
 	return &pb.GetFileResponse{File: &pb.File{
 		FileID:   f.ResourceID.String(),
