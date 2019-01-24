@@ -10,10 +10,12 @@ services:
       - NEO_USERNAME=neo4j
       - NEO_PASSWORD=${NEO_PASSWORD}
       - APP_PORT=8080
-      - GRPC_PORT=50051
+      - INTERNAL_GRPC_PORT=50051
+      - EXTERNAL_GRPC_PORT=50052
     ports:
       - "8080:8080"
       - "50051:50051"
+      - "50052:50052"
 
   neo4j:
     image: neo4j:latest

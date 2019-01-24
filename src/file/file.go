@@ -13,9 +13,9 @@ import (
 )
 
 type FileInput struct {
-	ResourceID string    `json:"resourceID"`
-	ParentID   string    `json:"parentID"`
-	Name       string    `json:"name"`
+	ResourceID string `json:"resourceID"`
+	ParentID   string `json:"parentID"`
+	Name       string `json:"name"`
 }
 
 type File struct {

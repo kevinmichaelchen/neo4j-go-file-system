@@ -1,4 +1,4 @@
-package grpc
+package external
 
 import (
 	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"

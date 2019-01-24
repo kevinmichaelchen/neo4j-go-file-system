@@ -1,4 +1,4 @@
-package grpc
+package public
 
 import (
 	"github.com/kevinmichaelchen/neo4j-go-file-system/pb"

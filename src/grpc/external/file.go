@@ -1,4 +1,4 @@
-package grpc
+package external
 
 import (
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
@@ -33,8 +33,8 @@ func UpdateFile(fileService file.Service, ctx context.Context, in *pb.UpdateFile
 	userID := getUserID(ctx)
 	f, svcErr := fileService.UpdateFile(service.CreateUserContext(userID), file.FileInput{
 		ResourceID: in.FileID,
-		ParentID: in.ParentID,
-		Name:     in.Name,
+		ParentID:   in.ParentID,
+		Name:       in.Name,
 	})
 	if svcErr != nil {
 		return nil, status.Error(svcErr.GrpcCode, svcErr.ErrorMessage)
