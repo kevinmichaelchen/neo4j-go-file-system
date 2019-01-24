@@ -67,19 +67,19 @@ func (s *Server) DeleteUser(ctx context.Context, in *pb.UserRequest) (*pb.UserRe
 	return DeleteUser(s.UserService, ctx, in)
 }
 
-func (s *Server) CreateFile(ctx context.Context, in *pb.CreateFileRequest) (*pb.CreateFileResponse, error) {
+func (s *Server) CreateFile(ctx context.Context, in *pb.CreateFileRequest) (*pb.FileResponse, error) {
 	return CreateFile(s.FileService, ctx, in)
 }
 
-func (s *Server) GetFile(ctx context.Context, in *pb.GetFileRequest) (*pb.GetFileResponse, error) {
+func (s *Server) GetFile(ctx context.Context, in *pb.GetFileRequest) (*pb.FileResponse, error) {
 	return GetFile(s.FileService, ctx, in)
 }
 
-func (s *Server) UpdateFile(ctx context.Context, in *pb.UpdateFileRequest) (*pb.UpdateFileResponse, error) {
+func (s *Server) UpdateFile(ctx context.Context, in *pb.UpdateFileRequest) (*pb.FileResponse, error) {
 	return UpdateFile(s.FileService, ctx, in)
 }
 
-func (s *Server) DeleteFile(ctx context.Context, in *pb.DeleteFileRequest) (*pb.DeleteFileResponse, error) {
+func (s *Server) DeleteFile(ctx context.Context, in *pb.DeleteFileRequest) (*pb.FileResponse, error) {
 	return DeleteFile(s.FileService, ctx, in)
 }
 

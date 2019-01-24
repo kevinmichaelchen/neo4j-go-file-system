@@ -3,7 +3,7 @@ syntax = "proto3";
 package pb;
 
 message File {
-    string fileID = 1;
+    string id = 1;
     string revisionID = 2;
     string name = 3;
     string parentID = 4;
@@ -17,27 +17,13 @@ message CreateFileRequest {
     string parentID = 4;
 }
 
-// TODO handle name collisions
-message CreateFileResponse {
+message FileResponse {
     File file = 1;
 }
 
 message GetFileRequest {
     int64 userID = 1;
     string fileID = 2;
-}
-
-message GetFileResponse {
-    File file = 1;
-}
-
-message DeleteFileRequest {
-    int64 userID = 1;
-    string fileID = 2;
-}
-
-message DeleteFileResponse {
-    File file = 1;
 }
 
 message UpdateFileRequest {
@@ -49,13 +35,14 @@ message UpdateFileRequest {
     string parentID = 4;
 }
 
-message UpdateFileResponse {
-    File file = 1;
+message DeleteFileRequest {
+    int64 userID = 1;
+    string fileID = 2;
 }
 
 service FileService {
-    rpc CreateFile (CreateFileRequest) returns (CreateFileResponse) {}
-    rpc GetFile (GetFileRequest) returns (GetFileResponse) {}
-    rpc DeleteFile (DeleteFileRequest) returns (DeleteFileResponse) {}
-    rpc UpdateFile (UpdateFileRequest) returns (UpdateFileResponse) {}
+    rpc CreateFile (CreateFileRequest) returns (FileResponse) {}
+    rpc GetFile (GetFileRequest) returns (FileResponse) {}
+    rpc UpdateFile (UpdateFileRequest) returns (FileResponse) {}
+    rpc DeleteFile (DeleteFileRequest) returns (FileResponse) {}
 }

@@ -20,18 +20,23 @@ func NewService(driverInfo neo.DriverInfo) *Service {
 	return &Service{DriverInfo: driverInfo}
 }
 
-func (s *Service) CreateFile(context context.Context, in file.File) (*file.File, *service.Error) {
+func (s *Service) CreateFile(context context.Context, in file.FileInput) (*file.File, *service.Error) {
 	return nil, service.Unimplemented()
 }
 
-func (s *Service) GetFile(context context.Context, in file.File) (*file.File, *service.Error) {
+func (s *Service) GetFile(context context.Context, in file.FileInput) (*file.File, *service.Error) {
 	driver := neo.GetDriver(s.DriverInfo)
 	defer driver.Close()
 
 	session := neo.GetSession(driver)
 	defer session.Close()
 
-	resource, err := GetFileByID(session, in.ResourceID)
+	fileID, err := uuid.Parse(in.ResourceID)
+	if err != nil {
+		return nil, service.InvalidArgument("invalid file ID")
+	}
+
+	resource, err := GetFileByID(session, fileID)
 
 	userID, svcErr := service.GetUserID(context)
 	if err != nil {
@@ -45,7 +50,7 @@ func (s *Service) GetFile(context context.Context, in file.File) (*file.File, *s
 	}
 
 	if resource == nil {
-		return nil, service.NotFound(fmt.Sprintf("No file found for ID: %s", in.ResourceID.String()))
+		return nil, service.NotFound(fmt.Sprintf("No file found for ID: %s", fileID.String()))
 	}
 
 	// TODO verify user can read file
@@ -53,11 +58,11 @@ func (s *Service) GetFile(context context.Context, in file.File) (*file.File, *s
 	return resource, nil
 }
 
-func (s *Service) UpdateFile(context context.Context, in file.File) (*file.File, *service.Error) {
+func (s *Service) UpdateFile(context context.Context, in file.FileInput) (*file.File, *service.Error) {
 	return nil, service.Unimplemented()
 }
 
-func (s *Service) DeleteFile(context context.Context, in file.File) (*file.File, *service.Error) {
+func (s *Service) DeleteFile(context context.Context, in file.FileInput) (*file.File, *service.Error) {
 	return nil, service.Unimplemented()
 }
 

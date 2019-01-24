@@ -12,6 +12,12 @@ import (
 	requestUtils "github.com/kevinmichaelchen/my-go-utils/request"
 )
 
+type FileInput struct {
+	ResourceID string    `json:"resourceID"`
+	ParentID   string    `json:"parentID"`
+	Name       string    `json:"name"`
+}
+
 type File struct {
 	ResourceID uuid.UUID `json:"resourceID"`
 	ParentID   uuid.UUID `json:"parentID"`
@@ -23,22 +29,17 @@ type Controller struct {
 }
 
 type Service interface {
-	CreateFile(ctx context.Context, file File) (*File, *service.Error)
-	GetFile(ctx context.Context, file File) (*File, *service.Error)
-	UpdateFile(ctx context.Context, file File) (*File, *service.Error)
-	DeleteFile(ctx context.Context, file File) (*File, *service.Error)
+	CreateFile(ctx context.Context, file FileInput) (*File, *service.Error)
+	GetFile(ctx context.Context, file FileInput) (*File, *service.Error)
+	UpdateFile(ctx context.Context, file FileInput) (*File, *service.Error)
+	DeleteFile(ctx context.Context, file FileInput) (*File, *service.Error)
 }
 
 func (c *Controller) GetFileRequestHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	fileIDString := vars["id"]
-	fileID, err := uuid.Parse(fileIDString)
-	if err != nil {
-		requestUtils.RespondWithError(w, http.StatusBadRequest, err.Error())
-		return
-	}
+	fileID := vars["id"]
 
-	response, serviceError := c.Service.GetFile(service.CreateUserContext(11), File{ResourceID: fileID})
+	response, serviceError := c.Service.GetFile(service.CreateUserContext(11), FileInput{ResourceID: fileID})
 	if serviceError != nil {
 		log.Println(serviceError.Error.Error())
 		requestUtils.RespondWithError(w, serviceError.HttpCode, serviceError.ErrorMessage)

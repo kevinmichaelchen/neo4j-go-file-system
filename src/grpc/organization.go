@@ -9,11 +9,9 @@ import (
 
 func CreateOrganization(organizationService organization.Service, ctx context.Context, in *pb.OrganizationCrudRequest) (*pb.OrganizationResponse, error) {
 	o, svcErr := organizationService.CreateOrganization(toOrganization(in.Organization))
-
 	if svcErr != nil {
 		return nil, status.Error(svcErr.GrpcCode, svcErr.ErrorMessage)
 	}
-
 	return &pb.OrganizationResponse{Organization: toGrpcOrganization(o)}, nil
 }
 

@@ -10,7 +10,6 @@ import (
 
 func CreateFolder(folderService folder.Service, ctx context.Context, in *pb.CreateFolderRequest) (*pb.FolderResponse, error) {
 	userID := getUserID(ctx)
-
 	f, svcErr := folderService.CreateFolder(service.CreateUserContext(userID), folder.FolderInput{
 		Name:     in.Name,
 		ParentID: optString(in.ParentID),
@@ -33,7 +32,6 @@ func GetFolder(folderService folder.Service, ctx context.Context, in *pb.GetFold
 
 func UpdateFolder(folderService folder.Service, ctx context.Context, in *pb.UpdateFolderRequest) (*pb.FolderResponse, error) {
 	userID := getUserID(ctx)
-
 	f, svcErr := folderService.UpdateFolder(service.CreateUserContext(userID), folder.FolderInput{
 		ResourceID: in.FolderID,
 		Name:       in.Name,

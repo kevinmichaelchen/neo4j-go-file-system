@@ -24,7 +24,7 @@ var _ = math.Inf
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
 type File struct {
-	FileID               string   `protobuf:"bytes,1,opt,name=fileID,proto3" json:"fileID,omitempty"`
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	RevisionID           string   `protobuf:"bytes,2,opt,name=revisionID,proto3" json:"revisionID,omitempty"`
 	Name                 string   `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	ParentID             string   `protobuf:"bytes,4,opt,name=parentID,proto3" json:"parentID,omitempty"`
@@ -37,7 +37,7 @@ func (m *File) Reset()         { *m = File{} }
 func (m *File) String() string { return proto.CompactTextString(m) }
 func (*File) ProtoMessage()    {}
 func (*File) Descriptor() ([]byte, []int) {
-	return fileDescriptor_file_1de13d16dd313e10, []int{0}
+	return fileDescriptor_file_5acc463ae05621ce, []int{0}
 }
 func (m *File) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_File.Unmarshal(m, b)
@@ -57,9 +57,9 @@ func (m *File) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_File proto.InternalMessageInfo
 
-func (m *File) GetFileID() string {
+func (m *File) GetId() string {
 	if m != nil {
-		return m.FileID
+		return m.Id
 	}
 	return ""
 }
@@ -100,7 +100,7 @@ func (m *CreateFileRequest) Reset()         { *m = CreateFileRequest{} }
 func (m *CreateFileRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateFileRequest) ProtoMessage()    {}
 func (*CreateFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_file_1de13d16dd313e10, []int{1}
+	return fileDescriptor_file_5acc463ae05621ce, []int{1}
 }
 func (m *CreateFileRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateFileRequest.Unmarshal(m, b)
@@ -148,39 +148,38 @@ func (m *CreateFileRequest) GetParentID() string {
 	return ""
 }
 
-// TODO handle name collisions
-type CreateFileResponse struct {
+type FileResponse struct {
 	File                 *File    `protobuf:"bytes,1,opt,name=file,proto3" json:"file,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *CreateFileResponse) Reset()         { *m = CreateFileResponse{} }
-func (m *CreateFileResponse) String() string { return proto.CompactTextString(m) }
-func (*CreateFileResponse) ProtoMessage()    {}
-func (*CreateFileResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_file_1de13d16dd313e10, []int{2}
+func (m *FileResponse) Reset()         { *m = FileResponse{} }
+func (m *FileResponse) String() string { return proto.CompactTextString(m) }
+func (*FileResponse) ProtoMessage()    {}
+func (*FileResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_file_5acc463ae05621ce, []int{2}
 }
-func (m *CreateFileResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_CreateFileResponse.Unmarshal(m, b)
+func (m *FileResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_FileResponse.Unmarshal(m, b)
 }
-func (m *CreateFileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_CreateFileResponse.Marshal(b, m, deterministic)
+func (m *FileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_FileResponse.Marshal(b, m, deterministic)
 }
-func (dst *CreateFileResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CreateFileResponse.Merge(dst, src)
+func (dst *FileResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FileResponse.Merge(dst, src)
 }
-func (m *CreateFileResponse) XXX_Size() int {
-	return xxx_messageInfo_CreateFileResponse.Size(m)
+func (m *FileResponse) XXX_Size() int {
+	return xxx_messageInfo_FileResponse.Size(m)
 }
-func (m *CreateFileResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_CreateFileResponse.DiscardUnknown(m)
+func (m *FileResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_FileResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_CreateFileResponse proto.InternalMessageInfo
+var xxx_messageInfo_FileResponse proto.InternalMessageInfo
 
-func (m *CreateFileResponse) GetFile() *File {
+func (m *FileResponse) GetFile() *File {
 	if m != nil {
 		return m.File
 	}
@@ -199,7 +198,7 @@ func (m *GetFileRequest) Reset()         { *m = GetFileRequest{} }
 func (m *GetFileRequest) String() string { return proto.CompactTextString(m) }
 func (*GetFileRequest) ProtoMessage()    {}
 func (*GetFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_file_1de13d16dd313e10, []int{3}
+	return fileDescriptor_file_5acc463ae05621ce, []int{3}
 }
 func (m *GetFileRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetFileRequest.Unmarshal(m, b)
@@ -233,128 +232,6 @@ func (m *GetFileRequest) GetFileID() string {
 	return ""
 }
 
-type GetFileResponse struct {
-	File                 *File    `protobuf:"bytes,1,opt,name=file,proto3" json:"file,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *GetFileResponse) Reset()         { *m = GetFileResponse{} }
-func (m *GetFileResponse) String() string { return proto.CompactTextString(m) }
-func (*GetFileResponse) ProtoMessage()    {}
-func (*GetFileResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_file_1de13d16dd313e10, []int{4}
-}
-func (m *GetFileResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetFileResponse.Unmarshal(m, b)
-}
-func (m *GetFileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetFileResponse.Marshal(b, m, deterministic)
-}
-func (dst *GetFileResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetFileResponse.Merge(dst, src)
-}
-func (m *GetFileResponse) XXX_Size() int {
-	return xxx_messageInfo_GetFileResponse.Size(m)
-}
-func (m *GetFileResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetFileResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_GetFileResponse proto.InternalMessageInfo
-
-func (m *GetFileResponse) GetFile() *File {
-	if m != nil {
-		return m.File
-	}
-	return nil
-}
-
-type DeleteFileRequest struct {
-	UserID               int64    `protobuf:"varint,1,opt,name=userID,proto3" json:"userID,omitempty"`
-	FileID               string   `protobuf:"bytes,2,opt,name=fileID,proto3" json:"fileID,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *DeleteFileRequest) Reset()         { *m = DeleteFileRequest{} }
-func (m *DeleteFileRequest) String() string { return proto.CompactTextString(m) }
-func (*DeleteFileRequest) ProtoMessage()    {}
-func (*DeleteFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_file_1de13d16dd313e10, []int{5}
-}
-func (m *DeleteFileRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_DeleteFileRequest.Unmarshal(m, b)
-}
-func (m *DeleteFileRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_DeleteFileRequest.Marshal(b, m, deterministic)
-}
-func (dst *DeleteFileRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DeleteFileRequest.Merge(dst, src)
-}
-func (m *DeleteFileRequest) XXX_Size() int {
-	return xxx_messageInfo_DeleteFileRequest.Size(m)
-}
-func (m *DeleteFileRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_DeleteFileRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_DeleteFileRequest proto.InternalMessageInfo
-
-func (m *DeleteFileRequest) GetUserID() int64 {
-	if m != nil {
-		return m.UserID
-	}
-	return 0
-}
-
-func (m *DeleteFileRequest) GetFileID() string {
-	if m != nil {
-		return m.FileID
-	}
-	return ""
-}
-
-type DeleteFileResponse struct {
-	File                 *File    `protobuf:"bytes,1,opt,name=file,proto3" json:"file,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *DeleteFileResponse) Reset()         { *m = DeleteFileResponse{} }
-func (m *DeleteFileResponse) String() string { return proto.CompactTextString(m) }
-func (*DeleteFileResponse) ProtoMessage()    {}
-func (*DeleteFileResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_file_1de13d16dd313e10, []int{6}
-}
-func (m *DeleteFileResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_DeleteFileResponse.Unmarshal(m, b)
-}
-func (m *DeleteFileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_DeleteFileResponse.Marshal(b, m, deterministic)
-}
-func (dst *DeleteFileResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DeleteFileResponse.Merge(dst, src)
-}
-func (m *DeleteFileResponse) XXX_Size() int {
-	return xxx_messageInfo_DeleteFileResponse.Size(m)
-}
-func (m *DeleteFileResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_DeleteFileResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_DeleteFileResponse proto.InternalMessageInfo
-
-func (m *DeleteFileResponse) GetFile() *File {
-	if m != nil {
-		return m.File
-	}
-	return nil
-}
-
 type UpdateFileRequest struct {
 	UserID int64  `protobuf:"varint,1,opt,name=userID,proto3" json:"userID,omitempty"`
 	FileID string `protobuf:"bytes,2,opt,name=fileID,proto3" json:"fileID,omitempty"`
@@ -371,7 +248,7 @@ func (m *UpdateFileRequest) Reset()         { *m = UpdateFileRequest{} }
 func (m *UpdateFileRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateFileRequest) ProtoMessage()    {}
 func (*UpdateFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_file_1de13d16dd313e10, []int{7}
+	return fileDescriptor_file_5acc463ae05621ce, []int{4}
 }
 func (m *UpdateFileRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateFileRequest.Unmarshal(m, b)
@@ -419,54 +296,59 @@ func (m *UpdateFileRequest) GetParentID() string {
 	return ""
 }
 
-type UpdateFileResponse struct {
-	File                 *File    `protobuf:"bytes,1,opt,name=file,proto3" json:"file,omitempty"`
+type DeleteFileRequest struct {
+	UserID               int64    `protobuf:"varint,1,opt,name=userID,proto3" json:"userID,omitempty"`
+	FileID               string   `protobuf:"bytes,2,opt,name=fileID,proto3" json:"fileID,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *UpdateFileResponse) Reset()         { *m = UpdateFileResponse{} }
-func (m *UpdateFileResponse) String() string { return proto.CompactTextString(m) }
-func (*UpdateFileResponse) ProtoMessage()    {}
-func (*UpdateFileResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_file_1de13d16dd313e10, []int{8}
+func (m *DeleteFileRequest) Reset()         { *m = DeleteFileRequest{} }
+func (m *DeleteFileRequest) String() string { return proto.CompactTextString(m) }
+func (*DeleteFileRequest) ProtoMessage()    {}
+func (*DeleteFileRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_file_5acc463ae05621ce, []int{5}
 }
-func (m *UpdateFileResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_UpdateFileResponse.Unmarshal(m, b)
+func (m *DeleteFileRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DeleteFileRequest.Unmarshal(m, b)
 }
-func (m *UpdateFileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_UpdateFileResponse.Marshal(b, m, deterministic)
+func (m *DeleteFileRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DeleteFileRequest.Marshal(b, m, deterministic)
 }
-func (dst *UpdateFileResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UpdateFileResponse.Merge(dst, src)
+func (dst *DeleteFileRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteFileRequest.Merge(dst, src)
 }
-func (m *UpdateFileResponse) XXX_Size() int {
-	return xxx_messageInfo_UpdateFileResponse.Size(m)
+func (m *DeleteFileRequest) XXX_Size() int {
+	return xxx_messageInfo_DeleteFileRequest.Size(m)
 }
-func (m *UpdateFileResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_UpdateFileResponse.DiscardUnknown(m)
+func (m *DeleteFileRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteFileRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UpdateFileResponse proto.InternalMessageInfo
+var xxx_messageInfo_DeleteFileRequest proto.InternalMessageInfo
 
-func (m *UpdateFileResponse) GetFile() *File {
+func (m *DeleteFileRequest) GetUserID() int64 {
 	if m != nil {
-		return m.File
+		return m.UserID
 	}
-	return nil
+	return 0
+}
+
+func (m *DeleteFileRequest) GetFileID() string {
+	if m != nil {
+		return m.FileID
+	}
+	return ""
 }
 
 func init() {
 	proto.RegisterType((*File)(nil), "pb.File")
 	proto.RegisterType((*CreateFileRequest)(nil), "pb.CreateFileRequest")
-	proto.RegisterType((*CreateFileResponse)(nil), "pb.CreateFileResponse")
+	proto.RegisterType((*FileResponse)(nil), "pb.FileResponse")
 	proto.RegisterType((*GetFileRequest)(nil), "pb.GetFileRequest")
-	proto.RegisterType((*GetFileResponse)(nil), "pb.GetFileResponse")
-	proto.RegisterType((*DeleteFileRequest)(nil), "pb.DeleteFileRequest")
-	proto.RegisterType((*DeleteFileResponse)(nil), "pb.DeleteFileResponse")
 	proto.RegisterType((*UpdateFileRequest)(nil), "pb.UpdateFileRequest")
-	proto.RegisterType((*UpdateFileResponse)(nil), "pb.UpdateFileResponse")
+	proto.RegisterType((*DeleteFileRequest)(nil), "pb.DeleteFileRequest")
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -481,10 +363,10 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type FileServiceClient interface {
-	CreateFile(ctx context.Context, in *CreateFileRequest, opts ...grpc.CallOption) (*CreateFileResponse, error)
-	GetFile(ctx context.Context, in *GetFileRequest, opts ...grpc.CallOption) (*GetFileResponse, error)
-	DeleteFile(ctx context.Context, in *DeleteFileRequest, opts ...grpc.CallOption) (*DeleteFileResponse, error)
-	UpdateFile(ctx context.Context, in *UpdateFileRequest, opts ...grpc.CallOption) (*UpdateFileResponse, error)
+	CreateFile(ctx context.Context, in *CreateFileRequest, opts ...grpc.CallOption) (*FileResponse, error)
+	GetFile(ctx context.Context, in *GetFileRequest, opts ...grpc.CallOption) (*FileResponse, error)
+	UpdateFile(ctx context.Context, in *UpdateFileRequest, opts ...grpc.CallOption) (*FileResponse, error)
+	DeleteFile(ctx context.Context, in *DeleteFileRequest, opts ...grpc.CallOption) (*FileResponse, error)
 }
 
 type fileServiceClient struct {
@@ -495,8 +377,8 @@ func NewFileServiceClient(cc *grpc.ClientConn) FileServiceClient {
 	return &fileServiceClient{cc}
 }
 
-func (c *fileServiceClient) CreateFile(ctx context.Context, in *CreateFileRequest, opts ...grpc.CallOption) (*CreateFileResponse, error) {
-	out := new(CreateFileResponse)
+func (c *fileServiceClient) CreateFile(ctx context.Context, in *CreateFileRequest, opts ...grpc.CallOption) (*FileResponse, error) {
+	out := new(FileResponse)
 	err := c.cc.Invoke(ctx, "/pb.FileService/CreateFile", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -504,8 +386,8 @@ func (c *fileServiceClient) CreateFile(ctx context.Context, in *CreateFileReques
 	return out, nil
 }
 
-func (c *fileServiceClient) GetFile(ctx context.Context, in *GetFileRequest, opts ...grpc.CallOption) (*GetFileResponse, error) {
-	out := new(GetFileResponse)
+func (c *fileServiceClient) GetFile(ctx context.Context, in *GetFileRequest, opts ...grpc.CallOption) (*FileResponse, error) {
+	out := new(FileResponse)
 	err := c.cc.Invoke(ctx, "/pb.FileService/GetFile", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -513,18 +395,18 @@ func (c *fileServiceClient) GetFile(ctx context.Context, in *GetFileRequest, opt
 	return out, nil
 }
 
-func (c *fileServiceClient) DeleteFile(ctx context.Context, in *DeleteFileRequest, opts ...grpc.CallOption) (*DeleteFileResponse, error) {
-	out := new(DeleteFileResponse)
-	err := c.cc.Invoke(ctx, "/pb.FileService/DeleteFile", in, out, opts...)
+func (c *fileServiceClient) UpdateFile(ctx context.Context, in *UpdateFileRequest, opts ...grpc.CallOption) (*FileResponse, error) {
+	out := new(FileResponse)
+	err := c.cc.Invoke(ctx, "/pb.FileService/UpdateFile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fileServiceClient) UpdateFile(ctx context.Context, in *UpdateFileRequest, opts ...grpc.CallOption) (*UpdateFileResponse, error) {
-	out := new(UpdateFileResponse)
-	err := c.cc.Invoke(ctx, "/pb.FileService/UpdateFile", in, out, opts...)
+func (c *fileServiceClient) DeleteFile(ctx context.Context, in *DeleteFileRequest, opts ...grpc.CallOption) (*FileResponse, error) {
+	out := new(FileResponse)
+	err := c.cc.Invoke(ctx, "/pb.FileService/DeleteFile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -533,10 +415,10 @@ func (c *fileServiceClient) UpdateFile(ctx context.Context, in *UpdateFileReques
 
 // FileServiceServer is the server API for FileService service.
 type FileServiceServer interface {
-	CreateFile(context.Context, *CreateFileRequest) (*CreateFileResponse, error)
-	GetFile(context.Context, *GetFileRequest) (*GetFileResponse, error)
-	DeleteFile(context.Context, *DeleteFileRequest) (*DeleteFileResponse, error)
-	UpdateFile(context.Context, *UpdateFileRequest) (*UpdateFileResponse, error)
+	CreateFile(context.Context, *CreateFileRequest) (*FileResponse, error)
+	GetFile(context.Context, *GetFileRequest) (*FileResponse, error)
+	UpdateFile(context.Context, *UpdateFileRequest) (*FileResponse, error)
+	DeleteFile(context.Context, *DeleteFileRequest) (*FileResponse, error)
 }
 
 func RegisterFileServiceServer(s *grpc.Server, srv FileServiceServer) {
@@ -579,24 +461,6 @@ func _FileService_GetFile_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FileService_DeleteFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteFileRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FileServiceServer).DeleteFile(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/pb.FileService/DeleteFile",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FileServiceServer).DeleteFile(ctx, req.(*DeleteFileRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _FileService_UpdateFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateFileRequest)
 	if err := dec(in); err != nil {
@@ -615,6 +479,24 @@ func _FileService_UpdateFile_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FileService_DeleteFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FileServiceServer).DeleteFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.FileService/DeleteFile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FileServiceServer).DeleteFile(ctx, req.(*DeleteFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _FileService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "pb.FileService",
 	HandlerType: (*FileServiceServer)(nil),
@@ -628,40 +510,39 @@ var _FileService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _FileService_GetFile_Handler,
 		},
 		{
-			MethodName: "DeleteFile",
-			Handler:    _FileService_DeleteFile_Handler,
-		},
-		{
 			MethodName: "UpdateFile",
 			Handler:    _FileService_UpdateFile_Handler,
+		},
+		{
+			MethodName: "DeleteFile",
+			Handler:    _FileService_DeleteFile_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "file.proto",
 }
 
-func init() { proto.RegisterFile("file.proto", fileDescriptor_file_1de13d16dd313e10) }
+func init() { proto.RegisterFile("file.proto", fileDescriptor_file_5acc463ae05621ce) }
 
-var fileDescriptor_file_1de13d16dd313e10 = []byte{
-	// 315 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x93, 0xc1, 0x4b, 0xc3, 0x30,
-	0x14, 0xc6, 0xb7, 0xae, 0xcc, 0xf9, 0x06, 0x4a, 0x9f, 0x38, 0x4a, 0x11, 0x91, 0x9c, 0x3c, 0x55,
-	0xa8, 0x5e, 0x07, 0xc2, 0x8a, 0xd2, 0x6b, 0xc5, 0x3f, 0xa0, 0xd5, 0x27, 0x14, 0x6a, 0x1b, 0x93,
-	0x6e, 0x17, 0x2f, 0xfe, 0xe9, 0x92, 0xa4, 0xb4, 0x9d, 0x45, 0x08, 0xba, 0x5b, 0xdf, 0xf7, 0xf2,
-	0xf2, 0x4b, 0xbe, 0xaf, 0x01, 0x78, 0x2b, 0x4a, 0x0a, 0xb9, 0xa8, 0x9b, 0x1a, 0x1d, 0x9e, 0xb3,
-	0x0a, 0xdc, 0x87, 0xa2, 0x24, 0x5c, 0xc1, 0x5c, 0x75, 0x92, 0xd8, 0x9f, 0x5e, 0x4d, 0xaf, 0x8f,
-	0xd3, 0xb6, 0xc2, 0x4b, 0x00, 0x41, 0xbb, 0x42, 0x16, 0x75, 0x95, 0xc4, 0xbe, 0xa3, 0x7b, 0x03,
-	0x05, 0x11, 0xdc, 0x2a, 0x7b, 0x27, 0x7f, 0xa6, 0x3b, 0xfa, 0x1b, 0x03, 0x58, 0xf0, 0x4c, 0x50,
-	0xd5, 0x24, 0xb1, 0xef, 0x6a, 0xbd, 0xab, 0xd9, 0x27, 0x78, 0x1b, 0x41, 0x59, 0x43, 0x8a, 0x9a,
-	0xd2, 0xc7, 0x96, 0x64, 0xa3, 0xe0, 0x5b, 0x49, 0xa2, 0x85, 0xcf, 0xd2, 0xb6, 0x3a, 0x38, 0x3c,
-	0x02, 0x1c, 0xc2, 0x25, 0xaf, 0x2b, 0x49, 0x78, 0x01, 0xae, 0xba, 0xac, 0x66, 0x2f, 0xa3, 0x45,
-	0xc8, 0xf3, 0x50, 0xf7, 0xb5, 0xca, 0xee, 0xe1, 0xe4, 0x91, 0x1a, 0x9b, 0xd3, 0xf6, 0x16, 0x3a,
-	0x43, 0x0b, 0xd9, 0x0d, 0x9c, 0x76, 0x3b, 0x58, 0x21, 0x37, 0xe0, 0xc5, 0x54, 0x92, 0x9d, 0x47,
-	0xbf, 0x51, 0x23, 0xc0, 0xe1, 0x26, 0x56, 0x60, 0x09, 0xde, 0x33, 0x7f, 0xcd, 0xfe, 0x05, 0xfe,
-	0x4b, 0x28, 0x43, 0xa8, 0xcd, 0x41, 0xa3, 0x2f, 0x07, 0x96, 0xaa, 0x7c, 0x22, 0xb1, 0x2b, 0x5e,
-	0x08, 0xd7, 0x00, 0x7d, 0xb0, 0x78, 0xae, 0x56, 0x8f, 0xfe, 0xb2, 0x60, 0xf5, 0x53, 0x36, 0x28,
-	0x36, 0xc1, 0x3b, 0x38, 0x6a, 0x13, 0x42, 0x54, 0x8b, 0xf6, 0x03, 0x0f, 0xce, 0xf6, 0xb4, 0x6e,
-	0x6a, 0x0d, 0xd0, 0x3b, 0x6c, 0xa0, 0xa3, 0xd8, 0x0c, 0x74, 0x1c, 0x84, 0x19, 0xef, 0xef, 0x6d,
-	0xc6, 0x47, 0xe6, 0x9b, 0xf1, 0xb1, 0x3d, 0x6c, 0x92, 0xcf, 0xf5, 0x1b, 0xbe, 0xfd, 0x0e, 0x00,
-	0x00, 0xff, 0xff, 0xbb, 0x54, 0x11, 0xe3, 0xd1, 0x03, 0x00, 0x00,
+var fileDescriptor_file_5acc463ae05621ce = []byte{
+	// 295 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x93, 0x41, 0x4b, 0xfb, 0x40,
+	0x10, 0xc5, 0xff, 0x4d, 0x43, 0xff, 0xf5, 0x55, 0x8a, 0x1d, 0xb0, 0x84, 0x22, 0x22, 0x39, 0x79,
+	0x90, 0x80, 0xf5, 0xd0, 0xab, 0xd0, 0xa0, 0xe4, 0x1a, 0xf1, 0x03, 0x24, 0x66, 0x0a, 0x0b, 0x31,
+	0x59, 0x77, 0xd3, 0x5e, 0xfc, 0xc8, 0x7e, 0x09, 0xd9, 0x4d, 0x48, 0x94, 0xb4, 0x50, 0xd1, 0x5b,
+	0xe6, 0x0d, 0x2f, 0x6f, 0xe6, 0x37, 0x2c, 0xb0, 0x11, 0x39, 0x07, 0x52, 0x95, 0x55, 0x49, 0x8e,
+	0x4c, 0xfd, 0x0d, 0xdc, 0x07, 0x91, 0x33, 0x4d, 0xe1, 0x88, 0xcc, 0x1b, 0x5c, 0x0d, 0xae, 0x4f,
+	0x62, 0x47, 0x64, 0x74, 0x09, 0x28, 0xde, 0x09, 0x2d, 0xca, 0x22, 0x0a, 0x3d, 0xc7, 0xea, 0x5f,
+	0x14, 0x22, 0xb8, 0x45, 0xf2, 0xca, 0xde, 0xd0, 0x76, 0xec, 0x37, 0x2d, 0x30, 0x96, 0x89, 0xe2,
+	0xa2, 0x8a, 0x42, 0xcf, 0xb5, 0x7a, 0x5b, 0xfb, 0xef, 0x98, 0xad, 0x15, 0x27, 0x15, 0x9b, 0xb4,
+	0x98, 0xdf, 0xb6, 0xac, 0x2b, 0x9a, 0x63, 0xb4, 0xd5, 0xac, 0xa2, 0xd0, 0x06, 0x0f, 0xe3, 0xa6,
+	0xfa, 0xf3, 0xf0, 0x1b, 0x9c, 0xd6, 0xb1, 0x5a, 0x96, 0x85, 0x66, 0xba, 0x80, 0x6b, 0x30, 0xd8,
+	0xd4, 0xc9, 0x72, 0x1c, 0xc8, 0x34, 0xb0, 0x7d, 0xab, 0xfa, 0xf7, 0x98, 0x3e, 0x72, 0x75, 0xcc,
+	0x9c, 0x73, 0x8c, 0x8c, 0xa3, 0x9d, 0xb1, 0xa9, 0x7c, 0x8d, 0xd9, 0xb3, 0xcc, 0x8e, 0x5c, 0xf6,
+	0xc0, 0x4f, 0x7e, 0xbc, 0xe4, 0x1a, 0xb3, 0x90, 0x73, 0xfe, 0x55, 0xe8, 0xf2, 0x63, 0x80, 0x89,
+	0xf1, 0x3f, 0xb1, 0xda, 0x89, 0x17, 0xa6, 0x15, 0xd0, 0x9d, 0x8d, 0xce, 0x0d, 0xa9, 0xde, 0x19,
+	0x17, 0x67, 0x2d, 0xc0, 0x06, 0xb0, 0xff, 0x8f, 0x6e, 0xf1, 0xbf, 0x81, 0x48, 0x64, 0xda, 0xdf,
+	0x89, 0xee, 0xb5, 0xac, 0x80, 0x8e, 0x5a, 0x9d, 0xd5, 0xa3, 0x78, 0xc8, 0xd8, 0x6d, 0x5e, 0x1b,
+	0x7b, 0x24, 0xf6, 0x19, 0xd3, 0x91, 0x7d, 0x07, 0x77, 0x9f, 0x01, 0x00, 0x00, 0xff, 0xff, 0xda,
+	0x0c, 0xfc, 0xdf, 0x15, 0x03, 0x00, 0x00,
 }
