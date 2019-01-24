@@ -4,7 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/kevinmichaelchen/neo4j-go-file-system/grpc"
+	externalGrpc "github.com/kevinmichaelchen/neo4j-go-file-system/grpc/external"
+	publicGrpc "github.com/kevinmichaelchen/neo4j-go-file-system/grpc/public"
 
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
 	fileNeo "github.com/kevinmichaelchen/neo4j-go-file-system/file/neo"
@@ -25,7 +26,8 @@ import (
 
 type App struct {
 	Router                 *mux.Router
-	GrpcServer             grpc.Server
+	ExternalGrpcServer     externalGrpc.Server
+	InternalGrpcServer     publicGrpc.Server
 	UserController         user.Controller
 	OrganizationController organization.Controller
 	MoveController         move.Controller
@@ -33,7 +35,7 @@ type App struct {
 	FolderController       folder.Controller
 }
 
-func NewApp(driverInfo neo.DriverInfo, grpcPort int) *App {
+func NewApp(driverInfo neo.DriverInfo, publicGrpcPort, externalGrpcPort int) *App {
 	userService := userNeo.NewService(driverInfo)
 	organizationService := orgNeo.NewService(driverInfo)
 	moveService := moveNeo.NewService(driverInfo)
@@ -41,13 +43,16 @@ func NewApp(driverInfo neo.DriverInfo, grpcPort int) *App {
 	folderService := folderNeo.NewService(driverInfo)
 
 	a := &App{
-		GrpcServer: grpc.Server{
-			Port:                grpcPort,
+		ExternalGrpcServer: externalGrpc.Server{
+			Port:          externalGrpcPort,
+			MoveService:   moveService,
+			FileService:   fileService,
+			FolderService: folderService,
+		},
+		InternalGrpcServer: publicGrpc.Server{
+			Port:                publicGrpcPort,
 			UserService:         userService,
 			OrganizationService: organizationService,
-			MoveService:         moveService,
-			FileService:         fileService,
-			FolderService:       folderService,
 		},
 		UserController:         user.Controller{Service: userService},
 		OrganizationController: organization.Controller{Service: organizationService},

@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	var hostname, user, pass, appPortString, grpcPortString string
+	var hostname, user, pass, appPortString, internalGrpcPortString, externalGrpcPortString string
 	var ok bool
 	if hostname, ok = os.LookupEnv("NEO_HOSTNAME"); !ok {
 		log.Fatal("Failed to specify hostname")
@@ -25,7 +25,10 @@ func main() {
 	if appPortString, ok = os.LookupEnv("APP_PORT"); !ok {
 		log.Fatal("Failed to specify app port")
 	}
-	if grpcPortString, ok = os.LookupEnv("GRPC_PORT"); !ok {
+	if internalGrpcPortString, ok = os.LookupEnv("INTERNAL_GRPC_PORT"); !ok {
+		log.Fatal("Failed to specify gRPC port")
+	}
+	if externalGrpcPortString, ok = os.LookupEnv("EXTERNAL_GRPC_PORT"); !ok {
 		log.Fatal("Failed to specify gRPC port")
 	}
 
@@ -34,9 +37,14 @@ func main() {
 		log.Fatalf("Failed to specify valid app port: %s", appPortString)
 	}
 
-	grpcPort, err := strconv.Atoi(grpcPortString)
+	internalGrpcPort, err := strconv.Atoi(internalGrpcPortString)
 	if err != nil {
-		log.Fatalf("Failed to specify valid gRPC port: %s", grpcPortString)
+		log.Fatalf("Failed to specify valid gRPC port: %s", internalGrpcPortString)
+	}
+
+	externalGrpcPort, err := strconv.Atoi(externalGrpcPortString)
+	if err != nil {
+		log.Fatalf("Failed to specify valid gRPC port: %s", externalGrpcPortString)
 	}
 
 	connectionString := fmt.Sprintf("bolt://%s:7687", hostname)
@@ -45,12 +53,15 @@ func main() {
 	driverInfo := neo.DriverInfo{ConnectionUri: connectionString, Username: user, Password: pass}
 	neo.InitializeObjects(driverInfo)
 
-	a := NewApp(driverInfo, grpcPort)
+	a := NewApp(driverInfo, internalGrpcPort, externalGrpcPort)
 
 	var wg sync.WaitGroup
 
 	wg.Add(1)
-	go a.GrpcServer.Run()
+	go a.InternalGrpcServer.Run()
+
+	wg.Add(1)
+	go a.ExternalGrpcServer.Run()
 
 	wg.Add(1)
 	go a.ServeRest(fmt.Sprintf(":%d", appPort), "http://localhost:3000")

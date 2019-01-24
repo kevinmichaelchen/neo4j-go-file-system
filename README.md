@@ -69,11 +69,12 @@ grpcurl -v -plaintext localhost:50051 list pb.FileService
 
 ### Files
 ```bash
-grpcurl -v -plaintext -d '{"userID": "4", "fileID": "7a1ced19-5396-4c44-bc30-4953d59453d5"}' localhost:50051 pb.FileService/GetFile
+grpcurl -v -plaintext -d '{"userID": "4", "fileID": "7a1ced19-5396-4c44-bc30-4953d59453d5"}' localhost:50052 pb.FileService/GetFile
 ```
 
 ### Organizations
 ```bash
+grpcurl -v -plaintext -d '{"organization": {"id": 1}}' localhost:50051 pb.OrganizationService/GetOrganization
 grpcurl -v -plaintext -d '{"organization": {"id": 2, "name": "My Custom Org"}}' localhost:50051 pb.OrganizationService/CreateOrganization
 ```
 
