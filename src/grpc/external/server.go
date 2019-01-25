@@ -2,12 +2,12 @@ package external
 
 import (
 	"fmt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"io"
 	"log"
 	"net"
 	"strings"
-
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
@@ -25,14 +25,41 @@ type Server struct {
 	FolderService folder.Service
 }
 
-func (s *Server) EmitEvent(ctx context.Context, in *pb.EventRequest) (*pb.EventResponse, error) {
-	switch e := in.Event.(type) {
-	case *pb.EventRequest_Foo:
-		log.Println("e.Foo.F =", e.Foo.F)
-	case *pb.EventRequest_Bar:
-		log.Println("e.Bar.B =", e.Bar.B)
+func (s *Server) EmitEvent(stream pb.EventService_EmitEventServer) error {
+	for {
+		in, err := stream.Recv()
+		if err == io.EOF {
+			return nil
+		}
+		if err != nil {
+			return err
+		}
+
+		switch e := in.Event.(type) {
+		case *pb.EventRequest_CreateFileEvent:
+			log.Println("CREATE FILE EVENT")
+			_, err := CreateFile(s.FileService, stream.Context(), e.CreateFileEvent)
+			if err != nil {
+				return err
+			}
+		case *pb.EventRequest_UpdateFileEvent:
+			log.Println("UPDATE FILE EVENT")
+		case *pb.EventRequest_DeleteFileEvent:
+			log.Println("DELETE FILE EVENT")
+		case *pb.EventRequest_CreateFolderEvent:
+			log.Println("CREATE FOLDER EVENT")
+		case *pb.EventRequest_UpdateFolderEvent:
+			log.Println("UPDATE FOLDER EVENT")
+		case *pb.EventRequest_DeleteFolderEvent:
+			log.Println("DELETE FOLDER EVENT")
+		default:
+			return status.Error(codes.Unimplemented, "Unsupported event detected")
+		}
+
+		if err := stream.Send(&pb.EventResponse{Ok: true}); err != nil {
+			return err
+		}
 	}
-	return nil, status.Error(codes.InvalidArgument, "Unsupported event type")
 }
 
 func (s *Server) CreateFile(ctx context.Context, in *pb.CreateFileRequest) (*pb.FileResponse, error) {
