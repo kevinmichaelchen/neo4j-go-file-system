@@ -25,14 +25,12 @@ type Server struct {
 	FolderService folder.Service
 }
 
-func (s *Server) EmitEvent(ctx context.Context, in *pb.FileRequest) (*pb.FileResponse, error) {
-	switch e := in.FileEvent.(type) {
-	case *pb.FileRequest_CreateEvent:
-		return CreateFile(s.FileService, ctx, e.CreateEvent)
-	case *pb.FileRequest_UpdateEvent:
-		return UpdateFile(s.FileService, ctx, e.UpdateEvent)
-	case *pb.FileRequest_DeleteEvent:
-		return DeleteFile(s.FileService, ctx, e.DeleteEvent)
+func (s *Server) EmitEvent(ctx context.Context, in *pb.EventRequest) (*pb.EventResponse, error) {
+	switch e := in.Event.(type) {
+	case *pb.EventRequest_Foo:
+		log.Println("e.Foo.F =", e.Foo.F)
+	case *pb.EventRequest_Bar:
+		log.Println("e.Bar.B =", e.Bar.B)
 	}
 	return nil, status.Error(codes.InvalidArgument, "Unsupported event type")
 }
@@ -97,6 +95,7 @@ func (s *Server) Run() {
 	// Register our services
 	pb.RegisterFileServiceServer(server, s)
 	pb.RegisterFolderServiceServer(server, s)
+	pb.RegisterEventServiceServer(server, s)
 
 	// Register reflection service on gRPC server.
 	reflection.Register(server)

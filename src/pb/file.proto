@@ -13,14 +13,6 @@ message FileResponse {
     File file = 1;
 }
 
-message FileRequest {
-    oneof fileEvent {
-        CreateFileRequest createEvent = 1;
-        UpdateFileRequest updateEvent = 2;
-        DeleteFileRequest deleteEvent = 3;
-    }
-}
-
 message CreateFileRequest {
     int64 userID = 1;
     string revisionID = 2;
@@ -48,7 +40,6 @@ message DeleteFileRequest {
 }
 
 service FileService {
-    rpc EmitEvent(FileRequest) returns (FileResponse) {}
     rpc CreateFile (CreateFileRequest) returns (FileResponse) {}
     rpc GetFile (GetFileRequest) returns (FileResponse) {}
     rpc UpdateFile (UpdateFileRequest) returns (FileResponse) {}

@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package pb;
+
+message Foo {
+    string f = 1;
+}
+
+message Bar {
+    string b = 1;
+}
+
+message EventRequest {
+    oneof event {
+        Foo foo = 1;
+        Bar bar = 2;
+    }
+}
+
+message EventResponse {
+    bool ok = 1;
+}
+
+service EventService {
+    rpc EmitEvent(EventRequest) returns (EventResponse) {}
+}
