@@ -6,6 +6,9 @@ import (
 	"net"
 	"strings"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/move"
@@ -20,6 +23,16 @@ type Server struct {
 	MoveService   move.Service
 	FileService   file.Service
 	FolderService folder.Service
+}
+
+func (s *Server) EmitEvent(ctx context.Context, in *pb.EventRequest) (*pb.EventResponse, error) {
+	switch e := in.Event.(type) {
+	case *pb.EventRequest_Foo:
+		log.Println("e.Foo.F =", e.Foo.F)
+	case *pb.EventRequest_Bar:
+		log.Println("e.Bar.B =", e.Bar.B)
+	}
+	return nil, status.Error(codes.InvalidArgument, "Unsupported event type")
 }
 
 func (s *Server) CreateFile(ctx context.Context, in *pb.CreateFileRequest) (*pb.FileResponse, error) {
@@ -82,6 +95,7 @@ func (s *Server) Run() {
 	// Register our services
 	pb.RegisterFileServiceServer(server, s)
 	pb.RegisterFolderServiceServer(server, s)
+	pb.RegisterEventServiceServer(server, s)
 
 	// Register reflection service on gRPC server.
 	reflection.Register(server)
