@@ -6,6 +6,9 @@ import (
 	"net"
 	"strings"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
 	"github.com/kevinmichaelchen/neo4j-go-file-system/file"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/folder"
 	"github.com/kevinmichaelchen/neo4j-go-file-system/move"
@@ -20,6 +23,18 @@ type Server struct {
 	MoveService   move.Service
 	FileService   file.Service
 	FolderService folder.Service
+}
+
+func (s *Server) EmitEvent(ctx context.Context, in *pb.FileRequest) (*pb.FileResponse, error) {
+	switch e := in.FileEvent.(type) {
+	case *pb.FileRequest_CreateEvent:
+		return CreateFile(s.FileService, ctx, e.CreateEvent)
+	case *pb.FileRequest_UpdateEvent:
+		return UpdateFile(s.FileService, ctx, e.UpdateEvent)
+	case *pb.FileRequest_DeleteEvent:
+		return DeleteFile(s.FileService, ctx, e.DeleteEvent)
+	}
+	return nil, status.Error(codes.InvalidArgument, "Unsupported event type")
 }
 
 func (s *Server) CreateFile(ctx context.Context, in *pb.CreateFileRequest) (*pb.FileResponse, error) {
