@@ -23,86 +23,14 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type Foo struct {
-	F                    string   `protobuf:"bytes,1,opt,name=f,proto3" json:"f,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *Foo) Reset()         { *m = Foo{} }
-func (m *Foo) String() string { return proto.CompactTextString(m) }
-func (*Foo) ProtoMessage()    {}
-func (*Foo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_event_50d46441025ad0d2, []int{0}
-}
-func (m *Foo) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Foo.Unmarshal(m, b)
-}
-func (m *Foo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Foo.Marshal(b, m, deterministic)
-}
-func (dst *Foo) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Foo.Merge(dst, src)
-}
-func (m *Foo) XXX_Size() int {
-	return xxx_messageInfo_Foo.Size(m)
-}
-func (m *Foo) XXX_DiscardUnknown() {
-	xxx_messageInfo_Foo.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Foo proto.InternalMessageInfo
-
-func (m *Foo) GetF() string {
-	if m != nil {
-		return m.F
-	}
-	return ""
-}
-
-type Bar struct {
-	B                    string   `protobuf:"bytes,1,opt,name=b,proto3" json:"b,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *Bar) Reset()         { *m = Bar{} }
-func (m *Bar) String() string { return proto.CompactTextString(m) }
-func (*Bar) ProtoMessage()    {}
-func (*Bar) Descriptor() ([]byte, []int) {
-	return fileDescriptor_event_50d46441025ad0d2, []int{1}
-}
-func (m *Bar) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Bar.Unmarshal(m, b)
-}
-func (m *Bar) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Bar.Marshal(b, m, deterministic)
-}
-func (dst *Bar) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Bar.Merge(dst, src)
-}
-func (m *Bar) XXX_Size() int {
-	return xxx_messageInfo_Bar.Size(m)
-}
-func (m *Bar) XXX_DiscardUnknown() {
-	xxx_messageInfo_Bar.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Bar proto.InternalMessageInfo
-
-func (m *Bar) GetB() string {
-	if m != nil {
-		return m.B
-	}
-	return ""
-}
-
 type EventRequest struct {
 	// Types that are valid to be assigned to Event:
-	//	*EventRequest_Foo
-	//	*EventRequest_Bar
+	//	*EventRequest_CreateFileEvent
+	//	*EventRequest_UpdateFileEvent
+	//	*EventRequest_DeleteFileEvent
+	//	*EventRequest_CreateFolderEvent
+	//	*EventRequest_UpdateFolderEvent
+	//	*EventRequest_DeleteFolderEvent
 	Event                isEventRequest_Event `protobuf_oneof:"event"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
@@ -113,7 +41,7 @@ func (m *EventRequest) Reset()         { *m = EventRequest{} }
 func (m *EventRequest) String() string { return proto.CompactTextString(m) }
 func (*EventRequest) ProtoMessage()    {}
 func (*EventRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_event_50d46441025ad0d2, []int{2}
+	return fileDescriptor_event_74678b33cf7b6863, []int{0}
 }
 func (m *EventRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_EventRequest.Unmarshal(m, b)
@@ -137,17 +65,41 @@ type isEventRequest_Event interface {
 	isEventRequest_Event()
 }
 
-type EventRequest_Foo struct {
-	Foo *Foo `protobuf:"bytes,1,opt,name=foo,proto3,oneof"`
+type EventRequest_CreateFileEvent struct {
+	CreateFileEvent *CreateFileRequest `protobuf:"bytes,1,opt,name=createFileEvent,proto3,oneof"`
 }
 
-type EventRequest_Bar struct {
-	Bar *Bar `protobuf:"bytes,2,opt,name=bar,proto3,oneof"`
+type EventRequest_UpdateFileEvent struct {
+	UpdateFileEvent *UpdateFileRequest `protobuf:"bytes,2,opt,name=updateFileEvent,proto3,oneof"`
 }
 
-func (*EventRequest_Foo) isEventRequest_Event() {}
+type EventRequest_DeleteFileEvent struct {
+	DeleteFileEvent *DeleteFileRequest `protobuf:"bytes,3,opt,name=deleteFileEvent,proto3,oneof"`
+}
 
-func (*EventRequest_Bar) isEventRequest_Event() {}
+type EventRequest_CreateFolderEvent struct {
+	CreateFolderEvent *CreateFolderRequest `protobuf:"bytes,4,opt,name=createFolderEvent,proto3,oneof"`
+}
+
+type EventRequest_UpdateFolderEvent struct {
+	UpdateFolderEvent *UpdateFolderRequest `protobuf:"bytes,5,opt,name=updateFolderEvent,proto3,oneof"`
+}
+
+type EventRequest_DeleteFolderEvent struct {
+	DeleteFolderEvent *DeleteFolderRequest `protobuf:"bytes,6,opt,name=deleteFolderEvent,proto3,oneof"`
+}
+
+func (*EventRequest_CreateFileEvent) isEventRequest_Event() {}
+
+func (*EventRequest_UpdateFileEvent) isEventRequest_Event() {}
+
+func (*EventRequest_DeleteFileEvent) isEventRequest_Event() {}
+
+func (*EventRequest_CreateFolderEvent) isEventRequest_Event() {}
+
+func (*EventRequest_UpdateFolderEvent) isEventRequest_Event() {}
+
+func (*EventRequest_DeleteFolderEvent) isEventRequest_Event() {}
 
 func (m *EventRequest) GetEvent() isEventRequest_Event {
 	if m != nil {
@@ -156,16 +108,44 @@ func (m *EventRequest) GetEvent() isEventRequest_Event {
 	return nil
 }
 
-func (m *EventRequest) GetFoo() *Foo {
-	if x, ok := m.GetEvent().(*EventRequest_Foo); ok {
-		return x.Foo
+func (m *EventRequest) GetCreateFileEvent() *CreateFileRequest {
+	if x, ok := m.GetEvent().(*EventRequest_CreateFileEvent); ok {
+		return x.CreateFileEvent
 	}
 	return nil
 }
 
-func (m *EventRequest) GetBar() *Bar {
-	if x, ok := m.GetEvent().(*EventRequest_Bar); ok {
-		return x.Bar
+func (m *EventRequest) GetUpdateFileEvent() *UpdateFileRequest {
+	if x, ok := m.GetEvent().(*EventRequest_UpdateFileEvent); ok {
+		return x.UpdateFileEvent
+	}
+	return nil
+}
+
+func (m *EventRequest) GetDeleteFileEvent() *DeleteFileRequest {
+	if x, ok := m.GetEvent().(*EventRequest_DeleteFileEvent); ok {
+		return x.DeleteFileEvent
+	}
+	return nil
+}
+
+func (m *EventRequest) GetCreateFolderEvent() *CreateFolderRequest {
+	if x, ok := m.GetEvent().(*EventRequest_CreateFolderEvent); ok {
+		return x.CreateFolderEvent
+	}
+	return nil
+}
+
+func (m *EventRequest) GetUpdateFolderEvent() *UpdateFolderRequest {
+	if x, ok := m.GetEvent().(*EventRequest_UpdateFolderEvent); ok {
+		return x.UpdateFolderEvent
+	}
+	return nil
+}
+
+func (m *EventRequest) GetDeleteFolderEvent() *DeleteFolderRequest {
+	if x, ok := m.GetEvent().(*EventRequest_DeleteFolderEvent); ok {
+		return x.DeleteFolderEvent
 	}
 	return nil
 }
@@ -173,8 +153,12 @@ func (m *EventRequest) GetBar() *Bar {
 // XXX_OneofFuncs is for the internal use of the proto package.
 func (*EventRequest) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
 	return _EventRequest_OneofMarshaler, _EventRequest_OneofUnmarshaler, _EventRequest_OneofSizer, []interface{}{
-		(*EventRequest_Foo)(nil),
-		(*EventRequest_Bar)(nil),
+		(*EventRequest_CreateFileEvent)(nil),
+		(*EventRequest_UpdateFileEvent)(nil),
+		(*EventRequest_DeleteFileEvent)(nil),
+		(*EventRequest_CreateFolderEvent)(nil),
+		(*EventRequest_UpdateFolderEvent)(nil),
+		(*EventRequest_DeleteFolderEvent)(nil),
 	}
 }
 
@@ -182,14 +166,34 @@ func _EventRequest_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
 	m := msg.(*EventRequest)
 	// event
 	switch x := m.Event.(type) {
-	case *EventRequest_Foo:
+	case *EventRequest_CreateFileEvent:
 		b.EncodeVarint(1<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.Foo); err != nil {
+		if err := b.EncodeMessage(x.CreateFileEvent); err != nil {
 			return err
 		}
-	case *EventRequest_Bar:
+	case *EventRequest_UpdateFileEvent:
 		b.EncodeVarint(2<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.Bar); err != nil {
+		if err := b.EncodeMessage(x.UpdateFileEvent); err != nil {
+			return err
+		}
+	case *EventRequest_DeleteFileEvent:
+		b.EncodeVarint(3<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.DeleteFileEvent); err != nil {
+			return err
+		}
+	case *EventRequest_CreateFolderEvent:
+		b.EncodeVarint(4<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.CreateFolderEvent); err != nil {
+			return err
+		}
+	case *EventRequest_UpdateFolderEvent:
+		b.EncodeVarint(5<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.UpdateFolderEvent); err != nil {
+			return err
+		}
+	case *EventRequest_DeleteFolderEvent:
+		b.EncodeVarint(6<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.DeleteFolderEvent); err != nil {
 			return err
 		}
 	case nil:
@@ -202,21 +206,53 @@ func _EventRequest_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
 func _EventRequest_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
 	m := msg.(*EventRequest)
 	switch tag {
-	case 1: // event.foo
+	case 1: // event.createFileEvent
 		if wire != proto.WireBytes {
 			return true, proto.ErrInternalBadWireType
 		}
-		msg := new(Foo)
+		msg := new(CreateFileRequest)
 		err := b.DecodeMessage(msg)
-		m.Event = &EventRequest_Foo{msg}
+		m.Event = &EventRequest_CreateFileEvent{msg}
 		return true, err
-	case 2: // event.bar
+	case 2: // event.updateFileEvent
 		if wire != proto.WireBytes {
 			return true, proto.ErrInternalBadWireType
 		}
-		msg := new(Bar)
+		msg := new(UpdateFileRequest)
 		err := b.DecodeMessage(msg)
-		m.Event = &EventRequest_Bar{msg}
+		m.Event = &EventRequest_UpdateFileEvent{msg}
+		return true, err
+	case 3: // event.deleteFileEvent
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(DeleteFileRequest)
+		err := b.DecodeMessage(msg)
+		m.Event = &EventRequest_DeleteFileEvent{msg}
+		return true, err
+	case 4: // event.createFolderEvent
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(CreateFolderRequest)
+		err := b.DecodeMessage(msg)
+		m.Event = &EventRequest_CreateFolderEvent{msg}
+		return true, err
+	case 5: // event.updateFolderEvent
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(UpdateFolderRequest)
+		err := b.DecodeMessage(msg)
+		m.Event = &EventRequest_UpdateFolderEvent{msg}
+		return true, err
+	case 6: // event.deleteFolderEvent
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(DeleteFolderRequest)
+		err := b.DecodeMessage(msg)
+		m.Event = &EventRequest_DeleteFolderEvent{msg}
 		return true, err
 	default:
 		return false, nil
@@ -227,13 +263,33 @@ func _EventRequest_OneofSizer(msg proto.Message) (n int) {
 	m := msg.(*EventRequest)
 	// event
 	switch x := m.Event.(type) {
-	case *EventRequest_Foo:
-		s := proto.Size(x.Foo)
+	case *EventRequest_CreateFileEvent:
+		s := proto.Size(x.CreateFileEvent)
 		n += 1 // tag and wire
 		n += proto.SizeVarint(uint64(s))
 		n += s
-	case *EventRequest_Bar:
-		s := proto.Size(x.Bar)
+	case *EventRequest_UpdateFileEvent:
+		s := proto.Size(x.UpdateFileEvent)
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *EventRequest_DeleteFileEvent:
+		s := proto.Size(x.DeleteFileEvent)
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *EventRequest_CreateFolderEvent:
+		s := proto.Size(x.CreateFolderEvent)
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *EventRequest_UpdateFolderEvent:
+		s := proto.Size(x.UpdateFolderEvent)
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *EventRequest_DeleteFolderEvent:
+		s := proto.Size(x.DeleteFolderEvent)
 		n += 1 // tag and wire
 		n += proto.SizeVarint(uint64(s))
 		n += s
@@ -255,7 +311,7 @@ func (m *EventResponse) Reset()         { *m = EventResponse{} }
 func (m *EventResponse) String() string { return proto.CompactTextString(m) }
 func (*EventResponse) ProtoMessage()    {}
 func (*EventResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_event_50d46441025ad0d2, []int{3}
+	return fileDescriptor_event_74678b33cf7b6863, []int{1}
 }
 func (m *EventResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_EventResponse.Unmarshal(m, b)
@@ -283,8 +339,6 @@ func (m *EventResponse) GetOk() bool {
 }
 
 func init() {
-	proto.RegisterType((*Foo)(nil), "pb.Foo")
-	proto.RegisterType((*Bar)(nil), "pb.Bar")
 	proto.RegisterType((*EventRequest)(nil), "pb.EventRequest")
 	proto.RegisterType((*EventResponse)(nil), "pb.EventResponse")
 }
@@ -301,7 +355,7 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type EventServiceClient interface {
-	EmitEvent(ctx context.Context, in *EventRequest, opts ...grpc.CallOption) (*EventResponse, error)
+	EmitEvent(ctx context.Context, opts ...grpc.CallOption) (EventService_EmitEventClient, error)
 }
 
 type eventServiceClient struct {
@@ -312,70 +366,107 @@ func NewEventServiceClient(cc *grpc.ClientConn) EventServiceClient {
 	return &eventServiceClient{cc}
 }
 
-func (c *eventServiceClient) EmitEvent(ctx context.Context, in *EventRequest, opts ...grpc.CallOption) (*EventResponse, error) {
-	out := new(EventResponse)
-	err := c.cc.Invoke(ctx, "/pb.EventService/EmitEvent", in, out, opts...)
+func (c *eventServiceClient) EmitEvent(ctx context.Context, opts ...grpc.CallOption) (EventService_EmitEventClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_EventService_serviceDesc.Streams[0], "/pb.EventService/EmitEvent", opts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &eventServiceEmitEventClient{stream}
+	return x, nil
+}
+
+type EventService_EmitEventClient interface {
+	Send(*EventRequest) error
+	Recv() (*EventResponse, error)
+	grpc.ClientStream
+}
+
+type eventServiceEmitEventClient struct {
+	grpc.ClientStream
+}
+
+func (x *eventServiceEmitEventClient) Send(m *EventRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *eventServiceEmitEventClient) Recv() (*EventResponse, error) {
+	m := new(EventResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
 
 // EventServiceServer is the server API for EventService service.
 type EventServiceServer interface {
-	EmitEvent(context.Context, *EventRequest) (*EventResponse, error)
+	EmitEvent(EventService_EmitEventServer) error
 }
 
 func RegisterEventServiceServer(s *grpc.Server, srv EventServiceServer) {
 	s.RegisterService(&_EventService_serviceDesc, srv)
 }
 
-func _EventService_EmitEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EventRequest)
-	if err := dec(in); err != nil {
+func _EventService_EmitEvent_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(EventServiceServer).EmitEvent(&eventServiceEmitEventServer{stream})
+}
+
+type EventService_EmitEventServer interface {
+	Send(*EventResponse) error
+	Recv() (*EventRequest, error)
+	grpc.ServerStream
+}
+
+type eventServiceEmitEventServer struct {
+	grpc.ServerStream
+}
+
+func (x *eventServiceEmitEventServer) Send(m *EventResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *eventServiceEmitEventServer) Recv() (*EventRequest, error) {
+	m := new(EventRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
-	if interceptor == nil {
-		return srv.(EventServiceServer).EmitEvent(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/pb.EventService/EmitEvent",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EventServiceServer).EmitEvent(ctx, req.(*EventRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	return m, nil
 }
 
 var _EventService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "pb.EventService",
 	HandlerType: (*EventServiceServer)(nil),
-	Methods: []grpc.MethodDesc{
+	Methods:     []grpc.MethodDesc{},
+	Streams: []grpc.StreamDesc{
 		{
-			MethodName: "EmitEvent",
-			Handler:    _EventService_EmitEvent_Handler,
+			StreamName:    "EmitEvent",
+			Handler:       _EventService_EmitEvent_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
 	Metadata: "event.proto",
 }
 
-func init() { proto.RegisterFile("event.proto", fileDescriptor_event_50d46441025ad0d2) }
+func init() { proto.RegisterFile("event.proto", fileDescriptor_event_74678b33cf7b6863) }
 
-var fileDescriptor_event_50d46441025ad0d2 = []byte{
-	// 196 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x4c, 0x8f, 0xb1, 0x6e, 0x83, 0x30,
-	0x14, 0x45, 0xb1, 0x51, 0x4b, 0x79, 0xd0, 0xaa, 0x75, 0x17, 0xd4, 0x0e, 0xad, 0x3c, 0x75, 0x62,
-	0xa0, 0x7f, 0x60, 0x09, 0x94, 0x35, 0xce, 0x17, 0xd8, 0x91, 0x91, 0x10, 0x0a, 0xcf, 0x31, 0x0e,
-	0xdf, 0x1f, 0xd9, 0x21, 0x0a, 0xeb, 0x39, 0xf2, 0xf1, 0x7d, 0x50, 0x98, 0xc5, 0x4c, 0xbe, 0xb6,
-	0x0e, 0x3d, 0x32, 0x6a, 0x35, 0xff, 0x84, 0xb4, 0x43, 0x64, 0x25, 0x90, 0xbe, 0x22, 0xbf, 0xe4,
-	0x2f, 0x97, 0xa4, 0x0f, 0x50, 0x28, 0x17, 0xa0, 0xbe, 0x43, 0xcd, 0xf7, 0x50, 0xb6, 0xe1, 0xb1,
-	0x34, 0xe7, 0x8b, 0x99, 0x3d, 0xfb, 0x86, 0xb4, 0x47, 0x8c, 0xbe, 0x68, 0xb2, 0xda, 0xea, 0xba,
-	0x43, 0xdc, 0x25, 0x32, 0xd0, 0x20, 0xb5, 0x72, 0x15, 0x7d, 0x48, 0xa1, 0x5c, 0x90, 0x5a, 0x39,
-	0x91, 0xc1, 0x53, 0x9c, 0xc1, 0x7f, 0xe0, 0x75, 0x4d, 0xce, 0x16, 0xa7, 0xd9, 0xb0, 0x37, 0xa0,
-	0x38, 0xc6, 0xe4, 0x8b, 0xa4, 0x38, 0x36, 0x62, 0xfd, 0xf3, 0x60, 0xdc, 0x32, 0x1c, 0x0d, 0x6b,
-	0x20, 0x6f, 0x4f, 0x83, 0x8f, 0x8c, 0xbd, 0x87, 0xec, 0x76, 0xd2, 0xd7, 0xc7, 0x86, 0xdc, 0x8a,
-	0x3c, 0xd1, 0xcf, 0xf1, 0xd8, 0xff, 0x6b, 0x00, 0x00, 0x00, 0xff, 0xff, 0x2c, 0xe8, 0xda, 0x3b,
-	0xfb, 0x00, 0x00, 0x00,
+var fileDescriptor_event_74678b33cf7b6863 = []byte{
+	// 274 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x64, 0xd2, 0xcd, 0x4e, 0xc2, 0x40,
+	0x10, 0x07, 0x70, 0x5a, 0x04, 0x75, 0xc0, 0x0f, 0x36, 0x31, 0x9a, 0x5e, 0x34, 0x3d, 0x71, 0x6a,
+	0x0c, 0x26, 0xde, 0x55, 0x40, 0xcf, 0x35, 0x3c, 0x80, 0xa5, 0x43, 0xd2, 0xb0, 0xb2, 0xeb, 0x76,
+	0xe9, 0xcb, 0xf9, 0x72, 0x66, 0x3f, 0xd2, 0x1d, 0xdb, 0xe3, 0xf6, 0x3f, 0xf3, 0xeb, 0x6c, 0x66,
+	0x61, 0x82, 0x0d, 0x1e, 0x74, 0x26, 0x95, 0xd0, 0x82, 0xc5, 0xb2, 0x48, 0x60, 0x57, 0x71, 0x74,
+	0xe7, 0x64, 0xba, 0x13, 0xbc, 0x44, 0xe5, 0x4e, 0xe9, 0xef, 0x10, 0xa6, 0x2b, 0x53, 0x9d, 0xe3,
+	0xcf, 0x11, 0x6b, 0xcd, 0x5e, 0xe0, 0x6a, 0xab, 0xf0, 0x4b, 0xe3, 0xba, 0xe2, 0x68, 0x93, 0xbb,
+	0xe8, 0x21, 0x9a, 0x4f, 0x16, 0x37, 0x99, 0x2c, 0xb2, 0xb7, 0x36, 0xf2, 0xf5, 0x1f, 0x83, 0xbc,
+	0x5b, 0x6f, 0x88, 0xa3, 0x2c, 0xff, 0x11, 0x71, 0x20, 0x36, 0x6d, 0x44, 0x88, 0x4e, 0xbd, 0x21,
+	0x4a, 0xe4, 0x48, 0x89, 0x61, 0x20, 0x96, 0x6d, 0x44, 0x88, 0x4e, 0x3d, 0x7b, 0x87, 0x99, 0x1f,
+	0xcc, 0xde, 0xd7, 0x21, 0x27, 0x16, 0xb9, 0x25, 0x57, 0xb1, 0x61, 0x60, 0xfa, 0x3d, 0x06, 0xf2,
+	0xe3, 0x11, 0x68, 0x14, 0xa0, 0x0d, 0x09, 0x09, 0xd4, 0xeb, 0x31, 0x90, 0x1f, 0x92, 0x40, 0xe3,
+	0x00, 0x2d, 0x49, 0x48, 0xa0, 0x5e, 0xcf, 0xeb, 0x29, 0x8c, 0xec, 0x86, 0xd3, 0x7b, 0xb8, 0xf0,
+	0xcb, 0xab, 0xa5, 0x38, 0xd4, 0xc8, 0x2e, 0x21, 0x16, 0x7b, 0xbb, 0xb0, 0xb3, 0x3c, 0x16, 0xfb,
+	0xc5, 0xda, 0x6f, 0xf7, 0x13, 0x55, 0x53, 0x6d, 0x91, 0x3d, 0xc3, 0xf9, 0xea, 0xbb, 0xd2, 0x6e,
+	0x9e, 0x6b, 0xf3, 0x53, 0xba, 0xfc, 0x64, 0x46, 0xbe, 0x38, 0x31, 0x1d, 0xcc, 0xa3, 0xc7, 0xa8,
+	0x18, 0xdb, 0xd7, 0xf2, 0xf4, 0x17, 0x00, 0x00, 0xff, 0xff, 0xc2, 0x70, 0xad, 0xbc, 0x5a, 0x02,
+	0x00, 0x00,
 }

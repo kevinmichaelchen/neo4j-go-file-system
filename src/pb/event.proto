@@ -2,18 +2,17 @@ syntax = "proto3";
 
 package pb;
 
-message Foo {
-    string f = 1;
-}
-
-message Bar {
-    string b = 1;
-}
+import "file.proto";
+import "folder.proto";
 
 message EventRequest {
     oneof event {
-        Foo foo = 1;
-        Bar bar = 2;
+        CreateFileRequest createFileEvent = 1;
+        UpdateFileRequest updateFileEvent = 2;
+        DeleteFileRequest deleteFileEvent = 3;
+        CreateFolderRequest createFolderEvent = 4;
+        UpdateFolderRequest updateFolderEvent = 5;
+        DeleteFolderRequest deleteFolderEvent = 6;
     }
 }
 
@@ -22,5 +21,5 @@ message EventResponse {
 }
 
 service EventService {
-    rpc EmitEvent(EventRequest) returns (EventResponse) {}
+    rpc EmitEvent(stream EventRequest) returns (stream EventResponse) {}
 }
